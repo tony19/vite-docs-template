@@ -11,6 +11,13 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "17"
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vitejs/docs-template.git"
@@ -28,5 +35,11 @@
   "homepage": "https://github.com/vitejs/docs-template#readme",
   "dependencies": {
     "vitepress": "^1.0.0-alpha.4"
+  },
+  "devDependencies": {
+    "@algolia/client-search": "^4.13.1",
+    "@types/react": "^18.0.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
