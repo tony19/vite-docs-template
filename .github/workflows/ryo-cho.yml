@@ -13,13 +13,13 @@ jobs:
       - uses: vuejs-translations/ryu-cho@v1
         with:
           # GitHub access token. Required.
-          access-token: ${{ secrets.ACCESS_TOKEN }}
+          access-token: ${{ secrets.GITHUB_TOKEN }}
 
           # Git user name to use when making issues and PRs. Required.
-          username: vitejs
+          username: github-actions
 
           # Git email address to use when making issues and PRs. Required.
-          email: "tony190@gmail.com"
+          email: "action@github.com"
 
           # The url for the upstream repo. This is the repository that you
           # set up Ryu-Cho. Required.
