@@ -48,3 +48,5 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
     ```
 
 5. In the pull request's description, include the URL for your translation repo. Be prepared to [transfer the repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) to the [`vitejs` organization](https://github.com/vitejs) upon request by the Vite team. The transfer automatically adds you as a collaborator on the repo. The repo will be renamed to `docs-LANGUAGE_CODE` (e.g., `docs-fr`) after the transfer.
+
+   **Thank you for your contribution!**
