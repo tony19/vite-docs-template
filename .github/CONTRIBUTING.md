@@ -8,7 +8,7 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
 
 2. This repo uses the [`ryo-cho` GitHub Action](https://github.com/vuejs-translations/ryu-cho) to keep it in sync with changes from [Vite's `docs`](https://github.com/vitejs/vite/tree/main/docs). It creates pull requests in this repo that cherry-pick the upstream changes to be translated.
 
-   Edit the following fields in `.github/workflows/ryo-cho.yml`:
+   Edit the following fields in [`/.github/workflows/ryo-cho.yml`](/.github/workflows/ryo-cho.yml):
 
     * `upstream-repo` - the Git URL of your translation repo (the URL should end with `.git`)
     * `upstream-repo-branch` - the target branch in your translation repo
