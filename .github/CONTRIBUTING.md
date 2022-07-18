@@ -6,7 +6,7 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
 
 1. Click [*Use this template*](https://github.com/tony19/vite-docs-template/generate) to scaffold a new translation repo in your personal GitHub.
 
-2. This repo uses the [`ryo-cho` GitHub Action](https://github.com/vuejs-translations/ryu-cho) to keep it in sync with changes from [Vite's `docs`](https://github.com/vitejs/vite/tree/main/docs). It creates pull requests in this repo that cherry-pick the upstream changes to be translated.
+2. This repo uses the [`ryo-cho` GitHub Action](https://github.com/vuejs-translations/ryu-cho) to keep it in sync with changes from [Vite's `docs`](https://github.com/vitejs/vite/tree/main/docs). It creates pull requests in this repo that cherry-pick the upstream changes to be translated ([example](https://github.com/tony19/vite-docs-template/pull/4)).
 
    Edit the following fields in [`/.github/workflows/ryo-cho.yml`](/.github/workflows/ryo-cho.yml):
 
