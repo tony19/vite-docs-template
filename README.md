@@ -1,3 +1,8 @@
+
+## This repo is a template for [Vite.js docs translation repositories](https://github.com/vitejs?q=docs). See [guide](/.github/CONTRIBUTING.md).
+
+---
+
 <p align="center">
   <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
     <img width="180" src="https://vitejs.dev/logo.svg" alt="Vite logo">
