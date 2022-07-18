@@ -30,7 +30,10 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
     * [`/README.md`](/README.md)
     * [`/docs/images/*.png`](/docs/images/*.png`) (re-generate images with their text translated) <!-- TODO: How are these images generated? -->
 
-   *We recommend submitting pull requests in your repo for this work so that collaborators can proofread the translations.*
+   💡 *Tips:*
+
+    * *Ping the [`#docs` channel](https://discord.com/channels/804011606160703521/855049073157341234) in [Discord](https://chat.vitejs.dev) or [GitHub Discussions](https://github.com/vitejs/vite/discussions/categories/general) for others who can help with translations.*
+    * *Submit pull requests in your repo for this work so that collaborators can proofread the translations.*
 
 4. Create a [pull request in Vite's main repo](https://github.com/vitejs/vite/pulls) to update the [locale links in `docs/.vitepress/config.ts`](https://github.com/vitejs/vite/blob/1e078ad1902ae980741d6920fc3a72d182fcf179/docs/.vitepress/config.ts#L55-L62), which would add the new language to the dropdown on the Vite homepage. Specifically, append to `localeLinks.items[]` an object with these keys:
 
