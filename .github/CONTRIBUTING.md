@@ -2,7 +2,7 @@
 
 This repo is a template for [Vite.js docs translation repositories](https://github.com/vitejs?q=docs).
 
-## Creating a translation repo
+## Creating a Translation Repo
 
 1. Click [*Use this template*](https://github.com/tony19/vite-docs-template/generate) to scaffold a new translation repo in your personal GitHub.
 
