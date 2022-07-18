@@ -1,4 +1,4 @@
-# vite-docs-template
+# Docs Translation Contributing Guide
 
 This repo is a template for [Vite.js docs translation repositories](https://github.com/vitejs?q=docs).
 
