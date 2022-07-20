@@ -19,11 +19,11 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
     * `email` - the email associated with the GitHub username above
     * `access-token` - a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) of the machine user (stored in a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository), enabling `access-token: ${{ secrets.MY_SECRET_TOKEN }}`)
 
-3. Translate the contents of the following files to the target language:
+3. Translate all user-visible strings (unless specified otherwise) in the following files to the target language:
 
     * [`/docs/.vitepress/config.ts`](/docs/.vitepress/config.ts) (the `og*`, `footer.*`, `text`, and `link` fields)
     * [`/docs/.vitepress/theme/components/HomeSponsors.vue`](/docs/.vitepress/theme/components/HomeSponsors.vue)
-    * [`/docs/.vitepress/theme/composables/sponsor.ts`](/docs/.vitepress/theme/composables/sponsor.ts)
+    * [`/docs/.vitepress/theme/composables/sponsor.ts`]([/docs/.vitepress/theme/composables/sponsor.ts](https://github.com/tony19/vite-docs-template/blob/main/docs/.vitepress/theme/composables/sponsor.ts#L44)) (the `tier` fields)
     * [`/docs/_data/team.js`](/docs/_data/team.js) (the `title` and `desc` fields)
     * `/docs/**/*.md`
     * [`/CONTRIBUTING.md`](/CONTRIBUTING.md)
