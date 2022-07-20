@@ -23,7 +23,7 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
 
     * [`/docs/.vitepress/config.ts`](/docs/.vitepress/config.ts) (the `og*`, `footer.*`, `text`, and `link` fields)
     * [`/docs/.vitepress/theme/components/HomeSponsors.vue`](/docs/.vitepress/theme/components/HomeSponsors.vue)
-    * [`/docs/.vitepress/theme/composables/sponsor.ts`]([/docs/.vitepress/theme/composables/sponsor.ts](https://github.com/tony19/vite-docs-template/blob/main/docs/.vitepress/theme/composables/sponsor.ts#L44)) (the `tier` fields)
+    * [`/docs/.vitepress/theme/composables/sponsor.ts`](https://github.com/tony19/vite-docs-template/blob/acea14e/docs/.vitepress/theme/composables/sponsor.ts#L44) (the `tier` fields)
     * [`/docs/_data/team.js`](/docs/_data/team.js) (the `title` and `desc` fields)
     * `/docs/**/*.md`
     * [`/CONTRIBUTING.md`](/CONTRIBUTING.md)
