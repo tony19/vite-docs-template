@@ -28,7 +28,7 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
     * `/docs/**/*.md`
     * [`/CONTRIBUTING.md`](/CONTRIBUTING.md)
     * [`/README.md`](/README.md)
-    * `/docs/images/*.png` (re-generate images with their text translated) <!-- TODO: How are these images generated? -->
+    * `/docs/images/*.svg`
 
    💡 *Tips:*
 
