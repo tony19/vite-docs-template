@@ -10,15 +10,15 @@ dependencies:
     version: 2.6.0
   vitepress:
     specifier: ^1.0.0-alpha.46
-    version: 1.0.0-alpha.46(@algolia/client-search@4.13.1)(@types/node@20.8.10)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0)
+    version: 1.0.0-alpha.46(@algolia/client-search@4.13.1)(@types/node@20.9.0)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@algolia/client-search':
     specifier: ^4.13.1
     version: 4.13.1
   '@types/node':
-    specifier: 20.8.10
-    version: 20.8.10
+    specifier: 20.9.0
+    version: 20.9.0
   '@types/react':
     specifier: ^18.0.15
     version: 18.0.15
@@ -396,8 +396,8 @@ packages:
     dev: false
     optional: true
 
-  /@types/node@20.8.10:
-    resolution: {integrity: sha512-TlgT8JntpcbmKUFzjhsyhGfP2fsiz1Mv56im6enJ905xG1DAYesxJaeSbGqQmAw8OWPdhyJGhGSQGKRNJ45u9w==}
+  /@types/node@20.9.0:
+    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
     dependencies:
       undici-types: 5.26.5
 
@@ -425,7 +425,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.1.2(@types/node@20.8.10)
+      vite: 4.1.2(@types/node@20.9.0)
       vue: 3.2.47
     dev: false
 
@@ -768,7 +768,7 @@ packages:
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  /vite@4.1.2(@types/node@20.8.10):
+  /vite@4.1.2(@types/node@20.9.0):
     resolution: {integrity: sha512-MWDb9Rfy3DI8omDQySbMK93nQqStwbsQWejXRY2EBzEWKmLAXWb1mkI9Yw2IJrc+oCvPCI1Os5xSSIBYY6DEAw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -793,7 +793,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.8.10
+      '@types/node': 20.9.0
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
@@ -802,7 +802,7 @@ packages:
       fsevents: 2.3.2
     dev: false
 
-  /vitepress@1.0.0-alpha.46(@algolia/client-search@4.13.1)(@types/node@20.8.10)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0):
+  /vitepress@1.0.0-alpha.46(@algolia/client-search@4.13.1)(@types/node@20.9.0)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-HiKiHzC0iTPsRsKs8XcsMeMzCpcCt5LWcX9mpDr288Ju+nQf1G8A2+Wm44ZkBsVv4EHxFK4ChmWyZrL1OJUXpg==}
     hasBin: true
     dependencies:
@@ -813,7 +813,7 @@ packages:
       '@vueuse/core': 9.13.0(vue@3.2.47)
       body-scroll-lock: 4.0.0-beta.0
       shiki: 0.14.1
-      vite: 4.1.2(@types/node@20.8.10)
+      vite: 4.1.2(@types/node@20.9.0)
       vue: 3.2.47
     transitivePeerDependencies:
       - '@algolia/client-search'
