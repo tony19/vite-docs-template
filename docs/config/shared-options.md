@@ -224,15 +224,12 @@ Specify options to pass to CSS pre-processors. The file extensions are used as k
 
 All preprocessor options also support the `additionalData` option, which can be used to inject extra code for each style content.
 
-Example:
+**Example:**
 
 ```js
 export default defineConfig({
   css: {
     preprocessorOptions: {
-      scss: {
-        additionalData: `$injectedColor: orange;`,
-      },
       less: {
         math: 'parens-division',
       },
@@ -245,6 +242,34 @@ export default defineConfig({
   },
 })
 ```
+
+### css.preprocessorOptions[extension].additionalData
+
+- **Type:** `string | ((source: string, filename: string) => (string | { content: string; map?: SourceMap }))`
+
+This option can be used to inject extra code for each style content. Note that if you include actual styles and not just variables, those styles will be duplicated in the final bundle.
+
+**Example:**
+
+```js
+export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `$injectedColor: orange;`,
+      },
+    },
+  },
+})
+```
+
+## css.preprocessorMaxWorkers
+
+- **Experimental:** [Give Feedback](TODO: update)
+- **Type:** `number | true`
+- **Default:** `0` (does not create any workers and run in the main thread)
+
+If this option is set, CSS preprocessors will run in workers when possible. `true` means the number of CPUs minus 1.
 
 ## css.devSourcemap
 
