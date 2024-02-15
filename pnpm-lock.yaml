@@ -14,8 +14,8 @@ devDependencies:
     specifier: ^4.13.1
     version: 4.20.0
   '@types/node':
-    specifier: 20.11.17
-    version: 20.11.17
+    specifier: 20.11.19
+    version: 20.11.19
   '@types/react':
     specifier: ^18.0.15
     version: 18.2.39
@@ -30,7 +30,7 @@ devDependencies:
     version: 18.2.0(react@18.2.0)
   vitepress:
     specifier: ^1.0.0-rc.31
-    version: 1.0.0-rc.31(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.11.0)
+    version: 1.0.0-rc.31(@algolia/client-search@4.20.0)(@types/node@20.11.19)(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.11.0)
 
 packages:
 
@@ -566,8 +566,8 @@ packages:
     resolution: {integrity: sha512-6L6VymKTzYSrEf4Nev4Xa1LCHKrlTlYCBMTlQKFuddo1CvQcE52I0mwfOJayueUC7MJuXOeHTcIU683lzd0cUA==}
     dev: true
 
-  /@types/node@20.11.17:
-    resolution: {integrity: sha512-QmgQZGWu1Yw9TDyAP9ZzpFJKynYNeOvwMJmaxABfieQoVoiVOS6MN1WSpqpRcbeA5+RW82kraAVxCCJg+780Qw==}
+  /@types/node@20.11.19:
+    resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -607,7 +607,7 @@ packages:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.0.4(@types/node@20.11.17)
+      vite: 5.0.4(@types/node@20.11.19)
       vue: 3.3.9
     dev: true
 
@@ -1223,7 +1223,7 @@ packages:
       vfile-message: 4.0.2
     dev: true
 
-  /vite@5.0.4(@types/node@20.11.17):
+  /vite@5.0.4(@types/node@20.11.19):
     resolution: {integrity: sha512-RzAr8LSvM8lmhB4tQ5OPcBhpjOZRZjuxv9zO5UcxeoY2bd3kP3Ticd40Qma9/BqZ8JS96Ll/jeBX9u+LJZrhVg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -1251,7 +1251,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.17
+      '@types/node': 20.11.19
       esbuild: 0.19.8
       postcss: 8.4.31
       rollup: 4.6.1
@@ -1259,7 +1259,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.0.0-rc.31(@algolia/client-search@4.20.0)(@types/node@20.11.17)(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.11.0):
+  /vitepress@1.0.0-rc.31(@algolia/client-search@4.20.0)(@types/node@20.11.19)(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.11.0):
     resolution: {integrity: sha512-ikH9pIjOOAbyoYAGBVfTz8TzuXp+UoWaIRMU4bw/oiTg8R65SbAaGKY84xx6TuL+f4VqUJ8lhzW82YyxSLvstA==}
     hasBin: true
     peerDependencies:
@@ -1284,7 +1284,7 @@ packages:
       mrmime: 1.0.1
       shikiji: 0.7.5
       shikiji-transformers: 0.7.5
-      vite: 5.0.4(@types/node@20.11.17)
+      vite: 5.0.4(@types/node@20.11.19)
       vue: 3.3.9
     transitivePeerDependencies:
       - '@algolia/client-search'
