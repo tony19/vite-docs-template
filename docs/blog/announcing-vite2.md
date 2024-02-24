@@ -19,9 +19,9 @@ head:
       content: Pengumuman Rilis Vite 2
 ---
 
-# Announcing Vite 2.0
+# Mengumumkan Vite 2.0
 
-_February 16, 2021_ - Lihat bagian [Vite 3.0 announcement](./announcing-vite3.md)
+_February 16, 2021_ - Lihat bagian [Mengumumkan Vite 3.0](./announcing-vite3.md)
 
 <p style="text-align:center">
   <img src="/logo.svg" style="height:200px">

@@ -1,5 +1,5 @@
 ---
-title: Vite 4.3 is out!
+title: Vite 4.3 Telah Dirilis!
 author:
   name: The Vite Team
 date: 2023-04-20

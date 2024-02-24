@@ -1,5 +1,5 @@
 ---
-title: Vite 3.0 is out!
+title: Vite 3.0 Telah Dirilis!
 author:
   name: The Vite Team
 date: 2022-07-23

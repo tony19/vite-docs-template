@@ -1,5 +1,5 @@
 ---
-title: Vite 5.0 is out!
+title: Vite 5.0 Telah Dirilis!
 author:
   name: The Vite Team
 date: 2023-11-16
