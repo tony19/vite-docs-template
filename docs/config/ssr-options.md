@@ -1,46 +1,46 @@
-# SSR Options
+# Opsi SSR
 
 ## ssr.external
 
-- **Type:** `string[] | true`
-- **Related:** [SSR Externals](/guide/ssr#ssr-externals)
+- **Tipe:** `string[] | true`
+- **Terkait:** [Eksternal SSR](/guide/ssr#ssr-externals)
 
-Externalize the given dependencies and their transitive dependencies for SSR. By default, all dependencies are externalized except for linked dependencies (for HMR). If you prefer to externalize the linked dependency, you can pass its name to this option.
+Eksternalisasikan dependensi yang diberikan dan dependensi transitif mereka untuk SSR. Secara default, semua dependensi dieksternalisasikan kecuali dependensi terhubung (untuk HMR). Jika Anda lebih memilih untuk mengeksternalisasikan dependensi terhubung, Anda dapat melewatkan namanya ke opsi ini.
 
-If `true`, all dependencies including linked dependencies are externalized.
+Jika `true`, semua dependensi termasuk dependensi terhubung dieksternalisasikan.
 
-Note that the explicitly listed dependencies (using `string[]` type) will always take priority if they're also listed in `ssr.noExternal` (using any type).
+Perhatikan bahwa dependensi yang secara eksplisit terdaftar (menggunakan tipe `string[]`) akan selalu memiliki prioritas jika mereka juga terdaftar di `ssr.noExternal` (menggunakan jenis apa pun).
 
 ## ssr.noExternal
 
-- **Type:** `string | RegExp | (string | RegExp)[] | true`
-- **Related:** [SSR Externals](/guide/ssr#ssr-externals)
+- **Tipe:** `string | RegExp | (string | RegExp)[] | true`
+- **Terkait:** [Eksternal SSR](/guide/ssr#ssr-externals)
 
-Prevent listed dependencies from being externalized for SSR, which they will get bundled in build. By default, only linked dependencies are not externalized (for HMR). If you prefer to externalize the linked dependency, you can pass its name to the `ssr.external` option.
+Mencegah dependensi yang terdaftar dari dieksternalisasikan untuk SSR, yang akan dibundel dalam build. Secara default, hanya dependensi terhubung yang tidak dieksternalisasikan (untuk HMR). Jika Anda lebih memilih untuk mengeksternalisasikan dependensi terhubung, Anda dapat melewatkan namanya ke opsi `ssr.external`.
 
-If `true`, no dependencies are externalized. However, dependencies explicitly listed in `ssr.external` (using `string[]` type) can take priority and still be externalized.
+Jika `true`, tidak ada dependensi yang dieksternalisasikan. Namun, dependensi yang secara eksplisit terdaftar di `ssr.external` (menggunakan tipe `string[]`) dapat memiliki prioritas dan tetap dieksternalisasikan.
 
-Note that if both `ssr.noExternal: true` and `ssr.external: true` are configured, `ssr.noExternal` takes priority and no dependencies are externalized.
+Perhatikan bahwa jika baik `ssr.noExternal: true` dan `ssr.external: true` dikonfigurasi, `ssr.noExternal` memiliki prioritas dan tidak ada dependensi yang dieksternalisasikan.
 
 ## ssr.target
 
-- **Type:** `'node' | 'webworker'`
+- **Tipe:** `'node' | 'webworker'`
 - **Default:** `node`
 
-Build target for the SSR server.
+Target pembangunan untuk server SSR.
 
 ## ssr.resolve.conditions
 
-- **Type:** `string[]`
-- **Related:** [Resolve Conditions](./shared-options.md#resolve-conditions)
+- **Tipe:** `string[]`
+- **Terkait:** [Kondisi Pemecahan](./shared-options.md#resolve-conditions)
 
-Defaults to the the root [`resolve.conditions`](./shared-options.md#resolve-conditions).
+Secara default ke [`resolve.conditions`](./shared-options.md#resolve-conditions) root.
 
-These conditions are used in the plugin pipeline, and only affect non-externalized dependencies during the SSR build. Use `ssr.resolve.externalConditions` to affect externalized imports.
+Kondisi ini digunakan dalam pipeline plugin, dan hanya memengaruhi dependensi yang tidak dieksternalisasikan selama pembangunan SSR. Gunakan `ssr.resolve.externalConditions` untuk mempengaruhi impor yang dieksternalisasikan.
 
 ## ssr.resolve.externalConditions
 
-- **Type:** `string[]`
+- **Tipe:** `string[]`
 - **Default:** `[]`
 
-Conditions that are used during ssr import (including `ssrLoadModule`) of externalized dependencies.
+Kondisi yang digunakan selama impor ssr (termasuk `ssrLoadModule`) dari dependensi yang dieksternalisasikan.

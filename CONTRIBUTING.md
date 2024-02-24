@@ -1,31 +1,31 @@
-# Vite Contributing Guide
+# Panduan Berkontribusi Vite
 
-Hi! We're really excited that you're interested in contributing to Vite! Before submitting your contribution, please read through the following guide. We also suggest you read the [Project Philosophy](https://vitejs.dev/guide/philosophy) in our documentation.
+Halo! Kami sangat senang bahwa Anda tertarik untuk berkontribusi pada Vite! Sebelum mengirimkan kontribusi Anda, harap baca panduan berikut. Kami juga menyarankan Anda untuk membaca [Filsafat Proyek](https://vitejs.dev/guide/philosophy) dalam dokumentasi kami.
 
-You can use [StackBlitz Codeflow](https://stackblitz.com/codeflow) to fix bugs or implement features. You'll see a Codeflow button on issues to start a PR to fix them. A button will also appear on PRs to review them without needing to check out the branch locally. When using Codeflow, the Vite repository will be cloned for you in an online editor, with the Vite package built in watch mode ready to test your changes. If you'd like to learn more, check out the [Codeflow docs](https://developer.stackblitz.com/codeflow/what-is-codeflow).
+Anda dapat menggunakan [StackBlitz Codeflow](https://stackblitz.com/codeflow) untuk memperbaiki bug atau mengimplementasikan fitur. Anda akan melihat tombol Codeflow pada isu untuk memulai PR untuk memperbaikinya. Tombol juga akan muncul pada PR untuk meninjau mereka tanpa perlu memeriksa cabang secara lokal. Ketika menggunakan Codeflow, repositori Vite akan di-clone untuk Anda dalam editor online, dengan paket Vite dibangun dalam mode watch siap untuk menguji perubahan Anda. Jika Anda ingin mempelajari lebih lanjut, periksa [dokumentasi Codeflow](https://developer.stackblitz.com/codeflow/what-is-codeflow).
 
-[![Open in Codeflow](https://developer.stackblitz.com/img/open_in_codeflow.svg)](https://pr.new/vitejs/vite)
+[![Buka di Codeflow](https://developer.stackblitz.com/img/open_in_codeflow.svg)](https://pr.new/vitejs/vite)
 
-## Repo Setup
+## Persiapan Repositori
 
-To develop locally, fork the Vite repository and clone it in your local machine. The Vite repo is a monorepo using pnpm workspaces. The package manager used to install and link dependencies must be [pnpm](https://pnpm.io/).
+Untuk mengembangkan secara lokal, fork repositori Vite dan clone di mesin lokal Anda. Repo Vite adalah monorepo yang menggunakan workspace pnpm. Manajer paket yang digunakan untuk menginstal dan mengaitkan dependensi harus [pnpm](https://pnpm.io/).
 
-To develop and test the core `vite` package:
+Untuk mengembangkan dan menguji paket inti `vite`:
 
-1. Run `pnpm i` in Vite's root folder.
+1. Jalankan `pnpm i` di folder root Vite.
 
-2. Run `pnpm run build` in Vite's root folder.
+2. Jalankan `pnpm run build` di folder root Vite.
 
-3. If you are developing Vite itself, you can go to `packages/vite` and run `pnpm run dev` to automatically rebuild Vite whenever you change its code.
+3. Jika Anda sedang mengembangkan Vite itu sendiri, Anda dapat pergi ke `packages/vite` dan jalankan `pnpm run dev` untuk secara otomatis membangun ulang Vite setiap kali Anda mengubah kode-nya.
 
-You can alternatively use [Vite.js Docker Dev](https://github.com/nystudio107/vitejs-docker-dev) for a containerized Docker setup for Vite.js development.
+Anda juga dapat menggunakan [Vite.js Docker Dev](https://github.com/nystudio107/vitejs-docker-dev) untuk setup Docker terkotainerisasi untuk pengembangan Vite.js.
 
-> Vite uses pnpm v8. If you are working on multiple projects with different versions of pnpm, it's recommended to enable [Corepack](https://github.com/nodejs/corepack) by running `corepack enable`.
+> Vite menggunakan pnpm v8. Jika Anda sedang bekerja pada beberapa proyek dengan versi pnpm yang berbeda, disarankan untuk mengaktifkan [Corepack](https://github.com/nodejs/corepack) dengan menjalankan `corepack enable`.
 
-### Ignoring commits when running `git blame`
+### Mengabaikan commit saat menjalankan `git blame`
 
-We have a `.git-blame-ignore-revs` file to ignore formatting changes.
-To make this file used by `git blame`, you need to run the following command.
+Kami memiliki file `.git-blame-ignore-revs` untuk mengabaikan perubahan format.
+Untuk membuat file ini digunakan oleh `git blame`, Anda perlu menjalankan perintah berikut.
 
 ```sh
 git config --local blame.ignoreRevsFile .git-blame-ignore-revs
@@ -33,37 +33,37 @@ git config --local blame.ignoreRevsFile .git-blame-ignore-revs
 
 ## Debugging
 
-To use breakpoints and explore code execution, you can use the ["Run and Debug"](https://code.visualstudio.com/docs/editor/debugging) feature from VS Code.
+Untuk menggunakan breakpoint dan menjelajahi eksekusi kode, Anda dapat menggunakan fitur ["Run and Debug"](https://code.visualstudio.com/docs/editor/debugging) dari VS Code.
 
-1. Add a `debugger` statement where you want to stop the code execution.
+1. Tambahkan pernyataan `debugger` di tempat Anda ingin menghentikan eksekusi kode.
 
-2. Click the "Run and Debug" icon in the activity bar of the editor, which opens the [_Run and Debug view_](https://code.visualstudio.com/docs/editor/debugging#_run-and-debug-view).
+2. Klik ikon "Run and Debug" di bilah aktivitas editor, yang membuka [_tampilan Run and Debug_](https://code.visualstudio.com/docs/editor/debugging#_run-and-debug-view).
 
-3. Click the "JavaScript Debug Terminal" button in the _Run and Debug view_, which opens a terminal in VS Code.
+3. Klik tombol "JavaScript Debug Terminal" di _tampilan Run and Debug_, yang membuka terminal di VS Code.
 
-4. From that terminal, go to `playground/xxx`, and run `pnpm run dev`.
+4. Dari terminal tersebut, masuk ke `playground/xxx`, dan jalankan `pnpm run dev`.
 
-5. The execution will stop at the `debugger` statement, and you can use the [Debug toolbar](https://code.visualstudio.com/docs/editor/debugging#_debug-actions) to continue, step over, and restart the process...
+5. Eksekusi akan berhenti di pernyataan `debugger`, dan Anda dapat menggunakan [toolbar Debug](https://code.visualstudio.com/docs/editor/debugging#_debug-actions) untuk melanjutkan, melangkah, dan me-restart proses...
 
-### Debugging Errors in Vitest Tests Using Playwright (Chromium)
+### Mendepan Kesalahan dalam Uji Vitest Menggunakan Playwright (Chromium)
 
-Some errors are masked and hidden away because of the layers of abstraction and sandboxed nature added by Vitest, Playwright, and Chromium. In order to see what's actually going wrong and the contents of the devtools console in those instances, follow this setup:
+Beberapa kesalahan disembunyikan karena lapisan abstraksi dan sifat yang di-sandbox oleh Vitest, Playwright, dan Chromium. Untuk melihat apa yang sebenarnya salah dan konten konsol devtools dalam kasus-kasus tersebut, ikuti pengaturan ini:
 
-1. Add a `debugger` statement to the `playground/vitestSetup.ts` -> `afterAll` hook. This will pause execution before the tests quit and the Playwright browser instance exits.
+1. Tambahkan pernyataan `debugger` ke hook `afterAll` di `playground/vitestSetup.ts`. Ini akan menghentikan eksekusi sebelum tes berhenti dan instance browser Playwright keluar.
 
-2. Run the tests with the `debug-serve` script command, which will enable remote debugging: `pnpm run debug-serve resolve`.
+2. Jalankan tes dengan perintah skrip `debug-serve`, yang akan mengaktifkan debug jarak jauh: `pnpm run debug-serve resolve`.
 
-3. Wait for inspector devtools to open in your browser and the debugger to attach.
+3. Tunggu devtools inspektor untuk membuka di browser Anda dan debugger untuk terlampir.
 
-4. In the sources panel in the right column, click the play button to resume execution, and allow the tests to run, which will open a Chromium instance.
+4. Di panel sumber di kolom kanan, klik tombol putar untuk melanjutkan eksekusi, dan izinkan tes berjalan, yang akan membuka instance Chromium.
 
-5. Focusing the Chromium instance, you can open the browser devtools and inspect the console there to find the underlying problems.
+5. Fokus pada instance Chromium, Anda dapat membuka devtools browser dan memeriksa konsol di sana untuk menemukan masalah yang mendasarinya.
 
-6. To close everything, just stop the test process back in your terminal.
+6. Untuk menutup semuanya, cukup hentikan proses tes kembali di terminal Anda.
 
-## Testing Vite against external packages
+## Pengujian Vite terhadap paket eksternal
 
-You may wish to test your locally modified copy of Vite against another package that is built with Vite. For pnpm, after building Vite, you can use [`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides) to do this. Note that `pnpm.overrides` must be specified in the root `package.json`, and you must list the package as a dependency in the root `package.json`:
+Anda mungkin ingin menguji salinan lokal yang dimodifikasi dari Vite Anda terhadap paket lain yang dibangun dengan Vite. Untuk pnpm, setelah membangun Vite, Anda dapat menggunakan [`pnpm.overrides`](https://pnpm.io/package_json#pnpmoverrides) untuk melakukan ini. Perhatikan bahwa `pnpm.overrides` harus ditentukan dalam `package.json` root, dan Anda harus mencantumkan paket sebagai dependensi dalam `package.json` root:
 
 ```json
 {
@@ -78,41 +78,41 @@ You may wish to test your locally modified copy of Vite against another package 
 }
 ```
 
-And re-run `pnpm install` to link the package.
+Dan jalankan kembali `pnpm install` untuk mengaitkan paket.
 
-## Running Tests
+## Menjalankan Pengujian
 
-### Integration Tests
+### Pengujian Integrasi
 
-Each package under `playground/` contains a `__tests__` directory. The tests are run using [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) with custom integrations to make writing tests simple. The detailed setup is inside `vitest.config.e2e.js` and `playground/vitest*` files.
+Setiap paket di bawah `playground/` berisi direktori `__tests__`. Pengujian dijalankan menggunakan [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) dengan integrasi kustom untuk membuat penulisan pengujian sederhana. Setup detailnya ada di dalam `vitest.config.e2e.js` dan file `playground/vitest*`.
 
-Some playgrounds define variants to run the same app using different config setups. By convention, when running a test spec file in a nested folder in `__tests__`, the setup will try to use a config file named `vite.config-{folderName}.js` at the playground's root. You can see an example of variants in the [assets playground](https://github.com/vitejs/vite/tree/main/playground/assets).
+Beberapa playground menentukan varian untuk menjalankan aplikasi yang sama menggunakan setup konfigurasi yang berbeda. Secara konvensi, saat menjalankan file spesifikasi tes di folder bersarang di `__tests__`, setup akan mencoba menggunakan file konfigurasi bernama `vite.config-{folderName}.js` di root playground. Anda dapat melihat contoh varian di [playground aset](https://github.com/vitejs/vite/tree/main/playground/assets).
 
-Before running the tests, make sure that [Vite has been built](#repo-setup). On Windows, you may want to [activate Developer Mode](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) to resolve [issues with symlink creation for non-admins](https://github.com/vitejs/vite/issues/7390). Also, you may want to [set git `core.symlinks` to `true` to resolve issues with symlinks in git](https://github.com/vitejs/vite/issues/5242).
+Sebelum menjalankan pengujian, pastikan bahwa [Vite telah dibangun](#repo-setup). Di Windows, Anda mungkin ingin [mengaktifkan Mode Pengembang](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) untuk memecahkan [masalah dengan penciptaan symlink untuk non-admin](https://github.com/vitejs/vite/issues/7390). Selain itu, Anda mungkin ingin [mengatur git `core.symlinks` menjadi `true` untuk memecahkan masalah dengan symlink di git](https://github.com/vitejs/vite/issues/5242).
 
-Each integration test can be run under either dev server mode or build mode.
+Setiap pengujian integrasi dapat dijalankan dalam mode server dev atau mode build.
 
-- `pnpm test` by default runs every integration test in both serve and build mode, and also unit tests.
+- `pnpm test` secara default menjalankan setiap pengujian integrasi baik dalam mode serve maupun mode build, dan juga pengujian unit.
 
-- `pnpm run test-serve` runs tests only under serve mode.
+- `pnpm run test-serve` menjalankan pengujian hanya dalam mode serve.
 
-- `pnpm run test-build` runs tests only under build mode.
+- `pnpm run test-build` menjalankan pengujian hanya dalam mode build.
 
-- `pnpm run test-serve [match]` or `pnpm run test-build [match]` runs tests in specific packages that match the given filter. e.g. `pnpm run test-serve asset` runs tests for both `playground/asset` and `vite/src/node/__tests__/asset` under serve mode.
+- `pnpm run test-serve [match]` atau `pnpm run test-build [match]` menjalankan pengujian dalam paket tertentu yang sesuai dengan filter yang diberikan. misalnya `pnpm run test-serve asset` menjalankan pengujian untuk baik `playground/asset` dan `vite/src/node/__tests__/asset` dalam mode serve.
 
-  Note package matching is not available for the `pnpm test` script, which always runs all tests.
+  Catatan pencocokan paket tidak tersedia untuk skrip `pnpm test`, yang selalu menjalankan semua pengujian.
 
-### Unit Tests
+### Pengujian Unit
 
-Other than tests under `playground/` for integration tests, packages might contain unit tests under their `__tests__` directory. Unit tests are powered by [Vitest](https://vitest.dev/). The detailed config is inside `vitest.config.ts` files.
+Selain pengujian di bawah `playground/` untuk pengujian integrasi, paket mungkin mengandung pengujian unit di bawah direktori `__tests__` mereka. Pengujian unit didukung oleh [Vitest](https://vitest.dev/). Konfigurasi detailnya ada di dalam file `vitest.config.ts`.
 
-- `pnpm run test-unit` runs unit tests under each package.
+- `pnpm run test-unit` menjalankan pengujian unit di bawah setiap paket.
 
-- `pnpm run test-unit [match]` runs tests in specific packages that match the given filter.
+- `pnpm run test-unit [match]` menjalankan pengujian dalam paket tertentu yang sesuai dengan filter yang diberikan.
 
-### Test Env and Helpers
+### Lingkungan Pengujian dan Pembantu
 
-Inside playground tests, you can import the `page` object from `~utils`, which is a Playwright [`Page`](https://playwright.dev/docs/api/class-page) instance that has already navigated to the served page of the current playground. So, writing a test is as simple as:
+Di dalam pengujian playground, Anda dapat mengimpor objek `page` dari `~utils`, yang merupakan instans Playwright [`Page`](https://playwright.dev/docs/api/class-page) yang sudah menavigasi ke halaman yang disajikan dari playground saat ini. Jadi, menulis pengujian sesederhana ini:
 
 ```js
 import { page } from '~utils'
@@ -122,27 +122,27 @@ test('should work', async () => {
 })
 ```
 
-Some common test helpers (e.g. `testDir`, `isBuild`, or `editFile`) are also available in the utils. Source code is located at `playground/test-utils.ts`.
+Beberapa pembantu pengujian umum (mis. `testDir`, `isBuild`, atau `editFile`) juga tersedia dalam utilitas. Kode sumbernya terletak di `playground/test-utils.ts`.
 
-Note: The test build environment uses a [different default set of Vite config](https://github.com/vitejs/vite/blob/main/playground/vitestSetup.ts#L102-L122) to skip transpilation during tests to make it faster. This may produce a different result compared to the default production build.
+Catatan: Lingkungan pembangunan pengujian menggunakan [setelan konfigurasi Vite default yang berbeda](https://github.com/vitejs/vite/blob/main/playground/vitestSetup.ts#L102-L122) untuk menghindari transpilasi selama pengujian untuk membuatnya lebih cepat. Ini mungkin menghasilkan hasil yang berbeda dibandingkan dengan pembangunan produksi default.
 
-### Extending the Test Suite
+### Memperluas Paket Pengujian
 
-To add new tests, you should find a related playground to the fix or feature (or create a new one). As an example, static assets loading is tested in the [assets playground](https://github.com/vitejs/vite/tree/main/playground/assets). In this Vite app, there is a test for `?raw` imports with [a section defined in the `index.html` for it](https://github.com/vitejs/vite/blob/main/playground/assets/index.html#L121):
+Untuk menambahkan pengujian baru, Anda harus menemukan playground terkait untuk perbaikan atau fitur (atau membuat yang baru). Sebagai contoh, pengujian pembebanan aset statis diuji dalam [playground aset](https://github.com/vitejs/vite/tree/main/playground/assets). Dalam aplikasi Vite ini, ada pengujian untuk impor `?raw` dengan [bagian yang ditentukan di `index.html` untuk itu](https://github.com/vitejs/vite/blob/main/playground/assets/index.html#L121):
 
 ```html
 <h2>?raw import</h2>
 <code class="raw"></code>
 ```
 
-This will be modified [with the result of a file import](https://github.com/vitejs/vite/blob/main/playground/assets/index.html#L151):
+Ini akan dimodifikasi [dengan hasil impor file](https://github.com/vitejs/vite/blob/main/playground/assets/index.html#L151):
 
 ```js
 import rawSvg from './nested/fragment.svg?raw'
 text('.raw', rawSvg)
 ```
 
-...where the `text` util is defined as:
+... di mana utilitas `text` didefinisikan sebagai:
 
 ```js
 function text(el, text) {
@@ -150,7 +150,7 @@ function text(el, text) {
 }
 ```
 
-In the [spec tests](https://github.com/vitejs/vite/blob/main/playground/assets/__tests__/assets.spec.ts#L180), the modifications to the DOM listed above are used to test this feature:
+Dalam [pengujian spesifikasi](https://github.com/vitejs/vite/blob/main/playground/assets/__tests__/assets.spec.ts#L180), modifikasi DOM yang tercantum di atas digunakan untuk menguji fitur ini:
 
 ```js
 test('?raw import', async () => {
@@ -158,118 +158,118 @@ test('?raw import', async () => {
 })
 ```
 
-## Note on Test Dependencies
+## Catatan tentang Dependensi Pengujian
 
-In many test cases, we need to mock dependencies using `link:` and `file:` protocols. `pnpm` treats `link:` as symlinks and `file:` as hardlinks. To test dependencies as if they were copied into `node_modules`, use the `file:` protocol. Otherwise, use the `link:` protocol.
+Dalam banyak kasus pengujian, kita perlu memalsukan dependensi menggunakan protokol `link:` dan `file:`. `pnpm` memperlakukan `link:` sebagai symlink dan `file:` sebagai hardlink. Untuk menguji dependensi seolah-olah mereka disalin ke `node_modules`, gunakan protokol `file:`. Jika tidak, gunakan protokol `link:`.
 
-For a mock dependency, make sure you add a `@vitejs/test-` prefix to the package name. This will avoid possible issues like false-positive alerts.
+Untuk dependensi palsu, pastikan Anda menambahkan awalan `@vitejs/test-` ke nama paket. Ini akan menghindari masalah yang mungkin seperti peringatan positif palsu.
 
 ## Debug Logging
 
-You can set the `DEBUG` environment variable to turn on debugging logs (e.g. `DEBUG="vite:resolve"`). To see all debug logs, you can set `DEBUG="vite:*"`, but be warned that it will be quite noisy. You can run `grep -r "createDebugger('vite:" packages/vite/src/` to see a list of available debug scopes.
+Anda dapat mengatur variabel lingkungan `DEBUG` untuk mengaktifkan log debugging (mis. `DEBUG="vite:resolve"`). Untuk melihat semua log debug, Anda dapat mengatur `DEBUG="vite:*"`, tetapi peringatannya akan cukup berisik. Anda dapat menjalankan `grep -r "createDebugger('vite:" packages/vite/src/` untuk melihat daftar cakupan debug yang tersedia.
 
-## Pull Request Guidelines
+## Pedoman Pull Request
 
-- Checkout a topic branch from a base branch (e.g. `main`), and merge back against that branch.
+- Checkout sebuah cabang topik dari cabang dasar (mis. `main`), dan gabungkan kembali melawan cabang itu.
 
-- If adding a new feature:
+- Jika menambahkan fitur baru:
 
-  - Add accompanying test case.
-  - Provide a convincing reason to add this feature. Ideally, you should open a suggestion issue first, and have it approved before working on it.
+  - Tambahkan kasus pengujian yang sesuai.
+  - Berikan alasan yang meyakinkan untuk menambahkan fitur ini. Idealnya, Anda harus membuka isu saran terlebih dahulu, dan memiliki persetujuannya sebelum bekerja pada itu.
 
-- If fixing a bug:
+- Jika memperbaiki bug:
 
-  - If you are resolving a special issue, add `(fix #xxxx[,#xxxx])` (#xxxx is the issue id) in your PR title for a better release log (e.g. `fix: update entities encoding/decoding (fix #3899)`).
-  - Provide a detailed description of the bug in the PR. Live demo preferred.
-  - Add appropriate test coverage if applicable.
+  - Jika Anda memecahkan masalah khusus, tambahkan `(fix #xxxx[,#xxxx])` (#xxxx adalah id isu) di judul PR Anda untuk log rilis yang lebih baik (mis. `fix: update entities encoding/decoding (fix #3899)`).
+  - Berikan deskripsi rinci tentang bug di PR. Demo langsung lebih disukai.
+  - Tambahkan cakupan pengujian yang sesuai jika memungkinkan.
 
-- It's OK to have multiple small commits as you work on the PR. GitHub can automatically squash them before merging.
+- Tidak apa-apa memiliki beberapa komit kecil saat Anda bekerja pada PR. GitHub dapat secara otomatis menggabungkannya sebelum digabungkan.
 
-- Make sure tests pass!
+- Pastikan pengujian berhasil!
 
-- No need to worry about code style as long as you have installed the dev dependencies. Modified files are automatically formatted with Prettier on commit (by invoking [Git Hooks](https://git-scm.com/docs/githooks) via [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks)).
+- Tidak perlu khawatir tentang gaya kode selama Anda telah menginstal dependensi pengembangan. Berkas yang dimodifikasi secara otomatis diformat dengan Prettier saat commit (dengan memanggil [Git Hooks](https://git-scm.com/docs/githooks) melalui [simple-git-hooks](https://github.com/toplenboren/simple-git-hooks)).
 
-- PR title must follow the [commit message convention](./.github/commit-convention.md) so that changelogs can be automatically generated.
+- Judul PR harus mengikuti [konvensi pesan commit](./.github/commit-convention.md) sehingga changelog dapat dibuat secara otomatis.
 
-## Maintenance Guidelines
+## Panduan Pemeliharaan
 
-> The following section is mostly for maintainers who have commit access, but it's helpful to go through if you intend to make non-trivial contributions to the codebase.
+> Bagian berikut ini sebagian besar ditujukan untuk pemelihara yang memiliki akses commit, tetapi berguna untuk dipelajari jika Anda bermaksud untuk membuat kontribusi yang tidak sepele ke kode basis.
 
-### Issue Triaging Workflow
+### Alur Kerja Penanganan Masalah
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./.github/issue-workflow-dark.png">
   <img src="./.github/issue-workflow.png">
 </picture>
 
-### Pull Request Review Workflow
+### Alur Kerja Tinjauan Pull Request
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./.github/pr-workflow-dark.png">
   <img src="./.github/pr-workflow.png">
 </picture>
 
-## Notes on Dependencies
+## Catatan tentang Dependensi
 
-Vite aims to be lightweight, and this includes being aware of the number of npm dependencies and their size.
+Vite bertujuan untuk ringan, dan hal ini termasuk menyadari jumlah dependensi npm dan ukurannya.
 
-We use Rollup to pre-bundle most dependencies before publishing! Therefore, most dependencies, even those used in runtime source code, should be added under `devDependencies` by default. This also creates the following constraints that we need to be aware of in the codebase.
+Kami menggunakan Rollup untuk membuat bundel sebagian besar dependensi sebelum dipublikasikan! Oleh karena itu, sebagian besar dependensi, bahkan yang digunakan dalam kode sumber runtime, seharusnya ditambahkan di bawah `devDependencies` secara default. Ini juga menciptakan batasan berikut yang perlu kita perhatikan dalam kode basis.
 
-### Usage of `require()`
+### Penggunaan `require()`
 
-In some cases, we intentionally lazy-require some dependencies to improve start-up performance. However, note that we cannot use simple `require('somedep')` calls since these are ignored in ESM files, so the dependency won't be included in the bundle, and the actual dependency won't even be there when published since they are in `devDependencies`.
+Dalam beberapa kasus, kita sengaja menggunakan `require()` secara lambat untuk meningkatkan kinerja start-up. Namun, perlu diingat bahwa kita tidak dapat menggunakan panggilan `require('somedep')` secara sederhana karena ini diabaikan dalam file ESM, sehingga dependensinya tidak akan disertakan dalam bundel, dan dependensi sebenarnya bahkan tidak akan ada saat dipublikasikan karena mereka berada di `devDependencies`.
 
-Instead, use `(await import('somedep')).default`.
+Sebagai gantinya, gunakan `(await import('somedep')).default`.
 
-### Think Before Adding a Dependency
+### Pertimbangkan Sebelum Menambahkan Dependensi
 
-Most deps should be added to `devDependencies` even if they are needed at runtime. Some exceptions are:
+Sebagian besar dependensi seharusnya ditambahkan ke `devDependencies` bahkan jika mereka diperlukan saat runtime. Beberapa pengecualian adalah:
 
-- Type packages. Example: `@types/*`.
-- Deps that cannot be properly bundled due to binary files. Example: `esbuild`.
-- Deps that ship their own types that are used in Vite's own public types. Example: `rollup`.
+- Paket tipe. Contoh: `@types/*`.
+- Dependensi yang tidak dapat dibundel dengan benar karena file biner. Contoh: `esbuild`.
+- Dependensi yang menyertakan tipe mereka sendiri yang digunakan dalam tipe publik Vite sendiri. Contoh: `rollup`.
 
-Avoid deps with large transitive dependencies that result in bloated size compared to the functionality it provides. For example, `http-proxy` itself plus `@types/http-proxy` is a little over 1MB in size, but `http-proxy-middleware` pulls in a ton of dependencies that make it 7MB(!) when a minimal custom middleware on top of `http-proxy` only requires a couple of lines of code.
+Hindari dependensi dengan dependensi transitif besar yang menghasilkan ukuran bengkak dibandingkan dengan fungsionalitas yang disediakannya. Sebagai contoh, `http-proxy` itu sendiri ditambah `@types/http-proxy` memiliki ukuran sedikit lebih dari 1MB, tetapi `http-proxy-middleware` menarik banyak dependensi yang membuatnya sebesar 7MB(!) ketika middleware kustom minimal di atas `http-proxy` hanya memerlukan beberapa baris kode.
 
-### Ensure Type Support
+### Pastikan Dukungan Tipe
 
-Vite aims to be fully usable as a dependency in a TypeScript project (e.g. it should provide proper typings for VitePress), and also in `vite.config.ts`. This means technically a dependency whose types are exposed needs to be part of `dependencies` instead of `devDependencies`. However, this also means we won't be able to bundle it.
+Vite bertujuan untuk sepenuhnya dapat digunakan sebagai dependensi dalam proyek TypeScript (misalnya, harus menyediakan tipe yang sesuai untuk VitePress), dan juga dalam `vite.config.ts`. Ini berarti secara teknis sebuah dependensi yang tipe-tipenya diekspos harus menjadi bagian dari `dependencies` alih-alih `devDependencies`. Namun, ini juga berarti kita tidak akan dapat mem-bundelnya.
 
-To get around this, we inline some of these dependencies' types in `packages/vite/src/types`. This way, we can still expose the typing but bundle the dependency's source code.
+Untuk mengatasinya, kami menyisipkan beberapa tipe dependensi ini di `packages/vite/src/types`. Dengan cara ini, kami masih bisa mengekspos tipe tetapi mem-bundel kode sumber dependensi tersebut.
 
-Use `pnpm run build-types-check` to check that the bundled types do not rely on types in `devDependencies`.
+Gunakan `pnpm run build-types-check` untuk memeriksa bahwa tipe yang dibundel tidak bergantung pada tipe di `devDependencies`.
 
-For types shared between client and node, they should be added into `packages/vite/types`. These types are not bundled and are published as is (though they are still considered internal). Dependency types within this directory (e.g. `packages/vite/types/chokidar.d.ts`) are deprecated and should be added to `packages/vite/src/types` instead.
+Untuk tipe yang dibagikan antara klien dan node, mereka harus ditambahkan ke `packages/vite/types`. Tipe-tipe ini tidak dibundel dan dipublikasikan apa adanya (meskipun masih dianggap sebagai internal). Tipe dependensi dalam direktori ini (misalnya, `packages/vite/types/chokidar.d.ts`) sudah usang dan harus ditambahkan ke `packages/vite/src/types` sebagai gantinya.
 
-### Think Before Adding Yet Another Option
+### Pertimbangkan Sebelum Menambahkan Opsi Lain
 
-We already have many config options, and we should avoid fixing an issue by adding yet another one. Before adding an option, consider whether the problem:
+Kami sudah memiliki banyak opsi konfigurasi, dan seharusnya kita hindari memperbaiki masalah dengan menambahkan opsi baru lagi. Sebelum menambahkan opsi, pertimbangkan apakah masalahnya:
 
-- is really worth addressing
-- can be fixed with a smarter default
-- has workaround using existing options
-- can be addressed with a plugin instead
+- benar-benar layak untuk diatasi
+- dapat diperbaiki dengan default yang lebih cerdas
+- memiliki cara kerja yang tersedia menggunakan opsi yang sudah ada
+- dapat diatasi dengan plugin sebagai gantinya
 
-## Release
+## Rilis
 
-If you have publish access, the steps below explain how to cut a release for a package. There are two phases for the release step: "Release" and "Publish".
+Jika Anda memiliki akses untuk menerbitkan, langkah-langkah di bawah menjelaskan cara melakukan rilis untuk sebuah paket. Ada dua tahap untuk langkah rilis: "Rilis" dan "Publikasikan".
 
-"Release" is done locally to generate the changelogs and git tags:
+"Tahap Rilis" dilakukan secara lokal untuk menghasilkan changelog dan tag git:
 
-1. Make sure the git remote for https://github.com/vitejs/vite is set as `origin`.
-2. In the `vite` project root `main` branch, run `git pull` and `pnpm i` to get it up-to-date.
-3. Run `pnpm release` and follow the prompts to cut a release for a package. It will generate the changelog, a git release tag, and push them to `origin`. You can run with the `--dry` flag to test it out.
-4. When the command finishes, it will provide a link to https://github.com/vitejs/vite/actions/workflows/publish.yml.
-5. Click the link to visit the page, and follow the next steps below.
+1. Pastikan remote git untuk https://github.com/vitejs/vite diatur sebagai `origin`.
+2. Di `vite` di proyek root `main` cabang, jalankan `git pull` dan `pnpm i` untuk membuatnya terbaru.
+3. Jalankan `pnpm release` dan ikuti petunjuknya untuk melakukan rilis untuk sebuah paket. Ini akan menghasilkan changelog, tag rilis git, dan mendorongnya ke `origin`. Anda dapat menjalankannya dengan menggunakan flag `--dry` untuk mencobanya.
+4. Ketika perintah selesai, itu akan memberikan tautan ke https://github.com/vitejs/vite/actions/workflows/publish.yml.
+5. Klik tautan untuk mengunjungi halaman tersebut, dan ikuti langkah-langkah selanjutnya di bawah ini.
 
-"Publish" is done on GitHub Actions to publish the package to npm:
+"Tahap Publikasikan" dilakukan di GitHub Actions untuk menerbitkan paket ke npm:
 
-1. Shortly in the workflows page, a new workflow will appear for the released package and is waiting for approval to publish to npm.
-2. Click on the workflow to open its page.
-3. Click on the "Review deployments" button in the yellow box, a popup will appear.
-4. Check "Release" and click "Approve and deploy".
-5. The package will start publishing to npm.
+1. Dalam waktu singkat di halaman workflows, akan muncul workflow baru untuk paket yang dirilis dan menunggu persetujuan untuk dipublikasikan ke npm.
+2. Klik pada workflow untuk membuka halamannya.
+3. Klik tombol "Review deployments" dalam kotak kuning, sebuah popup akan muncul.
+4. Periksa "Release" dan klik "Approve and deploy".
+5. Paket akan mulai dipublikasikan ke npm.
 
-## Docs Translation Contribution
+## Kontribusi Terjemahan Dokumentasi
 
-To add a new language to the Vite docs, see [`vite-docs-template`](https://github.com/tony19/vite-docs-template/blob/main/.github/CONTRIBUTING.md).
+Untuk menambahkan bahasa baru ke dokumen Vite, lihat [`vite-docs-template`](https://github.com/tony19/vite-docs-template/blob/main/.github/CONTRIBUTING.md).

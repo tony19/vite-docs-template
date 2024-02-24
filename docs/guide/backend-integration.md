@@ -1,50 +1,50 @@
-# Backend Integration
+# Integrasi Backend
 
-:::tip Note
-If you want to serve the HTML using a traditional backend (e.g. Rails, Laravel) but use Vite for serving assets, check for existing integrations listed in [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends).
+:::tip Catatan
+Jika Anda ingin melayani HTML menggunakan backend tradisional (misalnya, Rails, Laravel) tetapi menggunakan Vite untuk melayani aset, periksa integrasi yang sudah ada yang tercantum di [Awesome Vite](https://github.com/vitejs/awesome-vite#integrations-with-backends).
 
-If you need a custom integration, you can follow the steps in this guide to configure it manually
+Jika Anda membutuhkan integrasi kustom, Anda dapat mengikuti langkah-langkah dalam panduan ini untuk mengonfigurasinya secara manual.
 :::
 
-1. In your Vite config, configure the entry and enable build manifest:
+1. Dalam konfigurasi Vite Anda, konfigurasikan entri dan aktifkan manifest pembangunan:
 
    ```js
    // vite.config.js
    export default defineConfig({
      build: {
-       // generate .vite/manifest.json in outDir
+       // menghasilkan .vite/manifest.json di outDir
        manifest: true,
        rollupOptions: {
-         // overwrite default .html entry
+         // mengganti entri .html default
          input: '/path/to/main.js',
        },
      },
    })
    ```
 
-   If you haven't disabled the [module preload polyfill](/config/build-options.md#build-polyfillmodulepreload), you also need to import the polyfill in your entry
+   Jika Anda belum menonaktifkan [polyfill module preload](/config/build-options.md#build-polyfillmodulepreload), Anda juga perlu mengimpor polyfill tersebut di entri Anda
 
    ```js
-   // add the beginning of your app entry
+   // tambahkan di awal entri aplikasi Anda
    import 'vite/modulepreload-polyfill'
    ```
 
-2. For development, inject the following in your server's HTML template (substitute `http://localhost:5173` with the local URL Vite is running at):
+2. Untuk pengembangan, masukkan yang berikut ini dalam template HTML server Anda (ganti `http://localhost:5173` dengan URL lokal di mana Vite berjalan):
 
    ```html
-   <!-- if development -->
+   <!-- jika pengembangan -->
    <script type="module" src="http://localhost:5173/@vite/client"></script>
    <script type="module" src="http://localhost:5173/main.js"></script>
    ```
 
-   In order to properly serve assets, you have two options:
+   Untuk melayani aset dengan benar, Anda memiliki dua pilihan:
 
-   - Make sure the server is configured to proxy static assets requests to the Vite server
-   - Set [`server.origin`](/config/server-options.md#server-origin) so that generated asset URLs will be resolved using the back-end server URL instead of a relative path
+   - Pastikan server dikonfigurasi untuk memroksi permintaan aset statis ke server Vite
+   - Tetapkan [`server.origin`](/config/server-options.md#server-origin) sehingga URL aset yang dihasilkan akan diselesaikan menggunakan URL server backend daripada path relatif
 
-   This is needed for assets such as images to load properly.
+   Hal ini diperlukan agar aset seperti gambar dapat dimuat dengan benar.
 
-   Note if you are using React with `@vitejs/plugin-react`, you'll also need to add this before the above scripts, since the plugin is not able to modify the HTML you are serving (substitute `http://localhost:5173` with the local URL Vite is running at):
+   Perhatikan jika Anda menggunakan React dengan `@vitejs/plugin-react`, Anda juga perlu menambahkan ini sebelum skrip-skrip di atas, karena plugin tidak dapat memodifikasi HTML yang Anda layani (ganti `http://localhost:5173` dengan URL lokal di mana Vite berjalan):
 
    ```html
    <script type="module">
@@ -56,7 +56,7 @@ If you need a custom integration, you can follow the steps in this guide to conf
    </script>
    ```
 
-3. For production: after running `vite build`, a `.vite/manifest.json` file will be generated alongside other asset files. An example manifest file looks like this:
+3. Untuk produksi: setelah menjalankan `vite build`, file `.vite/manifest.json` akan dihasilkan bersama dengan file aset lainnya. Contoh file manifest seperti ini:
 
    ```json
    {
@@ -80,15 +80,16 @@ If you need a custom integration, you can follow the steps in this guide to conf
    }
    ```
 
-   - The manifest has a `Record<name, chunk>` structure
-   - For entry or dynamic entry chunks, the key is the relative src path from project root.
-   - For non entry chunks, the key is the base name of the generated file prefixed with `_`.
-   - Chunks will contain information on its static and dynamic imports (both are keys that map to the corresponding chunk in the manifest), and also its corresponding CSS and asset files (if any).
+   - Manifest memiliki struktur `Record<name, chunk>`
+   - Untuk chunk entri atau dinamis, kunci adalah path src relatif dari root proyek.
+   - Untuk chunk non-entri, kunci adalah nama dasar file yang dihasilkan dengan diawali `_`.
+   - Chunks akan berisi informasi tentang impor statis dan dinamisnya (keduanya adalah kunci yang memetakan ke chunk yang sesuai dalam manifest), dan juga file CSS dan asetnya (jika ada).
 
-   You can use this file to render links or preload directives with hashed filenames (note: the syntax here is for explanation only, substitute with your server templating language):
+   Anda dapat menggunakan file ini untuk merender tautan atau direktif preload dengan nama file yang di-hash (perhatikan: sintaksis di sini hanya untuk penjelasan, gantikan dengan bahasa templating server Anda):
 
    ```html
-   <!-- if production -->
+   <!-- jika produksi -->
    <link rel="stylesheet" href="/assets/{{ manifest['main.js'].css }}" />
    <script type="module" src="/assets/{{ manifest['main.js'].file }}"></script>
    ```
+   

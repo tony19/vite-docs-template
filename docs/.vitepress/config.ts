@@ -1,7 +1,7 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
 import { buildEnd } from './buildEnd.config'
 
-const ogDescription = 'Next Generation Frontend Tooling'
+const ogDescription = 'Alat frontend generasi berikutnya'
 const ogImage = 'https://vitejs.dev/og-image.png'
 const ogTitle = 'Vite'
 const ogUrl = 'https://vitejs.dev'
@@ -33,15 +33,15 @@ const additionalTitle = ((): string => {
 const versionLinks = ((): DefaultTheme.NavItemWithLink[] => {
   const oldVersions: DefaultTheme.NavItemWithLink[] = [
     {
-      text: 'Vite 4 Docs',
+      text: 'Dokumentasi Vite 4',
       link: 'https://v4.vitejs.dev',
     },
     {
-      text: 'Vite 3 Docs',
+      text: 'Dokumentasi Vite 3',
       link: 'https://v3.vitejs.dev',
     },
     {
-      text: 'Vite 2 Docs',
+      text: 'Dokumentasi Vite 2',
       link: 'https://v2.vitejs.dev',
     },
   ]
@@ -51,7 +51,7 @@ const versionLinks = ((): DefaultTheme.NavItemWithLink[] => {
     case 'local':
       return [
         {
-          text: 'Vite 5 Docs (release)',
+          text: 'Dokumentasi Vite 5 (rilis)',
           link: 'https://vitejs.dev',
         },
         ...oldVersions,
@@ -99,6 +99,7 @@ export default defineConfig({
     pt: { label: 'Português', link: 'https://pt.vitejs.dev' },
     ko: { label: '한국어', link: 'https://ko.vitejs.dev' },
     de: { label: 'Deutsch', link: 'https://de.vitejs.dev' },
+    id: { label: 'Indonesia', link: 'https://id.vitejs.dev' },
   },
 
   themeConfig: {
@@ -106,7 +107,7 @@ export default defineConfig({
 
     editLink: {
       pattern: 'https://github.com/vitejs/vite/edit/main/docs/:path',
-      text: 'Suggest changes to this page',
+      text: 'Sarankan perubahan pada halaman ini',
     },
 
     socialLinks: [
@@ -131,20 +132,20 @@ export default defineConfig({
     },
 
     footer: {
-      message: `Released under the MIT License. (${commitRef})`,
-      copyright: 'Copyright © 2019-present Evan You & Vite Contributors',
+      message: `Dirilis di bawah Lisensi MIT. (${commitRef})`,
+      copyright: 'Hak Cipta © 2019-sekarang Evan You & Kontributor Vite ',
     },
 
     nav: [
-      { text: 'Guide', link: '/guide/', activeMatch: '/guide/' },
-      { text: 'Config', link: '/config/', activeMatch: '/config/' },
-      { text: 'Plugins', link: '/plugins/', activeMatch: '/plugins/' },
+      { text: 'Panduan', link: '/guide/', activeMatch: '/guide/' },
+      { text: 'Konfigurasi', link: '/config/', activeMatch: '/config/' },
+      { text: 'Plugin', link: '/plugins/', activeMatch: '/plugins/' },
       {
         text: 'Resources',
         items: [
-          { text: 'Team', link: '/team' },
+          { text: 'Tim', link: '/team' },
           { text: 'Blog', link: '/blog' },
-          { text: 'Releases', link: '/releases' },
+          { text: 'Rilis', link: '/releases' },
           {
             items: [
               {
@@ -152,11 +153,11 @@ export default defineConfig({
                 link: 'https://twitter.com/vite_js',
               },
               {
-                text: 'Discord Chat',
+                text: 'Obrolan Discord',
                 link: 'https://chat.vitejs.dev',
               },
               {
-                text: 'Awesome Vite',
+                text: 'Vite yang luar biasa',
                 link: 'https://github.com/vitejs/awesome-vite',
               },
               {
@@ -164,15 +165,19 @@ export default defineConfig({
                 link: 'https://viteconf.org',
               },
               {
-                text: 'DEV Community',
+                text: 'Komunitas DEV',
                 link: 'https://dev.to/t/vite',
               },
               {
-                text: 'Changelog',
+                text: 'kompatibilitas Plugin Rollup',
+                link: 'https://vite-rollup-plugins.patak.dev/',
+              },
+              {
+                text: 'Daftar perubahan',
                 link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
               },
               {
-                text: 'Contributing',
+                text: 'Kontribusi',
                 link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
               },
             ],
@@ -180,7 +185,7 @@ export default defineConfig({
         ],
       },
       {
-        text: 'Version',
+        text: 'Versi',
         items: versionLinks,
       },
     ],
@@ -188,18 +193,18 @@ export default defineConfig({
     sidebar: {
       '/guide/': [
         {
-          text: 'Guide',
+          text: 'Panduan',
           items: [
             {
-              text: 'Why Vite',
+              text: 'Mengapa Vite',
               link: '/guide/why',
             },
             {
-              text: 'Getting Started',
+              text: 'Memulai',
               link: '/guide/',
             },
             {
-              text: 'Features',
+              text: 'Fitur',
               link: '/guide/features',
             },
             {
@@ -207,55 +212,55 @@ export default defineConfig({
               link: '/guide/cli',
             },
             {
-              text: 'Using Plugins',
+              text: 'Menggunakan Plugin',
               link: '/guide/using-plugins',
             },
             {
-              text: 'Dependency Pre-Bundling',
+              text: 'Dependensi Pre-Bundling',
               link: '/guide/dep-pre-bundling',
             },
             {
-              text: 'Static Asset Handling',
+              text: 'Penanganan Aset Statis',
               link: '/guide/assets',
             },
             {
-              text: 'Building for Production',
+              text: 'Membangun untuk Produksi',
               link: '/guide/build',
             },
             {
-              text: 'Deploying a Static Site',
+              text: 'Mendeploy Situs Statis',
               link: '/guide/static-deploy',
             },
             {
-              text: 'Env Variables and Modes',
+              text: 'Env Variabel and Mode',
               link: '/guide/env-and-mode',
             },
             {
-              text: 'Server-Side Rendering (SSR)',
+              text: 'Rendering Sisi Server (SSR)',
               link: '/guide/ssr',
             },
             {
-              text: 'Backend Integration',
+              text: 'Integrasi Backend',
               link: '/guide/backend-integration',
             },
             {
-              text: 'Comparisons',
+              text: 'Perbandingan',
               link: '/guide/comparisons',
             },
             {
-              text: 'Troubleshooting',
+              text: 'Pemecahan masalah',
               link: '/guide/troubleshooting',
             },
             {
-              text: 'Performance',
+              text: 'Performa',
               link: '/guide/performance',
             },
             {
-              text: 'Philosophy',
+              text: 'Filosofi',
               link: '/guide/philosophy',
             },
             {
-              text: 'Migration from v4',
+              text: 'Migrasi dari v4',
               link: '/guide/migration',
             },
           ],
@@ -264,7 +269,7 @@ export default defineConfig({
           text: 'APIs',
           items: [
             {
-              text: 'Plugin API',
+              text: 'API Plugin',
               link: '/guide/api-plugin',
             },
             {
@@ -276,11 +281,7 @@ export default defineConfig({
               link: '/guide/api-javascript',
             },
             {
-              text: 'Vite Runtime API',
-              link: '/guide/api-vite-runtime',
-            },
-            {
-              text: 'Config Reference',
+              text: 'Referensi Konfigurasi',
               link: '/config/',
             },
           ],
@@ -288,38 +289,38 @@ export default defineConfig({
       ],
       '/config/': [
         {
-          text: 'Config',
+          text: 'Konfigurasi',
           items: [
             {
-              text: 'Configuring Vite',
+              text: 'Mengonfigurasi Vite',
               link: '/config/',
             },
             {
-              text: 'Shared Options',
+              text: 'Opsi Bersama',
               link: '/config/shared-options',
             },
             {
-              text: 'Server Options',
+              text: 'Opsi Server',
               link: '/config/server-options',
             },
             {
-              text: 'Build Options',
+              text: 'Opsi Pembuatan',
               link: '/config/build-options',
             },
             {
-              text: 'Preview Options',
+              text: 'Opsi Pratinjau',
               link: '/config/preview-options',
             },
             {
-              text: 'Dep Optimization Options',
+              text: 'Opsi Pengoptimalan Dep',
               link: '/config/dep-optimization-options',
             },
             {
-              text: 'SSR Options',
+              text: 'Opsi SSR',
               link: '/config/ssr-options',
             },
             {
-              text: 'Worker Options',
+              text: 'Opsi Pekerja',
               link: '/config/worker-options',
             },
           ],

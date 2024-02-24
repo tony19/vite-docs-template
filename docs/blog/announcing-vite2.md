@@ -1,7 +1,7 @@
 ---
-title: Announcing Vite 2.0
+title: Mengumumkan Vite 2.0
 author:
-  - name: The Vite Team
+  - name: Tim Vite
 sidebar: false
 date: 2021-02-16
 head:
@@ -10,75 +10,75 @@ head:
       content: website
   - - meta
     - property: og:title
-      content: Announcing Vite 2.0
+      content: Mengumumkan Vite 2.0
   - - meta
     - property: og:url
       content: https://vitejs.dev/blog/announcing-vite2
   - - meta
     - property: og:description
-      content: Vite 2 Release Announcement
+      content: Pengumuman Rilis Vite 2
 ---
 
 # Announcing Vite 2.0
 
-_February 16, 2021_ - Check out the [Vite 3.0 announcement](./announcing-vite3.md)
+_February 16, 2021_ - Lihat bagian [Vite 3.0 announcement](./announcing-vite3.md)
 
 <p style="text-align:center">
   <img src="/logo.svg" style="height:200px">
 </p>
 
-Today we are excited to announce the official release of Vite 2.0!
+Hari ini kami dengan senang hati mengumumkan perilisan resmi Vite 2.0!
 
-Vite (French word for "fast", pronounced `/vit/`) is a new kind of build tool for frontend web development. Think a pre-configured dev server + bundler combo, but leaner and faster. It leverages browser's [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) support and tools written in compile-to-native languages like [esbuild](https://esbuild.github.io/) to deliver a snappy and modern development experience.
+Vite (Berasal dari bahasa Prancin yang berarti "cepat", penyebutanya `/vit/`) adalah jenis alat building baru untuk pengembangan web frontend. Bayangkan sebuah server pengembangan yang sudah diatur sebelumnya + bundler, tetapi lebih ringan dan cepat. dengan memanfaatkan dukungan [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) dari browser dan alat-alat yang ditulis dalam bahasa compile-to-native seperti [esbuild](https://esbuild.github.io/) untuk memberikan pengalaman pengembangan yang cepat dan modern.
 
-To get a sense of how fast Vite is, check out [this video comparison](https://twitter.com/amasad/status/1355379680275128321) of booting up a React application on Repl.it using Vite vs. `create-react-app` (CRA).
+Untuk mendapatkan gambaran seberapa cepat Vite, cek [vidio perbandingan ini](https://twitter.com/amasad/status/1355379680275128321) of tentang proses booting aplikasi React di Repl.it menggunakan Vite VS `create-react-app` (CRA).
 
-If you've never heard of Vite before and would love to learn more about it, check out [the rationale behind the project](https://vitejs.dev/guide/why.html). If you are interested in how Vite differs from other similar tools, check out the [comparisons](https://vitejs.dev/guide/comparisons.html).
+Jika Anda belum pernah mendengar tentang Vite sebelumnya dan ingin belajar lebih lanjut tentangnya, lihat [alasan dibalik proyek ini](https://vitejs.dev/guide/why.html). Jika Anda tertarik dengan perbedaan Vite dari alat serupa lainnya, cek [perbandingannya](https://vitejs.dev/guide/comparisons.html).
 
-## What's New in 2.0
+## Apa yang Baru di Versi 2.0
 
-Since we decided to completely refactor the internals before 1.0 got out of RC, this is in fact the first stable release of Vite. That said, Vite 2.0 brings about many big improvements over its previous incarnation:
+Karena kami memutuskan untuk merombak total bagian internal sebelum 1.0 keluar dari RC, ini adalah rilis stabil pertama Vite. Meskipun demikian, Vite 2.0 membawa banyak peningkatan besar dibandingkan versi sebelumnya:
 
 ### Framework Agnostic Core
 
-The original idea of Vite started as a [hacky prototype that serves Vue single-file components over native ESM](https://github.com/vuejs/vue-dev-server). Vite 1 was a continuation of that idea with HMR implemented on top.
+Ide asli dari Vite dimulai sebagai [ prototipe sederhana yang melayani komponen-komponen tunggal Vue melalui ESM asli.](https://github.com/vuejs/vue-dev-server). Vite 1 merupakan kelanjutan dari ide tersebut dengan HMR diimplementasikan di atasnya.
 
-Vite 2.0 takes what we learned along the way and is redesigned from scratch with a more robust internal architecture. It is now completely framework agnostic, and all framework-specific support is delegated to plugins. There are now [official templates for Vue, React, Preact, Lit Element](https://github.com/vitejs/vite/tree/main/packages/create-vite), and ongoing community efforts for Svelte integration.
+Vite 2.0 mengambil apa yang telah kita pelajari sepanjang perjalanan tersebut dan diubah ulang dari awal dengan arsitektur internal yang lebih kokoh. Sekarang, Vite sepenuhnya tidak berkaitan dengan kerangka kerja tertentu, dan semua dukungan khusus kerangka kerja didelegasikan ke dalam plugin. Sekarang ada [ template resmi untuk Vue, React, Preact, Lit Element](https://github.com/vitejs/vite/tree/main/packages/create-vite), dan upaya komunitas yang sedang berlangsung untuk integrasi Svelte.
 
-### New Plugin Format and API
+### Format Plugin Baru dan API
 
-Inspired by [WMR](https://github.com/preactjs/wmr), the new plugin system extends Rollup's plugin interface and is [compatible with many Rollup plugins](https://vite-rollup-plugins.patak.dev/) out of the box. Plugins can use Rollup-compatible hooks, with additional Vite-specific hooks and properties to adjust Vite-only behavior (e.g. differentiating dev vs. build or custom handling of HMR).
+Terinspirasi oleh [WMR](https://github.com/preactjs/wmr), sistem plugin baru ini memperluas antarmuka plugin Rollup dan [ kompatibel dengan banyak plugin Rollup ](https://vite-rollup-plugins.patak.dev/) secara langsung. Plugin dapat menggunakan hook yang kompatibel dengan Rollup, dengan tambahan hook dan properti khusus Vite untuk menyesuaikan perilaku yang hanya berlaku pada Vite (misalnya membedakan antara pengembangan dan pembangunan atau penanganan kustom untuk HMR).
 
-The [programmatic API](https://vitejs.dev/guide/api-javascript.html) has also been greatly improved to facilitate higher level tools / frameworks built on top of Vite.
+ [API programatik](https://vitejs.dev/guide/api-javascript.html) juga telah ditingkatkan secara signifikan untuk memfasilitasi alat / kerangka kerja tingkat tinggi yang dibangun di atas Vite.
 
 ### esbuild Powered Dep Pre-Bundling
 
-Since Vite is a native ESM dev server, it pre-bundles dependencies to reduce the number browser requests and handle CommonJS to ESM conversion. Previously Vite did this using Rollup, and in 2.0 it now uses `esbuild` which results in 10-100x faster dependency pre-bundling. As a reference, cold-booting a test app with heavy dependencies like React Material UI previously took 28 seconds on an M1-powered MacBook Pro and now takes ~1.5 seconds. Expect similar improvements if you are switching from a traditional bundler based setup.
+Karena Vite adalah server pengembangan native ESM, ia melakukan prapemaketan dependensi untuk mengurangi jumlah permintaan browser dan menangani konversi CommonJS menjadi ESM. Sebelumnya, Vite melakukannya menggunakan Rollup, dan pada versi 2.0 sekarang menggunakan `esbuild` yang menghasilkan prapemaketan dependensi 10-100x lebih cepat. Sebagai referensi, pemuatan dingin sebuah aplikasi uji dengan dependensi berat seperti React Material UI sebelumnya membutuhkan waktu 28 detik pada MacBook Pro yang didukung oleh M1, dan sekarang hanya memerlukan ~1.5 detik. Harapkan peningkatan serupa jika Anda beralih dari pengaturan bundler tradisional.
 
-### First-class CSS Support
+### Dukungan CSS Kelas Utama
 
-Vite treats CSS as a first-class citizen of the module graph and supports the following out of the box:
+Vite memperlakukan CSS sebagai warga pertama dalam grafik modul dan mendukung hal-hal berikut secara langsung:
 
-- **Resolver enhancement**: `@import` and `url()` paths in CSS are enhanced with Vite's resolver to respect aliases and npm dependencies.
-- **URL rebasing**: `url()` paths are automatically rebased regardless of where the file is imported from.
-- **CSS code splitting**: a code-split JS chunk also emits a corresponding CSS file, which is automatically loaded in parallel with the JS chunk when requested.
+- **Peningkatan Pemecahan Masalah**: `@import` dan `url()` dalam CSS ditingkatkan dengan resolver Vite untuk memperhatikan alias dan dependensi npm.
+- **Penggabungan Ulang URL**: `url()` secara otomatis digabungkan ulang tanpa memperdulikan dari mana file tersebut diimpor.
+- **Pemisahan Kode CSS**: Sebuah chunk JS yang dipisahkan kode juga mengeluarkan sebuah file CSS yang sesuai, yang secara otomatis dimuat secara paralel dengan chunk JS saat diminta.
 
-### Server-Side Rendering (SSR) Support
+### Dukungan Server-Side Rendering (SSR)
 
-Vite 2.0 ships with [experimental SSR support](https://vitejs.dev/guide/ssr.html). Vite provides APIs to efficiently load and update ESM-based source code in Node.js during development (almost like server-side HMR), and automatically externalizes CommonJS-compatible dependencies to improve development and SSR build speed. The production server can be completely decoupled from Vite, and the same setup can be easily adapted to perform pre-rendering / SSG.
+Vite 2.0 dilengkapi dengan [ dukungan SSR eksperimental](https://vitejs.dev/guide/ssr.html). Vite menyediakan API untuk memuat dan memperbarui kode sumber berbasis ESM secara efisien di Node.js selama pengembangan (hampir seperti HMR sisi server), dan secara otomatis mengexternalisasikan dependensi yang kompatibel dengan CommonJS untuk meningkatkan kecepatan pengembangan dan pembangunan SSR. Server produksi dapat sepenuhnya terpisah dari Vite, dan setup yang sama dapat dengan mudah disesuaikan untuk melakukan pra-rendering / SSG.
 
-Vite SSR is provided as a low-level feature and we are expecting to see higher level frameworks leveraging it under the hood.
+SSR Vite disediakan sebagai fitur tingkat rendah dan kami berharap akan melihat kerangka kerja tingkat tinggi memanfaatkannya di bawah kap mesin.
 
-### Opt-in Legacy Browser Support
+### Dukungan opt-in Legacy Browser 
 
-Vite targets modern browsers with native ESM support by default, but you can also opt-in to support legacy browsers via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). The plugin automatically generates dual modern/legacy bundles, and delivers the right bundle based on browser feature detection, ensuring more efficient code in modern browsers that support them.
+Secara default, Vite ditujukan untuk browser modern dengan dukungan ESM asli, tetapi Anda juga dapat memilih untuk mendukung browser legacy melalui [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) resmi. Plugin ini secara otomatis menghasilkan bundel ganda modern/legacy, dan memberikan bundel yang tepat berdasarkan deteksi fitur browser, sehingga memastikan kode yang lebih efisien di browser modern yang mendukungnya.
 
-## Give it a Try!
+## Cobalah Sekarang!
 
-That was a lot of features, but getting started with Vite is simple! You can spin up a Vite-powered app literally in a minute, starting with the following command (make sure you have Node.js >=12):
+walaupun Vite ini memiliki banyak fitur, tetapi memulai dengan Vite sangatlah mudah! Anda dapat membuat aplikasi yang didukung oleh Vite secara harfiah dalam satu menit, mulai dengan perintah berikut (pastikan Node.js memiliki versi yang >=12):
 
 ```bash
 npm init @vitejs/app
 ```
 
-Then, check out [the guide](https://vitejs.dev/guide/) to see what Vite provides out of the box. You can also check out the source code on [GitHub](https://github.com/vitejs/vite), follow updates on [Twitter](https://twitter.com/vite_js), or join discussions with other Vite users on our [Discord chat server](http://chat.vitejs.dev/).
+Selanjutnya, periksa [panduannya](https://vitejs.dev/guide/) untuk melihat apa yang disediakan Vite secara langsung. Anda juga dapat melihat kode sumbernya di [GitHub](https://github.com/vitejs/vite), mengikuti pembaruan di [Twitter](https://twitter.com/vite_js), atau bergabung dalam diskusi dengan pengguna Vite lainnya di [server obrolan Discord.](http://chat.vitejs.dev/).

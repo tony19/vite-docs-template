@@ -25,66 +25,66 @@ head:
       content: summary_large_image
 ---
 
-# Vite 4.3 is out!
+# Vite 4.3 Telah Dirilis!
 
-_April 20, 2023_
+_20 April 2023_
 
-![Vite 4.3 Announcement Cover Image](/og-image-announcing-vite4-3.png)
+![Gambar Sampul Pengumuman Vite 4.3](/og-image-announcing-vite4-3.png)
 
-Quick links:
+Tautan Cepat:
 
-- Docs: [English](/), [简体中文](https://cn.vitejs.dev/), [日本語](https://ja.vitejs.dev/), [Español](https://es.vitejs.dev/), [Português](https://pt.vitejs.dev/)
-- [Vite 4.3 Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#430-2023-04-20)
+- Dokumentasi: [Bahasa Inggris](/), [简体中文](https://cn.vitejs.dev/), [日本語](https://ja.vitejs.dev/), [Español](https://es.vitejs.dev/), [Português](https://pt.vitejs.dev/)
+- [Catatan Perubahan Vite 4.3](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#430-2023-04-20)
 
-## Performance Improvements
+## Penyempurnaan Kinerja
 
-In this minor, we focused on improving the dev server performance. The resolve logic got streamlined, improving hot paths and implementing smarter caching for finding `package.json`, TS config files, and resolved URL in general.
+Pada versi kecil ini, kami berfokus pada peningkatan kinerja server pengembangan. Logika penyelesaian telah disederhanakan, meningkatkan jalur panas dan menerapkan caching yang lebih cerdas untuk menemukan `package.json`, file konfigurasi TS, dan URL yang diselesaikan secara umum.
 
-You can read a detailed walkthrough of the performance work done in this blog post by one of Vite Contributors: [How we made Vite 4.3 faaaaster 🚀](https://sun0day.github.io/blog/vite/why-vite4_3-is-faster.html).
+Anda dapat membaca penjelasan rinci tentang pekerjaan kinerja yang dilakukan dalam pos blog ini oleh salah satu Kontributor Vite: [Bagaimana kami membuat Vite 4.3 lebih cepat 🚀](https://sun0day.github.io/blog/vite/why-vite4_3-is-faster.html).
 
-This sprint resulted in speed improvements across the board compared to Vite 4.2.
+Sprint ini menghasilkan peningkatan kecepatan di seluruh papan dibandingkan dengan Vite 4.2.
 
-These are the performance improvements as measured by [sapphi-red/performance-compare](https://github.com/sapphi-red/performance-compare), which tests an app with 1000 React Components cold and warm dev server startup time as well as HMR times for a root and a leaf component:
+Berikut adalah peningkatan kinerja yang diukur oleh [sapphi-red/performance-compare](https://github.com/sapphi-red/performance-compare), yang menguji sebuah aplikasi dengan 1000 Komponen React waktu startup server pengembangan dingin dan hangat serta waktu HMR untuk komponen root dan daun:
 
-| **Vite (babel)**   |  Vite 4.2 | Vite 4.3 | Improvement |
+| **Vite (babel)**   |  Vite 4.2 | Vite 4.3 | Peningkatan |
 | :----------------- | --------: | -------: | ----------: |
-| **dev cold start** | 17249.0ms | 5132.4ms |      -70.2% |
-| **dev warm start** |  6027.8ms | 4536.1ms |      -24.7% |
-| **Root HMR**       |    46.8ms |   26.7ms |      -42.9% |
-| **Leaf HMR**       |    27.0ms |   12.9ms |      -52.2% |
+| **startup dingin** | 17249.0ms | 5132.4ms |      -70.2% |
+| **startup hangat** |  6027.8ms | 4536.1ms |      -24.7% |
+| **HMR Root**       |    46.8ms |   26.7ms |      -42.9% |
+| **HMR Daun**       |    27.0ms |   12.9ms |      -52.2% |
 
-| **Vite (swc)**     |  Vite 4.2 | Vite 4.3 | Improvement |
+| **Vite (swc)**     |  Vite 4.2 | Vite 4.3 | Peningkatan |
 | :----------------- | --------: | -------: | ----------: |
-| **dev cold start** | 13552.5ms | 3201.0ms |      -76.4% |
-| **dev warm start** |  4625.5ms | 2834.4ms |      -38.7% |
-| **Root HMR**       |    30.5ms |   24.0ms |      -21.3% |
-| **Leaf HMR**       |    16.9ms |   10.0ms |      -40.8% |
+| **startup dingin** | 13552.5ms | 3201.0ms |      -76.4% |
+| **startup hangat** |  4625.5ms | 2834.4ms |      -38.7% |
+| **HMR Root**       |    30.5ms |   24.0ms |      -21.3% |
+| **HMR Daun**       |    16.9ms |   10.0ms |      -40.8% |
 
-![Vite 4.3 vs 4.2 startup time comparison](/vite4-3-startup-time.png)
+![Perbandingan waktu startup Vite 4.3 vs 4.2](/vite4-3-startup-time.png)
 
-![Vite 4.3 vs 4.2 HMR time comparison](/vite4-3-hmr-time.png)
+![Perbandingan waktu HMR Vite 4.3 vs 4.2](/vite4-3-hmr-time.png)
 
-You can read more information about the benchmark [here](https://gist.github.com/sapphi-red/25be97327ee64a3c1dce793444afdf6e). Specs and Versions for this performance run:
+Anda dapat membaca informasi lebih lanjut tentang benchmark [di sini](https://gist.github.com/sapphi-red/25be97327ee64a3c1dce793444afdf6e). Spesifikasi dan Versi untuk pengujian kinerja ini:
 
-- CPU: Ryzen 9 5900X, Memory: DDR4-3600 32GB, SSD: WD Blue SN550 NVME SSD
+- CPU: Ryzen 9 5900X, Memori: DDR4-3600 32GB, SSD: WD Blue SN550 NVME SSD
 - Windows 10 Pro 21H2 19044.2846
 - Node.js 18.16.0
-- Vite and React Plugin versions
+- Versi Vite dan Plugin React
   - Vite 4.2 (babel): Vite 4.2.1 + plugin-react 3.1.0
   - Vite 4.3 (babel): Vite 4.3.0 + plugin-react 4.0.0-beta.1
   - Vite 4.2 (swc): Vite 4.2.1 + plugin-react-swc 3.2.0
   - Vite 4.3 (swc): Vite 4.3.0 + plugin-react-swc 3.3.0
 
-Early adopters have also reported seeing 1.5x-2x dev startup time improvement on real apps while testing the Vite 4.3 beta. We'd love to know the results for your apps.
+Pengguna awal juga melaporkan adanya peningkatan waktu awal pengembangan sebesar 1.5x-2x pada aplikasi nyata saat menguji beta Vite 4.3. Kami sangat ingin mengetahui hasilnya untuk aplikasi Anda.
 
 ## Profiling
 
-We'll continue to work on Vite's performance. We're working on an official [Benchmark tool](https://github.com/vitejs/vite-benchmark) for Vite that let us get performance metrics for each Pull Request.
+Kami akan terus bekerja pada kinerja Vite. Kami sedang mengerjakan [Alat Benchmark resmi](https://github.com/vitejs/vite-benchmark) untuk Vite yang memungkinkan kami mendapatkan metrik kinerja untuk setiap Pull Request.
 
-And [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) now has more performance-related features to help you identify which plugins or middlewares are the bottleneck for your applications.
+Dan [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) kini memiliki lebih banyak fitur terkait kinerja untuk membantu Anda mengidentifikasi plugin atau middleware mana yang menjadi bottleneck untuk aplikasi Anda.
 
-Using `vite --profile` (and then pressing `p`) once the page loads will save a CPU profile of the dev server startup. You can open them in an app as [speedscope](https://www.speedscope.app/) to identify performance issues. And you can share your findings with the Vite Team in a [Discussion](https://github.com/vitejs/vite/discussions) or in [Vite's Discord](https://chat.vitejs.dev).
+Menggunakan `vite --profile` (dan kemudian menekan `p`) setelah halaman dimuat akan menyimpan profil CPU dari awal server pengembangan. Anda dapat membukanya di aplikasi seperti [speedscope](https://www.speedscope.app/) untuk mengidentifikasi masalah kinerja. Dan Anda dapat membagikan temuan Anda dengan Tim Vite dalam [Diskusi](https://github.com/vitejs/vite/discussions) atau di [Discord Vite](https://chat.vitejs.dev).
 
-## Next Steps
+## Langkah Selanjutnya
 
-We decided to do a single Vite Major this year aligning with the [EOL of Node.js 16](https://endoflife.date/nodejs) in September, dropping support for both Node.js 14 and 16 in it. If you would like to get involved, we started a [Vite 5 Discussion](https://github.com/vitejs/vite/discussions/12466) to gather early feedback.
+Kami memutuskan untuk melakukan satu Pembaruan Mayor Vite tahun ini sejalan dengan [EOL Node.js 16](https://endoflife.date/nodejs) pada bulan September, dengan menghentikan dukungan untuk Node.js 14 dan 16 di dalamnya. Jika Anda ingin terlibat, kami telah memulai [Diskusi Vite 5](https://github.com/vitejs/vite/discussions/12466) untuk mengumpulkan umpan balik awal.

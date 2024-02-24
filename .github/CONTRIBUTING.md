@@ -1,30 +1,30 @@
-# Docs Translation Contributing Guide
+# Panduan Berkontribusi Terjemahan Dokumentasi
 
-This repo is a template for [Vite.js docs translation repositories](https://github.com/vitejs?q=docs).
+Repo ini adalah sebuah template untuk [repo-repo terjemahan dokumen Vite.js](https://github.com/vitejs?q=docs).
 
-## Creating a Translation Repo
+## Membuat Repo Terjemahan
 
-1. Click [*Use this template*](https://github.com/tony19/vite-docs-template/generate) to scaffold a new translation repo in your personal GitHub.
+1. Klik [*Gunakan template ini*](https://github.com/tony19/vite-docs-template/generate) untuk membuat sebuah repo terjemahan baru di GitHub pribadi Anda.
 
-2. This repo uses the [`ryo-cho` GitHub Action](https://github.com/vuejs-translations/ryu-cho) to keep it in sync with changes from [Vite's `docs`](https://github.com/vitejs/vite/tree/main/docs). It creates pull requests in this repo that cherry-pick the upstream changes to be translated ([example](https://github.com/tony19/vite-docs-template/pull/4)).
+2. Repo ini menggunakan [`ryo-cho` GitHub Action](https://github.com/vuejs-translations/ryu-cho) untuk menjaga agar tetap selaras dengan perubahan dari [dokumen Vite](https://github.com/vitejs/vite/tree/main/docs). Ini membuat pull request di repo ini yang mengekstrak perubahan dari upstream untuk diterjemahkan ([contoh](https://github.com/tony19/vite-docs-template/pull/4)).
 
-   Edit the following fields in [`/.github/workflows/ryo-cho.yml`](/.github/workflows/ryo-cho.yml):
+   Edit bagian-bagian berikut di [`/.github/workflows/ryo-cho.yml`](/.github/workflows/ryo-cho.yml):
 
-    * `upstream-repo` - the Git URL of your translation repo (the URL should end with `.git`)
-    * `upstream-repo-branch` - the target branch in your translation repo
+    * `upstream-repo` - URL Git dari repo terjemahan Anda (URL harus diakhiri dengan `.git`)
+    * `upstream-repo-branch` - cabang target di repo terjemahan Anda
 
-   By default, `ryo-cho` is configured to use the `github-actions` bot, which works out of the box. However, you can use your own bot by configuring the following:
+   Secara default, `ryo-cho` dikonfigurasi untuk menggunakan bot `github-actions`, yang berfungsi langsung. Namun, Anda dapat menggunakan bot Anda sendiri dengan mengkonfigurasi berikut:
 
-    * `username` - the GitHub username of a [machine user](https://docs.github.com/en/developers/overview/managing-deploy-keys#machine-users) (e.g., `ci-bot`)
-    * `email` - the email associated with the GitHub username above
-    * `access-token` - a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) of the machine user (stored in a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository), enabling `access-token: ${{ secrets.MY_SECRET_TOKEN }}`)
+    * `username` - nama pengguna GitHub dari [pengguna mesin](https://docs.github.com/en/developers/overview/managing-deploy-keys#machine-users) (misalnya, `ci-bot`)
+    * `email` - email yang terkait dengan nama pengguna GitHub di atas
+    * `access-token` - sebuah [token akses personal](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) dari pengguna mesin (disimpan dalam sebuah [rahasia repositori](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository), mengaktifkan `access-token: ${{ secrets.MY_SECRET_TOKEN }}`)
 
-3. Translate all user-visible strings (unless specified otherwise) in the following files to the target language:
+3. Terjemahkan semua string yang terlihat oleh pengguna (kecuali dinyatakan lain) dalam file-file berikut ke dalam bahasa target:
 
-    * [`/docs/.vitepress/config.ts`](/docs/.vitepress/config.ts) (the `og*`, `footer.*`, `text`, and `link` fields)
+    * [`/docs/.vitepress/config.ts`](/docs/.vitepress/config.ts) (bidang `og*`, `footer.*`, `text`, dan `link`)
     * [`/docs/.vitepress/theme/components/HomeSponsors.vue`](/docs/.vitepress/theme/components/HomeSponsors.vue)
-    * [`/docs/.vitepress/theme/composables/sponsor.ts`](https://github.com/tony19/vite-docs-template/blob/acea14e/docs/.vitepress/theme/composables/sponsor.ts#L44) (the `tier` fields)
-    * [`/docs/_data/team.js`](/docs/_data/team.js) (the `title` and `desc` fields)
+    * [`/docs/.vitepress/theme/composables/sponsor.ts`](https://github.com/tony19/vite-docs-template/blob/acea14e/docs/.vitepress/theme/composables/sponsor.ts#L44) (bidang `tier`)
+    * [`/docs/_data/team.js`](/docs/_data/team.js) (bidang `title` dan `desc`)
     * `/docs/**/*.md`
     * [`/CONTRIBUTING.md`](/CONTRIBUTING.md)
     * [`/README.md`](/README.md)
@@ -32,15 +32,15 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
 
    💡 *Tips:*
 
-    * *Ping the [`#docs` channel](https://discord.com/channels/804011606160703521/855049073157341234) in [Discord](https://chat.vitejs.dev) or [GitHub Discussions](https://github.com/vitejs/vite/discussions/categories/general) for others who can help with translations.*
-    * *Submit pull requests in your repo for this work so that collaborators can proofread the translations.*
+    * *Mention ke channel [`#docs`](https://discord.com/channels/804011606160703521/855049073157341234) di [Discord](https://chat.vitejs.dev) atau [Diskusi GitHub](https://github.com/vitejs/vite/discussions/categories/general) untuk orang lain yang dapat membantu dengan terjemahan.*
+    * *Kirim pull request di repo Anda untuk pekerjaan ini sehingga rekan-rekan dapat memeriksa terjemahan.*
 
-4. Create a [pull request in Vite's main repo](https://github.com/vitejs/vite/pulls) to update the [locale links in `docs/.vitepress/config.ts`](https://github.com/vitejs/vite/blob/1e078ad1902ae980741d6920fc3a72d182fcf179/docs/.vitepress/config.ts#L55-L62), which would add the new language to the dropdown on the Vite homepage. Specifically, append to `localeLinks.items[]` an object with these keys:
+4. Buat [pull request di repo utama Vite](https://github.com/vitejs/vite/pulls) untuk memperbarui [tautan bahasa di `docs/.vitepress/config.ts`](https://github.com/vitejs/vite/blob/1e078ad1902ae980741d6920fc3a72d182fcf179/docs/.vitepress/config.ts#L55-L62), yang akan menambahkan bahasa baru ke dropdown di beranda Vite. Secara khusus, tambahkan ke `localeLinks.items[]` sebuah objek dengan kunci-kunci berikut:
 
-    - `text` - the language name in its native spelling (e.g., `Español`)
-    - `link` - the URL to the target site, composed of the language's [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) as a subdomain of `https://vitejs.dev` (e.g., `https://es.vitejs.dev`)
+    - `text` - nama bahasa dalam ejaan aslinya (misalnya, `Español`)
+    - `link` - URL ke situs target, terdiri dari kode [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) bahasa sebagai subdomain dari `https://vitejs.dev` (misalnya, `https://es.vitejs.dev`)
 
-    *Example for French:*
+    *Contoh untuk Bahasa Perancis:*
 
     ```js
     localeLinks: {
@@ -50,6 +50,6 @@ This repo is a template for [Vite.js docs translation repositories](https://gith
     },
     ```
 
-5. In the pull request's description, include the URL to your translation repo. Be prepared to [transfer the repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) to the [`vitejs` organization](https://github.com/vitejs) upon request by the [Vite team](https://github.com/orgs/vitejs/people). The transfer automatically adds you as a collaborator on the repo. The repo will be renamed to `docs-LANGUAGE_CODE` (e.g., `docs-fr`) after the transfer.
+5. Di deskripsi pull request, sertakan URL repo terjemahan Anda. Siapkan untuk [mentransfer repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository) ke organisasi [`vitejs`](https://github.com/vitejs) atas permintaan dari [Tim Vite](https://github.com/orgs/vitejs/people). Transfer secara otomatis menambahkan Anda sebagai kolaborator pada repo. Repo akan diubah namanya menjadi `docs-KODE_BAHASA` (misalnya, `docs-fr`) setelah transfer.
 
-   **Thank you for your contribution!** ❤️
+   **Terima kasih atas kontribusinya!** ❤️

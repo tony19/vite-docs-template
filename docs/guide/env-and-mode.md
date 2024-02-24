@@ -1,63 +1,63 @@
-# Env Variables and Modes
+# Variabel Lingkungan dan Mode
 
-## Env Variables
+## Variabel Lingkungan
 
-Vite exposes env variables on the special **`import.meta.env`** object. Some built-in variables are available in all cases:
+Vite mengekspos variabel lingkungan pada objek khusus **`import.meta.env`**. Beberapa variabel bawaan tersedia dalam semua kasus:
 
-- **`import.meta.env.MODE`**: {string} the [mode](#modes) the app is running in.
+- **`import.meta.env.MODE`**: {string} mode [mode](#modes) aplikasi berjalan.
 
-- **`import.meta.env.BASE_URL`**: {string} the base url the app is being served from. This is determined by the [`base` config option](/config/shared-options.md#base).
+- **`import.meta.env.BASE_URL`**: {string} URL dasar tempat aplikasi disajikan. Ini ditentukan oleh opsi konfigurasi [`base`](/config/shared-options.md#base).
 
-- **`import.meta.env.PROD`**: {boolean} whether the app is running in production (running the dev server with `NODE_ENV='production'` or running an app built with `NODE_ENV='production'`).
+- **`import.meta.env.PROD`**: {boolean} apakah aplikasi berjalan di produksi (menjalankan server dev dengan `NODE_ENV='production'` atau menjalankan aplikasi yang dibangun dengan `NODE_ENV='production'`).
 
-- **`import.meta.env.DEV`**: {boolean} whether the app is running in development (always the opposite of `import.meta.env.PROD`)
+- **`import.meta.env.DEV`**: {boolean} apakah aplikasi berjalan dalam pengembangan (selalu kebalikan dari `import.meta.env.PROD`)
 
-- **`import.meta.env.SSR`**: {boolean} whether the app is running in the [server](./ssr.md#conditional-logic).
+- **`import.meta.env.SSR`**: {boolean} apakah aplikasi berjalan dalam [server](./ssr.md#conditional-logic).
 
-## `.env` Files
+## Berkas `.env`
 
-Vite uses [dotenv](https://github.com/motdotla/dotenv) to load additional environment variables from the following files in your [environment directory](/config/shared-options.md#envdir):
+Vite menggunakan [dotenv](https://github.com/motdotla/dotenv) untuk memuat variabel lingkungan tambahan dari berkas berikut dalam [direktori lingkungan](/config/shared-options.md#envdir) Anda:
 
 ```
-.env                # loaded in all cases
-.env.local          # loaded in all cases, ignored by git
-.env.[mode]         # only loaded in specified mode
-.env.[mode].local   # only loaded in specified mode, ignored by git
+.env                # dimuat dalam semua kasus
+.env.local          # dimuat dalam semua kasus, diabaikan oleh git
+.env.[mode]         # hanya dimuat dalam mode tertentu yang ditentukan
+.env.[mode].local   # hanya dimuat dalam mode tertentu yang ditentukan, diabaikan oleh git
 ```
 
-:::tip Env Loading Priorities
+:::tip Prioritas Memuat Env
 
-An env file for a specific mode (e.g. `.env.production`) will take higher priority than a generic one (e.g. `.env`).
+Sebuah berkas env untuk mode tertentu (misalnya `.env.production`) akan memiliki prioritas yang lebih tinggi daripada yang generik (misalnya `.env`).
 
-In addition, environment variables that already exist when Vite is executed have the highest priority and will not be overwritten by `.env` files. For example, when running `VITE_SOME_KEY=123 vite build`.
+Selain itu, variabel lingkungan yang sudah ada ketika Vite dieksekusi memiliki prioritas tertinggi dan tidak akan ditimpa oleh berkas `.env`. Misalnya, ketika menjalankan `VITE_SOME_KEY=123 vite build`.
 
-`.env` files are loaded at the start of Vite. Restart the server after making changes.
+Berkas `.env` dimuat pada awal Vite. Mulai ulang server setelah melakukan perubahan.
 :::
 
-Loaded env variables are also exposed to your client source code via `import.meta.env` as strings.
+Variabel lingkungan yang dimuat juga diekspos ke kode sumber klien Anda melalui `import.meta.env` sebagai string.
 
-To prevent accidentally leaking env variables to the client, only variables prefixed with `VITE_` are exposed to your Vite-processed code. e.g. for the following env variables:
+Untuk mencegah kebocoran variabel lingkungan ke klien secara tidak sengaja, hanya variabel yang diawali dengan `VITE_` yang diekspos ke kode yang diproses Vite Anda. misalnya untuk variabel lingkungan berikut:
 
 ```
 VITE_SOME_KEY=123
 DB_PASSWORD=foobar
 ```
 
-Only `VITE_SOME_KEY` will be exposed as `import.meta.env.VITE_SOME_KEY` to your client source code, but `DB_PASSWORD` will not.
+Hanya `VITE_SOME_KEY` yang akan diekspos sebagai `import.meta.env.VITE_SOME_KEY` ke kode sumber klien Anda, tetapi `DB_PASSWORD` tidak.
 
 ```js
 console.log(import.meta.env.VITE_SOME_KEY) // "123"
 console.log(import.meta.env.DB_PASSWORD) // undefined
 ```
 
-:::tip Env parsing
+:::tip Pemrosesan Env
 
-As shown above, `VITE_SOME_KEY` is a number but returns a string when parsed. The same would also happen for boolean env variables. Make sure to convert to the desired type when using it in your code.
+Seperti yang ditunjukkan di atas, `VITE_SOME_KEY` adalah angka tetapi mengembalikan string saat diurai. Hal yang sama juga akan terjadi untuk variabel lingkungan boolean. Pastikan untuk mengonversi ke tipe yang diinginkan saat menggunakannya dalam kode Anda.
 :::
 
-Also, Vite uses [dotenv-expand](https://github.com/motdotla/dotenv-expand) to expand variables out of the box. To learn more about the syntax, check out [their docs](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow).
+Juga, Vite menggunakan [dotenv-expand](https://github.com/motdotla/dotenv-expand) untuk memperluas variabel secara otomatis. Untuk mempelajari lebih lanjut tentang sintaksnya, lihat [dokumentasi mereka](https://github.com/motdotla/dotenv-expand#what-rules-does-the-expansion-engine-follow).
 
-Note that if you want to use `$` inside your environment value, you have to escape it with `\`.
+Perhatikan bahwa jika Anda ingin menggunakan `$` di dalam nilai lingkungan Anda, Anda harus melarikannya dengan `\`.
 
 ```
 KEY=123
@@ -66,27 +66,27 @@ NEW_KEY2=test\$foo  # test$foo
 NEW_KEY3=test$KEY   # test123
 ```
 
-If you want to customize the env variables prefix, see the [envPrefix](/config/shared-options.html#envprefix) option.
+Jika Anda ingin menyesuaikan awalan variabel lingkungan, lihat opsi [envPrefix](/config/shared-options.html#envprefix).
 
-:::warning SECURITY NOTES
+:::warning CATATAN KEAMANAN
 
-- `.env.*.local` files are local-only and can contain sensitive variables. You should add `*.local` to your `.gitignore` to avoid them being checked into git.
+- Berkas `.env.*.local` hanya untuk lokal dan dapat berisi variabel sensitif. Anda harus menambahkan `*.local` ke `.gitignore` Anda untuk menghindari dimasukkannya ke git.
 
-- Since any variables exposed to your Vite source code will end up in your client bundle, `VITE_*` variables should _not_ contain any sensitive information.
+- Karena variabel yang diekspos ke kode sumber Vite Anda akan berakhir di bundel klien Anda, variabel `VITE_*` seharusnya _tidak_ mengandung informasi sensitif.
   :::
 
-### IntelliSense for TypeScript
+### IntelliSense untuk TypeScript
 
-By default, Vite provides type definitions for `import.meta.env` in [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts). While you can define more custom env variables in `.env.[mode]` files, you may want to get TypeScript IntelliSense for user-defined env variables that are prefixed with `VITE_`.
+Secara default, Vite menyediakan definisi tipe untuk `import.meta.env` di [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts). Meskipun Anda dapat mendefinisikan lebih banyak variabel lingkungan kustom dalam berkas `.env.[mode]`, Anda mungkin ingin mendapatkan IntelliSense TypeScript untuk variabel lingkungan yang ditentukan pengguna yang diawali dengan `VITE_`.
 
-To achieve this, you can create an `vite-env.d.ts` in `src` directory, then augment `ImportMetaEnv` like this:
+Untuk mencapai hal ini, Anda dapat membuat sebuah berkas `vite-env.d.ts` di direktori `src`, kemudian memperluas `ImportMetaEnv` seperti ini:
 
 ```typescript
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
-  // more env variables...
+  // variabel lingkungan lainnya...
 }
 
 interface ImportMeta {
@@ -94,7 +94,7 @@ interface ImportMeta {
 }
 ```
 
-If your code relies on types from browser environments such as [DOM](https://github.com/microsoft/TypeScript/blob/main/lib/lib.dom.d.ts) and [WebWorker](https://github.com/microsoft/TypeScript/blob/main/lib/lib.webworker.d.ts), you can update the [lib](https://www.typescriptlang.org/tsconfig#lib) field in `tsconfig.json`.
+Jika kode Anda bergantung pada tipe dari lingkungan peramban seperti [DOM](https://github.com/microsoft/TypeScript/blob/main/lib/lib.dom.d.ts) dan [WebWorker](https://github.com/microsoft/TypeScript/blob/main/lib/lib.webworker.d.ts), Anda dapat memperbarui bidang [lib](https://www.typescriptlang.org/tsconfig#lib) dalam `tsconfig.json`.
 
 ```json
 {
@@ -102,85 +102,85 @@ If your code relies on types from browser environments such as [DOM](https://git
 }
 ```
 
-:::warning Imports will break type augmentation
+:::warning Impor akan memecah perluasan tipe
 
-If the `ImportMetaEnv` augmentation does not work, make sure you do not have any `import` statements in `vite-env.d.ts`. See the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/2/modules.html#how-javascript-modules-are-defined) for more information.
+Jika perluasan `ImportMetaEnv` tidak berfungsi, pastikan Anda tidak memiliki pernyataan `import` dalam `vite-env.d.ts`. Lihat [dokumentasi TypeScript](https://www.typescriptlang.org/docs/handbook/2/modules.html#how-javascript-modules-are-defined) untuk informasi lebih lanjut.
 :::
 
-## HTML Env Replacement
+## Penggantian Env dalam HTML
 
-Vite also supports replacing env variables in HTML files. Any properties in `import.meta.env` can be used in HTML files with a special `%ENV_NAME%` syntax:
+Vite juga mendukung penggantian variabel lingkungan dalam berkas HTML. Properti apa pun dalam `import.meta.env` dapat digunakan dalam berkas HTML dengan sintaks khusus `%ENV_NAME%`:
 
 ```html
-<h1>Vite is running in %MODE%</h1>
-<p>Using data from %VITE_API_URL%</p>
+<h1>Vite berjalan di mode %MODE%</h1>
+<p>Menggunakan data dari %VITE_API_URL%</p>
 ```
 
-If the env doesn't exist in `import.meta.env`, e.g. `%NON_EXISTENT%`, it will be ignored and not replaced, unlike `import.meta.env.NON_EXISTENT` in JS where it's replaced as `undefined`.
+Jika lingkungan tidak ada dalam `import.meta.env`, misalnya `%NON_EXISTENT%`, itu akan diabaikan dan tidak diganti, berbeda dengan `import.meta.env.NON_EXISTENT` dalam JS di mana itu diganti sebagai `undefined`.
 
-Given that Vite is used by many frameworks, it is intentionally unopinionated about complex replacements like conditionals. Vite can be extended using [an existing userland plugin](https://github.com/vitejs/awesome-vite#transformers) or a custom plugin that implements the [`transformIndexHtml` hook](./api-plugin#transformindexhtml).
+Karena Vite digunakan oleh banyak kerangka kerja, secara sengaja tidak memiliki pendapat tentang penggantian kompleks seperti kondisional. Vite dapat diperluas menggunakan [plugin pengguna yang ada](https://github.com/vitejs/awesome-vite#transformers) atau plugin kustom yang mengimplementasikan [`transformIndexHtml` hook](./api-plugin#transformindexhtml).
 
-## Modes
+## Mode
 
-By default, the dev server (`dev` command) runs in `development` mode and the `build` command runs in `production` mode.
+Secara default, server dev (`dev` command) berjalan dalam mode `development` dan perintah `build` berjalan dalam mode `production`.
 
-This means when running `vite build`, it will load the env variables from `.env.production` if there is one:
+Ini berarti ketika menjalankan `vite build`, itu akan memuat variabel lingkungan dari `.env.production` jika ada:
 
 ```
 # .env.production
 VITE_APP_TITLE=My App
 ```
 
-In your app, you can render the title using `import.meta.env.VITE_APP_TITLE`.
+Di aplikasi Anda, Anda dapat merender judul menggunakan `import.meta.env.VITE_APP_TITLE`.
 
-In some cases, you may want to run `vite build` with a different mode to render a different title. You can overwrite the default mode used for a command by passing the `--mode` option flag. For example, if you want to build your app for a staging mode:
+Dalam beberapa kasus, Anda mungkin ingin menjalankan `vite build` dengan mode yang berbeda untuk merender judul yang berbeda. Anda dapat menimpa mode default yang digunakan untuk sebuah perintah dengan melewati opsi flag `--mode`. Misalnya, jika Anda ingin membangun aplikasi Anda untuk mode staging:
 
 ```bash
 vite build --mode staging
 ```
 
-And create a `.env.staging` file:
+Dan membuat berkas `.env.staging`:
 
 ```
 # .env.staging
 VITE_APP_TITLE=My App (staging)
 ```
 
-As `vite build` runs a production build by default, you can also change this and run a development build by using a different mode and `.env` file configuration:
+Karena `vite build` menjalankan build produksi secara default, Anda juga dapat mengubah ini dan menjalankan build pengembangan dengan menggunakan mode dan konfigurasi berkas `.env` yang berbeda:
 
 ```
 # .env.testing
 NODE_ENV=development
 ```
 
-## NODE_ENV and Modes
+## NODE_ENV dan Mode
 
-It's important to note that `NODE_ENV` (`process.env.NODE_ENV`) and modes are two different concepts. Here's how different commands affect the `NODE_ENV` and mode:
+Penting untuk dicatat bahwa `NODE_ENV` (`process.env.NODE_ENV`) dan mode adalah dua konsep yang berbeda. Berikut adalah bagaimana perintah yang berbeda mempengaruhi `NODE_ENV` dan mode:
 
-| Command                                              | NODE_ENV        | Mode            |
+| Perintah                                              | NODE_ENV        | Mode            |
 | ---------------------------------------------------- | --------------- | --------------- |
 | `vite build`                                         | `"production"`  | `"production"`  |
 | `vite build --mode development`                      | `"production"`  | `"development"` |
 | `NODE_ENV=development vite build`                    | `"development"` | `"production"`  |
 | `NODE_ENV=development vite build --mode development` | `"development"` | `"development"` |
 
-The different values of `NODE_ENV` and mode also reflect on its corresponding `import.meta.env` properties:
+Berbagai nilai dari `NODE_ENV` dan mode juga tercermin pada properti `import.meta.env` yang sesuai:
 
-| Command                | `import.meta.env.PROD` | `import.meta.env.DEV` |
+| Perintah                | `import.meta.env.PROD` | `import.meta.env.DEV` |
 | ---------------------- | ---------------------- | --------------------- |
 | `NODE_ENV=production`  | `true`                 | `false`               |
 | `NODE_ENV=development` | `false`                | `true`                |
 | `NODE_ENV=other`       | `false`                | `true`                |
 
-| Command              | `import.meta.env.MODE` |
+| Perintah            | `import.meta.env.MODE` |
 | -------------------- | ---------------------- |
 | `--mode production`  | `"production"`         |
 | `--mode development` | `"development"`        |
 | `--mode staging`     | `"staging"`            |
 
-:::tip `NODE_ENV` in `.env` files
+:::tip `NODE_ENV` dalam berkas `.env`
 
-`NODE_ENV=...` can be set in the command, and also in your `.env` file. If `NODE_ENV` is specified in a `.env.[mode]` file, the mode can be used to control its value. However, both `NODE_ENV` and modes remain as two different concepts.
+`NODE_ENV=...` dapat diatur dalam perintah, dan juga dalam berkas `.env` Anda. Jika `NODE_ENV` ditentukan dalam berkas `.env.[mode]`, mode dapat digunakan untuk mengontrol nilainya. Namun, baik `NODE_ENV` maupun mode tetap sebagai dua konsep yang berbeda.
 
-The main benefit with `NODE_ENV=...` in the command is that it allows Vite to detect the value early. It also allows you to read `process.env.NODE_ENV` in your Vite config as Vite can only load the env files once the config is evaluated.
+Manfaat utama dengan `NODE_ENV=...` dalam perintah adalah memungkinkan Vite mendeteksi nilainya lebih awal. Ini juga memungkinkan Anda untuk membaca `process.env.NODE_ENV` dalam konfigurasi Vite karena Vite hanya dapat memuat berkas lingkungan setelah konfigurasi dievaluasi.
 :::

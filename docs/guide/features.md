@@ -1,104 +1,103 @@
-# Features
+# Fitur
 
-At the very basic level, developing using Vite is not that different from using a static file server. However, Vite provides many enhancements over native ESM imports to support various features that are typically seen in bundler-based setups.
+Pada tingkat dasar, pengembangan menggunakan Vite tidak terlalu berbeda dari menggunakan server file statis. Namun, Vite menyediakan banyak peningkatan atas impor ESM asli untuk mendukung berbagai fitur yang biasanya ditemui dalam pengaturan berbasis bundler.
 
-## NPM Dependency Resolving and Pre-Bundling
+## Pencarian dan Pra-Bundling Dependensi NPM
 
-Native ES imports do not support bare module imports like the following:
+Impor ESM asli tidak mendukung impor modul kosong seperti berikut:
 
 ```js
 import { someMethod } from 'my-dep'
 ```
 
-The above will throw an error in the browser. Vite will detect such bare module imports in all served source files and perform the following:
+Di atas akan menyebabkan kesalahan di peramban. Vite akan mendeteksi impor modul kosong seperti ini dalam semua berkas sumber yang disajikan dan melakukan hal berikut:
 
-1. [Pre-bundle](./dep-pre-bundling) them to improve page loading speed and convert CommonJS / UMD modules to ESM. The pre-bundling step is performed with [esbuild](http://esbuild.github.io/) and makes Vite's cold start time significantly faster than any JavaScript-based bundler.
+1. [Meng-pra-bundle](./dep-pre-bundling) mereka untuk meningkatkan kecepatan pengambilan halaman dan mengonversi modul CommonJS / UMD menjadi ESM. Langkah pra-bundling dilakukan dengan [esbuild](http://esbuild.github.io/) dan membuat waktu mulai dingin Vite jauh lebih cepat daripada bundler berbasis JavaScript lainnya.
 
-2. Rewrite the imports to valid URLs like `/node_modules/.vite/deps/my-dep.js?v=f3sf2ebd` so that the browser can import them properly.
+2. Menulis ulang impor menjadi URL yang valid seperti `/node_modules/.vite/deps/my-dep.js?v=f3sf2ebd` sehingga peramban dapat mengimpornya dengan benar.
 
-**Dependencies are Strongly Cached**
+**Dependensi Dicache dengan Kuat**
 
-Vite caches dependency requests via HTTP headers, so if you wish to locally edit/debug a dependency, follow the steps [here](./dep-pre-bundling#browser-cache).
+Vite mencache permintaan dependensi melalui header HTTP, jadi jika Anda ingin mengedit/debug dependensi secara lokal, ikuti langkah-langkah [di sini](./dep-pre-bundling#browser-cache).
 
-## Hot Module Replacement
+## Penggantian Modul Panas (Hot Module Replacement)
 
-Vite provides an [HMR API](./api-hmr) over native ESM. Frameworks with HMR capabilities can leverage the API to provide instant, precise updates without reloading the page or blowing away application state. Vite provides first-party HMR integrations for [Vue Single File Components](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue) and [React Fast Refresh](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react). There are also official integrations for Preact via [@prefresh/vite](https://github.com/JoviDeCroock/prefresh/tree/main/packages/vite).
+Vite menyediakan [API HMR](./api-hmr) di atas ESM asli. Framework dengan kemampuan HMR dapat memanfaatkan API ini untuk menyediakan pembaruan instan, tepat tanpa me-refresh halaman atau menghapus status aplikasi. Vite menyediakan integrasi HMR first-party untuk [Vue Single File Components](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue) dan [React Fast Refresh](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react). Ada juga integrasi resmi untuk Preact melalui [@prefresh/vite](https://github.com/JoviDeCroock/prefresh/tree/main/packages/vite).
 
-Note you don't need to manually set these up - when you [create an app via `create-vite`](./), the selected templates would have these pre-configured for you already.
+Perlu dicatat Anda tidak perlu mengatur ini secara manual - saat Anda [membuat aplikasi melalui `create-vite`](./), template yang dipilih sudah memiliki konfigurasi ini sebelumnya.
 
 ## TypeScript
 
-Vite supports importing `.ts` files out of the box.
+Vite mendukung impor berkas `.ts` secara langsung.
 
-### Transpile Only
+### Transpile Saja
 
-Note that Vite only performs transpilation on `.ts` files and does **NOT** perform type checking. It assumes type checking is taken care of by your IDE and build process.
+Perhatikan bahwa Vite hanya melakukan transpilasi pada berkas `.ts` dan **TIDAK** melakukan pengecekan tipe. Ini mengasumsikan pengecekan tipe diatur oleh IDE dan proses pembangunan Anda.
 
-The reason Vite does not perform type checking as part of the transform process is because the two jobs work fundamentally differently. Transpilation can work on a per-file basis and aligns perfectly with Vite's on-demand compile model. In comparison, type checking requires knowledge of the entire module graph. Shoe-horning type checking into Vite's transform pipeline will inevitably compromise Vite's speed benefits.
+Alasan Vite tidak melakukan pengecekan tipe sebagai bagian dari proses transformasi adalah karena kedua pekerjaan tersebut bekerja secara fundamental berbeda. Transpilasi dapat bekerja pada basis per-berkas dan selaras dengan model kompilasi on-demand Vite. Dibandingkan dengan itu, pengecekan tipe memerlukan pengetahuan tentang seluruh grafik modul. Memasukkan pengecekan tipe ke dalam pipeline transformasi Vite akan mengorbankan manfaat kecepatan Vite.
 
-Vite's job is to get your source modules into a form that can run in the browser as fast as possible. To that end, we recommend separating static analysis checks from Vite's transform pipeline. This principle applies to other static analysis checks such as ESLint.
+Pekerjaan Vite adalah untuk membuat modul sumber Anda menjadi bentuk yang dapat berjalan di peramban sesegera mungkin. Untuk itu, kami menyarankan untuk memisahkan pemeriksaan analisis statis dari pipeline transformasi Vite. Prinsip ini berlaku untuk pemeriksaan analisis statis lainnya seperti ESLint.
 
-- For production builds, you can run `tsc --noEmit` in addition to Vite's build command.
+- Untuk pembangunan produksi, Anda dapat menjalankan `tsc --noEmit` bersamaan dengan perintah pembangunan Vite.
 
-- During development, if you need more than IDE hints, we recommend running `tsc --noEmit --watch` in a separate process, or use [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) if you prefer having type errors directly reported in the browser.
+- Selama pengembangan, jika Anda memerlukan lebih dari petunjuk IDE, kami menyarankan untuk menjalankan `tsc --noEmit --watch` dalam proses terpisah, atau gunakan [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) jika Anda lebih suka mendapatkan kesalahan tipe secara langsung dilaporkan di peramban.
 
-Vite uses [esbuild](https://github.com/evanw/esbuild) to transpile TypeScript into JavaScript which is about 20~30x faster than vanilla `tsc`, and HMR updates can reflect in the browser in under 50ms.
+Vite menggunakan [esbuild](https://github.com/evanw/esbuild) untuk mentranspilasi TypeScript menjadi JavaScript yang sekitar 20~30x lebih cepat dari `tsc` polos, dan pembaruan HMR dapat tercermin di peramban dalam waktu kurang dari 50ms.
 
-Use the [Type-Only Imports and Export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) syntax to avoid potential problems like type-only imports being incorrectly bundled, for example:
+Gunakan sintaks [Type-Only Imports and Export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) untuk menghindari masalah potensial seperti impor hanya-tipe yang salah-bundel, misalnya:
 
 ```ts
 import type { T } from 'only/types'
 export type { T }
 ```
 
-### TypeScript Compiler Options
+### Opsi Kompilator TypeScript
 
-Some configuration fields under `compilerOptions` in `tsconfig.json` require special attention.
+Beberapa bidang konfigurasi di bawah `compilerOptions` dalam `tsconfig.json` memerlukan perhatian khusus.
 
 #### `isolatedModules`
 
-- [TypeScript documentation](https://www.typescriptlang.org/tsconfig#isolatedModules)
+- [Dokumentasi TypeScript](https://www.typescriptlang.org/tsconfig#isolatedModules)
 
-Should be set to `true`.
+Harus diatur ke `true`.
 
-It is because `esbuild` only performs transpilation without type information, it doesn't support certain features like const enum and implicit type-only imports.
+Ini karena `esbuild` hanya melakukan transpilasi tanpa informasi tipe, tidak mendukung fitur tertentu seperti const enum dan impor hanya-tipe implisit.
 
-You must set `"isolatedModules": true` in your `tsconfig.json` under `compilerOptions`, so that TS will warn you against the features that do not work with isolated transpilation.
+Anda harus menetapkan `"isolatedModules": true` di `tsconfig.json` Anda di bawah `compilerOptions`, sehingga TS akan memperingatkan Anda terhadap fitur-fitur yang tidak berfungsi dengan transpilasi terisolasi.
 
-However, some libraries (e.g. [`vue`](https://github.com/vuejs/core/issues/1228)) don't work well with `"isolatedModules": true`. You can use `"skipLibCheck": true` to temporarily suppress the errors until it is fixed upstream.
+Namun, beberapa pustaka (misalnya [`vue`](https://github.com/vuejs/core/issues/1228)) tidak berfungsi dengan baik dengan `"isolatedModules": true`. Anda dapat menggunakan `"skipLibCheck": true` untuk sementara menekan kesalahan sampai diperbaiki secara hulu.
 
 #### `useDefineForClassFields`
 
-- [TypeScript documentation](https://www.typescriptlang.org/tsconfig#useDefineForClassFields)
+- [Dokumentasi TypeScript](https://www.typescriptlang.org/tsconfig#useDefineForClassFields)
 
-Starting from Vite 2.5.0, the default value will be `true` if the TypeScript target is `ESNext` or `ES2022` or newer. It is consistent with the [behavior of `tsc` 4.3.2 and later](https://github.com/microsoft/TypeScript/pull/42663). It is also the standard ECMAScript runtime behavior.
+Mulai dari Vite 2.5.0, nilai defaultnya akan menjadi `true` jika target TypeScript adalah `ESNext` atau `ES2022` atau yang lebih baru. Ini konsisten dengan [perilaku `tsc` 4.3.2 dan setelahnya](https://github.com/microsoft/TypeScript/pull/42663). Ini juga perilaku runtime ECMAScript standar.
 
-Other TypeScript targets will default to `false`.
+Target TypeScript lainnya akan default menjadi `false`.
 
-But it may be counter-intuitive for those coming from other programming languages or older versions of TypeScript.
-You can read more about the transition in the [TypeScript 3.7 release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier).
+Namun, ini mungkin tidak intuitif bagi mereka yang berasal dari bahasa pemrograman lain atau versi TypeScript yang lebih lama. Anda dapat membaca lebih lanjut tentang transisi ini di [catatan rilis TypeScript 3.7](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier).
 
-If you are using a library that heavily relies on class fields, please be careful about the library's intended usage of it.
+Jika Anda menggunakan pustaka yang sangat bergantung pada bidang kelas, harap berhati-hati tentang penggunaan yang dimaksudkan pustaka tersebut.
 
-Most libraries expect `"useDefineForClassFields": true`, such as [MobX](https://mobx.js.org/installation.html#use-spec-compliant-transpilation-for-class-properties).
+Sebagian besar pustaka mengharapkan `"useDefineForClassFields": true`, seperti [MobX](https://mobx.js.org/installation.html#use-spec-compliant-transpilation-for-class-properties).
 
-But a few libraries haven't transitioned to this new default yet, including [`lit-element`](https://github.com/lit/lit-element/issues/1030). Please explicitly set `useDefineForClassFields` to `false` in these cases.
+Tetapi beberapa pustaka belum beralih ke nilai default baru ini, termasuk [`lit-element`](https://github.com/lit/lit-element/issues/1030). Harap tetapkan `useDefineForClassFields` secara eksplisit ke `false` dalam kasus-kasus ini.
 
 #### `target`
 
-- [TypeScript documentation](https://www.typescriptlang.org/tsconfig#target)
+- [Dokumentasi TypeScript](https://www.typescriptlang.org/tsconfig#target)
 
-Vite does not transpile TypeScript with the configured `target` value by default, following the same behaviour as `esbuild`.
+Vite tidak mentranspilasi TypeScript dengan nilai `target` yang dikonfigurasi secara default, mengikuti perilaku yang sama dengan `esbuild`.
 
-The [`esbuild.target`](/config/shared-options.html#esbuild) option can be used instead, which defaults to `esnext` for minimal transpilation. In builds, the [`build.target`](/config/build-options.html#build-target) option takes higher priority and can also be set if needed.
+Opsi [`esbuild.target`](/config/shared-options.html#esbuild) dapat digunakan sebagai gantinya, yang defaultnya adalah `esnext` untuk transpilasi minimal. Dalam pembangunan, opsi [`build.target`](/config/build-options.html#build-target) memiliki prioritas yang lebih tinggi dan juga dapat diatur jika diperlukan.
 
-::: warning `useDefineForClassFields`
-If `target` is not `ESNext` or `ES2022` or newer, or if there's no `tsconfig.json` file, `useDefineForClassFields` will default to `false` which can be problematic with the default `esbuild.target` value of `esnext`. It may transpile to [static initialization blocks](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks#browser_compatibility) which may not be supported in your browser.
+::: peringatan `useDefineForClassFields`
+Jika `target` bukan `ESNext` atau `ES2022` atau yang lebih baru, atau jika tidak ada berkas `tsconfig.json`, `useDefineForClassFields` akan default menjadi `false` yang dapat bermasalah dengan nilai default `esbuild.target` dari `esnext`. Ini dapat mentranspilasi ke [blok inisialisasi statis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks#browser_compatibility) yang mungkin tidak didukung di peramban Anda.
 
-As such, it is recommended to set `target` to `ESNext` or `ES2022` or newer, or set `useDefineForClassFields` to `true` explicitly when configuring `tsconfig.json`.
+Oleh karena itu, disarankan untuk mengatur `target` ke `ESNext` atau `ES2022` atau yang lebih baru, atau tetapkan `useDefineForClassFields` ke `true` secara eksplisit saat mengonfigurasi `tsconfig.json`.
 :::
 
-#### Other Compiler Options Affecting the Build Result
+### Opsi Compiler Lain yang Mempengaruhi Hasil Pembangunan
 
 - [`extends`](https://www.typescriptlang.org/tsconfig#extends)
 - [`importsNotUsedAsValues`](https://www.typescriptlang.org/tsconfig#importsNotUsedAsValues)
@@ -112,18 +111,18 @@ As such, it is recommended to set `target` to `ESNext` or `ES2022` or newer, or 
 - [`alwaysStrict`](https://www.typescriptlang.org/tsconfig#alwaysStrict)
 
 ::: tip `skipLibCheck`
-Vite starter templates have `"skipLibCheck": "true"` by default to avoid typechecking dependencies, as they may choose to only support specific versions and configurations of TypeScript. You can learn more at [vuejs/vue-cli#5688](https://github.com/vuejs/vue-cli/pull/5688).
+Template awal Vite memiliki `"skipLibCheck": "true"` secara default untuk menghindari pengecekan tipe pada dependensi, karena mereka mungkin memilih untuk hanya mendukung versi dan konfigurasi TypeScript tertentu. Anda dapat mempelajari lebih lanjut di [vuejs/vue-cli#5688](https://github.com/vuejs/vue-cli/pull/5688).
 :::
 
-### Client Types
+### Tipe Klien
 
-Vite's default types are for its Node.js API. To shim the environment of client side code in a Vite application, add a `d.ts` declaration file:
+Tipe default Vite adalah untuk API Node.js-nya. Untuk meniru lingkungan kode sisi klien dalam aplikasi Vite, tambahkan sebuah berkas deklarasi `d.ts`:
 
 ```typescript
 /// <reference types="vite/client" />
 ```
 
-Alternatively, you can add `vite/client` to `compilerOptions.types` inside `tsconfig.json`:
+Sebagai alternatif, Anda dapat menambahkan `vite/client` ke `compilerOptions.types` di dalam `tsconfig.json`:
 
 ```json
 {
@@ -133,25 +132,25 @@ Alternatively, you can add `vite/client` to `compilerOptions.types` inside `tsco
 }
 ```
 
-This will provide the following type shims:
+Ini akan memberikan peniruan tipe berikut:
 
-- Asset imports (e.g. importing an `.svg` file)
-- Types for the Vite-injected [env variables](./env-and-mode#env-variables) on `import.meta.env`
-- Types for the [HMR API](./api-hmr) on `import.meta.hot`
+- Impor aset (misalnya, mengimpor berkas `.svg`)
+- Tipe untuk [variabel env](./env-and-mode#env-variables) yang disuntikkan Vite pada `import.meta.env`
+- Tipe untuk [API HMR](./api-hmr) pada `import.meta.hot`
 
 ::: tip
-To override the default typing, add a type definition file that contains your typings. Then, add the type reference before `vite/client`.
+Untuk mengganti pengetikan default, tambahkan sebuah berkas definisi tipe yang berisi pengetikan Anda. Kemudian, tambahkan referensi tipe sebelum `vite/client`.
 
-For example, to make the default import of `*.svg` a React component:
+Misalnya, untuk membuat impor default dari `*.svg` menjadi komponen React:
 
-- `vite-env-override.d.ts` (the file that contains your typings):
+- `vite-env-override.d.ts` (berkas yang berisi pengetikan Anda):
   ```ts
   declare module '*.svg' {
     const content: React.FC<React.SVGProps<SVGElement>>
     export default content
   }
   ```
-- The file containing the reference to `vite/client`:
+- Berkas yang berisi referensi ke `vite/client`:
   ```ts
   /// <reference types="./vite-env-override.d.ts" />
   /// <reference types="vite/client" />
@@ -161,20 +160,20 @@ For example, to make the default import of `*.svg` a React component:
 
 ## Vue
 
-Vite provides first-class Vue support:
+Vite menyediakan dukungan Vue kelas satu:
 
-- Vue 3 SFC support via [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
-- Vue 3 JSX support via [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
-- Vue 2.7 support via [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
-- Vue <2.7 support via [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2)
+- Dukungan Vue 3 SFC melalui [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
+- Dukungan Vue 3 JSX melalui [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx)
+- Dukungan Vue 2.7 melalui [@vitejs/plugin-vue2](https://github.com/vitejs/vite-plugin-vue2)
+- Dukungan Vue <2.7 melalui [vite-plugin-vue2](https://github.com/underfin/vite-plugin-vue2)
 
 ## JSX
 
-`.jsx` and `.tsx` files are also supported out of the box. JSX transpilation is also handled via [esbuild](https://esbuild.github.io).
+Berkas `.jsx` dan `.tsx` juga didukung secara langsung. Transpilasi JSX juga ditangani melalui [esbuild](https://esbuild.github.io).
 
-Vue users should use the official [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx) plugin, which provides Vue 3 specific features including HMR, global component resolving, directives and slots.
+Pengguna Vue harus menggunakan plugin [@vitejs/plugin-vue-jsx](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx) resmi, yang menyediakan fitur khusus Vue 3 termasuk HMR, penyelesaian komponen global, direktif, dan slot.
 
-If using JSX without React or Vue, custom `jsxFactory` and `jsxFragment` can be configured using the [`esbuild` option](/config/shared-options.md#esbuild). For example for Preact:
+Jika tidak menggunakan JSX dengan React atau Vue, `jsxFactory` dan `jsxFragment` kustom dapat dikonfigurasi menggunakan [opsi `esbuild`](/config/shared-options.md#esbuild). Misalnya untuk Preact:
 
 ```js
 // vite.config.js
@@ -188,9 +187,9 @@ export default defineConfig({
 })
 ```
 
-More details in [esbuild docs](https://esbuild.github.io/content-types/#jsx).
+Lebih banyak detail di [dokumentasi esbuild](https://esbuild.github.io/content-types/#jsx).
 
-You can inject the JSX helpers using `jsxInject` (which is a Vite-only option) to avoid manual imports:
+Anda dapat menyuntikkan pembantu JSX menggunakan `jsxInject` (yang merupakan opsi khusus Vite) untuk menghindari impor manual:
 
 ```js
 // vite.config.js
@@ -205,23 +204,23 @@ export default defineConfig({
 
 ## CSS
 
-Importing `.css` files will inject its content to the page via a `<style>` tag with HMR support.
+Mengimpor berkas `.css` akan menyuntikkan kontennya ke halaman melalui tag `<style>` dengan dukungan HMR.
 
-### `@import` Inlining and Rebasing
+### `@import` Inline dan Rebasing
 
-Vite is pre-configured to support CSS `@import` inlining via `postcss-import`. Vite aliases are also respected for CSS `@import`. In addition, all CSS `url()` references, even if the imported files are in different directories, are always automatically rebased to ensure correctness.
+Vite telah dikonfigurasi sebelumnya untuk mendukung `@import` CSS dengan cara menyisipkannya melalui `postcss-import`. Aliases Vite juga dihormati untuk `@import` CSS. Selain itu, semua referensi `url()` CSS, bahkan jika berkas yang diimpor berada di direktori yang berbeda, selalu secara otomatis di-rebase untuk memastikan kebenaran.
 
-`@import` aliases and URL rebasing are also supported for Sass and Less files (see [CSS Pre-processors](#css-pre-processors)).
+`@import` alias dan rebasing URL juga didukung untuk berkas Sass dan Less (lihat [Pre-pemrosesan CSS](#css-pre-pemrosesan)).
 
 ### PostCSS
 
-If the project contains valid PostCSS config (any format supported by [postcss-load-config](https://github.com/postcss/postcss-load-config), e.g. `postcss.config.js`), it will be automatically applied to all imported CSS.
+Jika proyek ini berisi konfigurasi PostCSS yang valid (format yang didukung oleh [postcss-load-config](https://github.com/postcss/postcss-load-config), misalnya `postcss.config.js`), itu akan secara otomatis diterapkan pada semua CSS yang diimpor.
 
-Note that CSS minification will run after PostCSS and will use [`build.cssTarget`](/config/build-options.md#build-csstarget) option.
+Perhatikan bahwa minimasi CSS akan berjalan setelah PostCSS dan akan menggunakan opsi [`build.cssTarget`](/config/build-options.md#build-csstarget).
 
-### CSS Modules
+### Modul CSS
 
-Any CSS file ending with `.module.css` is considered a [CSS modules file](https://github.com/css-modules/css-modules). Importing such a file will return the corresponding module object:
+Setiap berkas CSS yang diakhiri dengan `.module.css` dianggap sebagai [berkas modul CSS](https://github.com/css-modules/css-modules). Mengimpor berkas tersebut akan mengembalikan objek modul yang sesuai:
 
 ```css
 /* example.module.css */
@@ -235,9 +234,9 @@ import classes from './example.module.css'
 document.getElementById('foo').className = classes.red
 ```
 
-CSS modules behavior can be configured via the [`css.modules` option](/config/shared-options.md#css-modules).
+Perilaku modul CSS dapat dikonfigurasi melalui [opsi `css.modules`](/config/shared-options.md#css-modules).
 
-If `css.modules.localsConvention` is set to enable camelCase locals (e.g. `localsConvention: 'camelCaseOnly'`), you can also use named imports:
+Jika `css.modules.localsConvention` diatur untuk mengaktifkan lokal camelCase (misalnya, `localsConvention: 'camelCaseOnly'`), Anda juga dapat menggunakan impor bernama:
 
 ```js
 // .apply-color -> applyColor
@@ -245,125 +244,125 @@ import { applyColor } from './example.module.css'
 document.getElementById('foo').className = applyColor
 ```
 
-### CSS Pre-processors
+### Prapemrosesan CSS
 
-Because Vite targets modern browsers only, it is recommended to use native CSS variables with PostCSS plugins that implement CSSWG drafts (e.g. [postcss-nesting](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-nesting)) and author plain, future-standards-compliant CSS.
+Karena Vite hanya menyasar browser modern, disarankan untuk menggunakan variabel CSS asli dengan plugin PostCSS yang mengimplementasikan draf CSSWG (misalnya [postcss-nesting](https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-nesting)) dan menulis CSS yang sederhana, sesuai dengan standar masa depan.
 
-That said, Vite does provide built-in support for `.scss`, `.sass`, `.less`, `.styl` and `.stylus` files. There is no need to install Vite-specific plugins for them, but the corresponding pre-processor itself must be installed:
+Meskipun begitu, Vite menyediakan dukungan bawaan untuk berkas `.scss`, `.sass`, `.less`, `.styl`, dan `.stylus`. Tidak perlu menginstal plugin khusus Vite untuk mereka, tetapi praprosesor yang sesuai harus diinstal:
 
 ```bash
-# .scss and .sass
+# .scss dan .sass
 npm add -D sass
 
 # .less
 npm add -D less
 
-# .styl and .stylus
+# .styl dan .stylus
 npm add -D stylus
 ```
 
-If using Vue single file components, this also automatically enables `<style lang="sass">` et al.
+Jika menggunakan komponen berkas tunggal Vue, ini juga secara otomatis mengaktifkan `<style lang="sass">` dan sebagainya.
 
-Vite improves `@import` resolving for Sass and Less so that Vite aliases are also respected. In addition, relative `url()` references inside imported Sass/Less files that are in different directories from the root file are also automatically rebased to ensure correctness.
+Vite meningkatkan resolusi `@import` untuk Sass dan Less sehingga alias Vite juga dihormati. Selain itu, referensi `url()` relatif di dalam berkas Sass/Less yang diimpor yang berada di direktori yang berbeda dari berkas root juga secara otomatis direbas untuk memastikan kebenaran.
 
-`@import` alias and url rebasing are not supported for Stylus due to its API constraints.
+`@import` alias dan url rebasing tidak didukung untuk Stylus karena batasan API-nya.
 
-You can also use CSS modules combined with pre-processors by prepending `.module` to the file extension, for example `style.module.scss`.
+Anda juga dapat menggunakan modul CSS yang dikombinasikan dengan praprosesor dengan menambahkan `.module` ke ekstensi berkas, misalnya `style.module.scss`.
 
-### Disabling CSS injection into the page
+### Menonaktifkan Penyisipan CSS ke dalam Halaman
 
-The automatic injection of CSS contents can be turned off via the `?inline` query parameter. In this case, the processed CSS string is returned as the module's default export as usual, but the styles aren't injected to the page.
+Penyisipan otomatis konten CSS dapat dimatikan melalui parameter kueri `?inline`. Dalam hal ini, string CSS yang diproses dikembalikan sebagai ekspor default modul seperti biasa, tetapi gaya tidak disisipkan ke dalam halaman.
 
 ```js
-import styles from './foo.css' // will be injected into the page
-import otherStyles from './bar.css?inline' // will not be injected
+import styles from './foo.css' // akan disisipkan ke dalam halaman
+import otherStyles from './bar.css?inline' // tidak akan disisipkan
 ```
 
-::: tip NOTE
-Default and named imports from CSS files (e.g `import style from './foo.css'`) are removed since Vite 5. Use the `?inline` query instead.
+::: tip CATATAN
+Impor default dan bernama dari berkas CSS (mis., `import style from './foo.css'`) dihapus sejak Vite 5. Gunakan kueri `?inline` sebagai gantinya.
 :::
 
-### Lightning CSS
+### CSS Lightning
 
-Starting from Vite 4.4, there is experimental support for [Lightning CSS](https://lightningcss.dev/). You can opt into it by adding [`css.transformer: 'lightningcss'`](../config/shared-options.md#css-transformer) to your config file and install the optional [`lightningcss`](https://www.npmjs.com/package/lightningcss) dependency:
+Mulai dari Vite 4.4, ada dukungan eksperimental untuk [Lightning CSS](https://lightningcss.dev/). Anda dapat memilihnya dengan menambahkan [`css.transformer: 'lightningcss'`](../config/shared-options.md#css-transformer) ke file konfigurasi Anda dan menginstal dependensi opsional [`lightningcss`](https://www.npmjs.com/package/lightningcss):
 
 ```bash
 npm add -D lightningcss
 ```
 
-If enabled, CSS files will be processed by Lightning CSS instead of PostCSS. To configure it, you can pass Lightning CSS options to the [`css.lightningcss`](../config/shared-options.md#css-lightningcss) config option.
+Jika diaktifkan, berkas CSS akan diproses oleh Lightning CSS daripada PostCSS. Untuk mengonfigurasinya, Anda dapat meneruskan opsi Lightning CSS ke opsi konfigurasi [`css.lightningcss`](../config/shared-options.md#css-lightningcss).
 
-To configure CSS Modules, you'll use [`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html) instead of [`css.modules`](../config/shared-options.md#css-modules) (which configures the way PostCSS handles CSS modules).
+Untuk mengonfigurasi Modul CSS, Anda akan menggunakan [`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html) sebagai gantinya [`css.modules`](../config/shared-options.md#css-modules) (yang mengonfigurasi cara PostCSS menangani Modul CSS).
 
-By default, Vite uses esbuild to minify CSS. Lightning CSS can also be used as the CSS minifier with [`build.cssMinify: 'lightningcss'`](../config/build-options.md#build-cssminify).
+Secara default, Vite menggunakan esbuild untuk meminimalkan CSS. Lightning CSS juga dapat digunakan sebagai pengurang CSS dengan [`build.cssMinify: 'lightningcss'`](../config/build-options.md#build-cssminify).
 
-::: tip NOTE
-[CSS Pre-processors](#css-pre-processors) aren't supported when using Lightning CSS.
+::: tip CATATAN
+[Praprosesor CSS](#css-pre-prosesor) tidak didukung saat menggunakan Lightning CSS.
 :::
 
-## Static Assets
+## Aset Statis
 
-Importing a static asset will return the resolved public URL when it is served:
+Mengimpor sebuah aset statis akan mengembalikan URL publik yang diselesaikan saat disajikan:
 
 ```js
 import imgUrl from './img.png'
 document.getElementById('hero-img').src = imgUrl
 ```
 
-Special queries can modify how assets are loaded:
+Kueri khusus dapat memodifikasi bagaimana aset dimuat:
 
 ```js
-// Explicitly load assets as URL
+// Memuat aset secara eksplisit sebagai URL
 import assetAsURL from './asset.js?url'
 ```
 
 ```js
-// Load assets as strings
+// Memuat aset sebagai string
 import assetAsString from './shader.glsl?raw'
 ```
 
 ```js
-// Load Web Workers
+// Memuat Web Workers
 import Worker from './worker.js?worker'
 ```
 
 ```js
-// Web Workers inlined as base64 strings at build time
+// Web Worker di dalamkan sebagai string base64 pada waktu pembangunan
 import InlineWorker from './worker.js?worker&inline'
 ```
 
-More details in [Static Asset Handling](./assets).
+Lebih banyak detail di [Penanganan Aset Statis](./assets).
 
 ## JSON
 
-JSON files can be directly imported - named imports are also supported:
+Berkas JSON dapat diimpor langsung - impor bernama juga didukung:
 
 ```js
-// import the entire object
+// impor seluruh objek
 import json from './example.json'
-// import a root field as named exports - helps with tree-shaking!
+// impor bidang root sebagai ekspor bernama - membantu dengan pohon shake!
 import { field } from './example.json'
 ```
 
-## Glob Import
+## Impor Glob
 
-Vite supports importing multiple modules from the file system via the special `import.meta.glob` function:
+Vite mendukung impor beberapa modul dari sistem berkas melalui fungsi khusus `import.meta.glob`:
 
 ```js
 const modules = import.meta.glob('./dir/*.js')
 ```
 
-The above will be transformed into the following:
+Di atas akan diubah menjadi:
 
 ```js
-// code produced by vite
+// kode yang dihasilkan oleh vite
 const modules = {
   './dir/foo.js': () => import('./dir/foo.js'),
   './dir/bar.js': () => import('./dir/bar.js'),
 }
 ```
 
-You can then iterate over the keys of the `modules` object to access the corresponding modules:
+Anda kemudian dapat mengulanginya untuk kunci objek `modules` untuk mengakses modul yang sesuai:
 
 ```js
 for (const path in modules) {
@@ -373,16 +372,16 @@ for (const path in modules) {
 }
 ```
 
-Matched files are by default lazy-loaded via dynamic import and will be split into separate chunks during build. If you'd rather import all the modules directly (e.g. relying on side-effects in these modules to be applied first), you can pass `{ eager: true }` as the second argument:
+Berkas yang cocok secara default dimuat secara malas melalui impor dinamis dan akan dibagi menjadi potongan terpisah selama pembangunan. Jika Anda lebih suka mengimpor semua modul langsung (misalnya mengandalkan efek samping dalam modul ini untuk diterapkan terlebih dahulu), Anda dapat melewatkan `{ eager: true }` sebagai argumen kedua:
 
 ```js
 const modules = import.meta.glob('./dir/*.js', { eager: true })
 ```
 
-The above will be transformed into the following:
+Di atas akan diubah menjadi:
 
 ```js
-// code produced by vite
+// kode yang dihasilkan oleh vite
 import * as __glob__0_0 from './dir/foo.js'
 import * as __glob__0_1 from './dir/bar.js'
 const modules = {
@@ -391,46 +390,46 @@ const modules = {
 }
 ```
 
-### Multiple Patterns
+### Pola Ganda
 
-The first argument can be an array of globs, for example
+Argumen pertama dapat berupa array glob, misalnya
 
 ```js
 const modules = import.meta.glob(['./dir/*.js', './another/*.js'])
 ```
 
-### Negative Patterns
+### Pola Negatif
 
-Negative glob patterns are also supported (prefixed with `!`). To ignore some files from the result, you can add exclude glob patterns to the first argument:
+Pola glob negatif juga didukung (diawali dengan `!`). Untuk mengabaikan beberapa berkas dari hasil, Anda dapat menambahkan pola glob pengecualian ke argumen pertama:
 
 ```js
 const modules = import.meta.glob(['./dir/*.js', '!**/bar.js'])
 ```
 
 ```js
-// code produced by vite
+// kode yang dihasilkan oleh vite
 const modules = {
   './dir/foo.js': () => import('./dir/foo.js'),
 }
 ```
 
-#### Named Imports
+#### Impor Bernama
 
-It's possible to only import parts of the modules with the `import` options.
+Mungkin untuk hanya mengimpor bagian dari modul dengan opsi `import`.
 
 ```ts
 const modules = import.meta.glob('./dir/*.js', { import: 'setup' })
 ```
 
 ```ts
-// code produced by vite
+// kode yang dihasilkan oleh vite
 const modules = {
   './dir/foo.js': () => import('./dir/foo.js').then((m) => m.setup),
   './dir/bar.js': () => import('./dir/bar.js').then((m) => m.setup),
 }
 ```
 
-When combined with `eager` it's even possible to have tree-shaking enabled for those modules.
+Ketika digabungkan dengan `eager`, bahkan mungkin untuk mengaktifkan tree-shaking untuk modul-modul itu.
 
 ```ts
 const modules = import.meta.glob('./dir/*.js', {
@@ -440,7 +439,7 @@ const modules = import.meta.glob('./dir/*.js', {
 ```
 
 ```ts
-// code produced by vite:
+// kode yang dihasilkan oleh vite:
 import { setup as __glob__0_0 } from './dir/foo.js'
 import { setup as __glob__0_1 } from './dir/bar.js'
 const modules = {
@@ -449,7 +448,7 @@ const modules = {
 }
 ```
 
-Set `import` to `default` to import the default export.
+Atur `import` menjadi `default` untuk mengimpor ekspor default.
 
 ```ts
 const modules = import.meta.glob('./dir/*.js', {
@@ -459,7 +458,7 @@ const modules = import.meta.glob('./dir/*.js', {
 ```
 
 ```ts
-// code produced by vite:
+// kode yang dihasilkan oleh vite:
 import __glob__0_0 from './dir/foo.js'
 import __glob__0_1 from './dir/bar.js'
 const modules = {
@@ -468,9 +467,9 @@ const modules = {
 }
 ```
 
-#### Custom Queries
+## Kueri Kustom
 
-You can also use the `query` option to provide queries to imports, for example, to import assets [as a string](https://vitejs.dev/guide/assets.html#importing-asset-as-string) or [as a url](https://vitejs.dev/guide/assets.html#importing-asset-as-url):
+Anda juga dapat menggunakan opsi `query` untuk menyediakan kueri ke impor, misalnya, untuk mengimpor aset [sebagai string](https://vitejs.dev/guide/assets.html#importing-asset-as-string) atau [sebagai url](https://vitejs.dev/guide/assets.html#importing-asset-as-url):
 
 ```ts
 const moduleStrings = import.meta.glob('./dir/*.svg', {
@@ -484,7 +483,7 @@ const moduleUrls = import.meta.glob('./dir/*.svg', {
 ```
 
 ```ts
-// code produced by vite:
+// kode yang dihasilkan oleh vite:
 const moduleStrings = {
   './dir/foo.svg': () => import('./dir/foo.js?raw').then((m) => m['default']),
   './dir/bar.svg': () => import('./dir/bar.js?raw').then((m) => m['default']),
@@ -495,7 +494,7 @@ const moduleUrls = {
 }
 ```
 
-You can also provide custom queries for other plugins to consume:
+Anda juga dapat menyediakan kueri kustom untuk plugin lainnya untuk dikonsumsi:
 
 ```ts
 const modules = import.meta.glob('./dir/*.js', {
@@ -503,29 +502,29 @@ const modules = import.meta.glob('./dir/*.js', {
 })
 ```
 
-### Glob Import Caveats
+### Catatan Impor Glob
 
-Note that:
+Perhatikan bahwa:
 
-- This is a Vite-only feature and is not a web or ES standard.
-- The glob patterns are treated like import specifiers: they must be either relative (start with `./`) or absolute (start with `/`, resolved relative to project root) or an alias path (see [`resolve.alias` option](/config/shared-options.md#resolve-alias)).
-- The glob matching is done via [`fast-glob`](https://github.com/mrmlnc/fast-glob) - check out its documentation for [supported glob patterns](https://github.com/mrmlnc/fast-glob#pattern-syntax).
-- You should also be aware that all the arguments in the `import.meta.glob` must be **passed as literals**. You can NOT use variables or expressions in them.
+- Ini adalah fitur hanya untuk Vite dan bukan standar web atau ES.
+- Pola glob diperlakukan seperti spesifikasi impor: mereka harus relatif (dimulai dengan `./`) atau absolut (dimulai dengan `/`, dipecahkan relatif terhadap akar proyek) atau jalur alias (lihat opsi [`resolve.alias`](/config/shared-options.md#resolve-alias)).
+- Pencocokan glob dilakukan melalui [`fast-glob`](https://github.com/mrmlnc/fast-glob) - lihat dokumentasinya untuk [pola glob yang didukung](https://github.com/mrmlnc/fast-glob#pattern-syntax).
+- Anda juga harus menyadari bahwa semua argumen dalam `import.meta.glob` harus **dilewatkan sebagai literal**. Anda TIDAK bisa menggunakan variabel atau ekspresi di dalamnya.
 
-## Dynamic Import
+## Impor Dinamis
 
-Similar to [glob import](#glob-import), Vite also supports dynamic import with variables.
+Sama seperti [impor glob](#glob-import), Vite juga mendukung impor dinamis dengan variabel.
 
 ```ts
 const module = await import(`./dir/${file}.js`)
 ```
 
-Note that variables only represent file names one level deep. If `file` is `'foo/bar'`, the import would fail. For more advanced usage, you can use the [glob import](#glob-import) feature.
+Perhatikan bahwa variabel hanya mewakili nama berkas satu tingkat kedalaman. Jika `file` adalah `'foo/bar'`, impor akan gagal. Untuk penggunaan yang lebih canggih, Anda dapat menggunakan fitur [impor glob](#glob-import).
 
 ## WebAssembly
 
-Pre-compiled `.wasm` files can be imported with `?init`.
-The default export will be an initialization function that returns a Promise of the [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/Instance):
+Berkas `.wasm` yang telah dikompilasi sebelumnya dapat diimpor dengan `?init`.
+Ekspor default akan menjadi fungsi inisialisasi yang mengembalikan Promise dari [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/Instance):
 
 ```js
 import init from './example.wasm?init'
@@ -535,7 +534,7 @@ init().then((instance) => {
 })
 ```
 
-The init function can also take an importObject which is passed along to [`WebAssembly.instantiate`](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiate) as its second argument:
+Fungsi init juga dapat mengambil importObject yang diteruskan ke [`WebAssembly.instantiate`](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiate) sebagai argumen keduanya:
 
 ```js
 init({
@@ -549,16 +548,16 @@ init({
 })
 ```
 
-In the production build, `.wasm` files smaller than `assetInlineLimit` will be inlined as base64 strings. Otherwise, they will be treated as a [static asset](./assets) and fetched on-demand.
+Pada pembangunan produksi, berkas `.wasm` yang lebih kecil dari `assetInlineLimit` akan diinlining sebagai string base64. Jika tidak, mereka akan diperlakukan sebagai [aset statis](./assets) dan diambil secara on-demand.
 
-::: tip NOTE
-[ES Module Integration Proposal for WebAssembly](https://github.com/WebAssembly/esm-integration) is not currently supported.
-Use [`vite-plugin-wasm`](https://github.com/Menci/vite-plugin-wasm) or other community plugins to handle this.
+::: tip CATATAN
+[Proposal Integrasi Modul ES untuk WebAssembly](https://github.com/WebAssembly/esm-integration) saat ini tidak didukung.
+Gunakan [`vite-plugin-wasm`](https://github.com/Menci/vite-plugin-wasm) atau plugin komunitas lainnya untuk menangani ini.
 :::
 
-### Accessing the WebAssembly Module
+### Mengakses Modul WebAssembly
 
-If you need access to the `Module` object, e.g. to instantiate it multiple times, use an [explicit URL import](./assets#explicit-url-imports) to resolve the asset, and then perform the instantiation:
+Jika Anda memerlukan akses ke objek `Module`, misalnya untuk menginisialisasinya beberapa kali, gunakan [impor URL eksplisit](./assets#explicit-url-imports) untuk menyelesaikan aset, dan kemudian lakukan inisialisasi:
 
 ```js
 import wasmUrl from 'foo.wasm?url'
@@ -573,12 +572,12 @@ const main = async () => {
 main()
 ```
 
-### Fetching the module in Node.js
+### Mengambil modul di Node.js
 
-In SSR, the `fetch()` happening as part of the `?init` import, may fail with `TypeError: Invalid URL`.
-See the issue [Support wasm in SSR](https://github.com/vitejs/vite/issues/8882).
+Dalam SSR, `fetch()` yang terjadi sebagai bagian dari impor `?init`, mungkin gagal dengan `TypeError: Invalid URL`.
+Lihat masalah [Dukungan wasm di SSR](https://github.com/vitejs/vite/issues/8882).
 
-Here is an alternative, assuming the project base is the current directory:
+Berikut adalah alternatifnya, dengan asumsi dasar proyek adalah direktori saat ini:
 
 ```js
 import wasmUrl from 'foo.wasm?url'
@@ -598,15 +597,15 @@ main()
 
 ## Web Workers
 
-### Import with Constructors
+### Impor dengan Konstruktor
 
-A web worker script can be imported using [`new Worker()`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker) and [`new SharedWorker()`](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker/SharedWorker). Compared to the worker suffixes, this syntax leans closer to the standards and is the **recommended** way to create workers.
+Script pekerja web dapat diimpor menggunakan [`new Worker()`](https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker) dan [`new SharedWorker()`](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker/SharedWorker). Dibandingkan dengan akhiran pekerja, sintaks ini lebih mendekati standar dan merupakan cara yang **direkomendasikan** untuk membuat pekerja.
 
 ```ts
 const worker = new Worker(new URL('./worker.js', import.meta.url))
 ```
 
-The worker constructor also accepts options, which can be used to create "module" workers:
+Konstruktor pekerja juga menerima opsi, yang dapat digunakan untuk membuat pekerja "modul":
 
 ```ts
 const worker = new Worker(new URL('./worker.js', import.meta.url), {
@@ -614,11 +613,11 @@ const worker = new Worker(new URL('./worker.js', import.meta.url), {
 })
 ```
 
-The worker detection will only work if the `new URL()` constructor is used directly inside the `new Worker()` declaration. Additionally, all options parameters must be static values (i.e. string literals).
+Deteksi pekerja hanya akan berfungsi jika konstruktor `new URL()` digunakan langsung di dalam deklarasi `new Worker()`. Selain itu, semua parameter opsi harus berupa nilai statis (yaitu string literal).
 
-### Import with Query Suffixes
+### Impor dengan Sufiks Query
 
-A web worker script can be directly imported by appending `?worker` or `?sharedworker` to the import request. The default export will be a custom worker constructor:
+Script pekerja web dapat diimpor langsung dengan menambahkan `?worker` atau `?sharedworker` ke permintaan impor. Ekspor default akan menjadi konstruktor pekerja kustom:
 
 ```js
 import MyWorker from './worker?worker'
@@ -626,55 +625,57 @@ import MyWorker from './worker?worker'
 const worker = new MyWorker()
 ```
 
-The worker script can also use ESM `import` statements instead of `importScripts()`. **Note**: During development this relies on [browser native support](https://caniuse.com/?search=module%20worker), but for the production build it is compiled away.
+Script pekerja juga dapat menggunakan pernyataan `import` ESM daripada `importScripts()`. **Catatan**: Selama pengembangan ini bergantung pada [dukungan asli browser](https://caniuse.com/?search=module%20worker), namun untuk build produksi akan dikompilasi.
 
-By default, the worker script will be emitted as a separate chunk in the production build. If you wish to inline the worker as base64 strings, add the `inline` query:
+Secara default, script pekerja akan dihasilkan sebagai chunk terpisah dalam build produksi. Jika Anda ingin menyisipkan pekerja sebagai string base64, tambahkan query `inline`:
 
 ```js
 import MyWorker from './worker?worker&inline'
 ```
 
-If you wish to retrieve the worker as a URL, add the `url` query:
+Jika Anda ingin mengambil pekerja sebagai URL, tambahkan query `url`:
 
 ```js
 import MyWorker from './worker?worker&url'
 ```
 
-See [Worker Options](/config/worker-options.md) for details on configuring the bundling of all workers.
+Lihat [Opsi Pekerja](/config/worker-options.md) untuk detail tentang mengkonfigurasi bundling semua pekerja.
 
-## Build Optimizations
+## Optimisasi Pembangunan
 
-> Features listed below are automatically applied as part of the build process and there is no need for explicit configuration unless you want to disable them.
+> Fitur yang tercantum di bawah ini secara otomatis diterapkan sebagai bagian dari proses pembangunan dan tidak perlu dikonfigurasi secara eksplisit kecuali jika Anda ingin menonaktifkannya.
 
-### CSS Code Splitting
+### Pemisahan Kode CSS
 
-Vite automatically extracts the CSS used by modules in an async chunk and generates a separate file for it. The CSS file is automatically loaded via a `<link>` tag when the associated async chunk is loaded, and the async chunk is guaranteed to only be evaluated after the CSS is loaded to avoid [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content#:~:text=A%20flash%20of%20unstyled%20content,before%20all%20information%20is%20retrieved.).
+Vite secara otomatis mengekstrak CSS yang digunakan oleh modul dalam chunk async dan menghasilkan file terpisah untuknya. File CSS secara otomatis dimuat melalui tag `<link>` ketika chunk async terkait dimuat, dan chunk async dijamin hanya dievaluasi setelah CSS dimuat untuk menghindari [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content#:~:text=A%20flash%20of%20unstyled%20content,before%20all%20information%20is%20retrieved.).
 
-If you'd rather have all the CSS extracted into a single file, you can disable CSS code splitting by setting [`build.cssCodeSplit`](/config/build-options.md#build-csscodesplit) to `false`.
+Jika Anda lebih suka memiliki semua CSS diekstrak ke dalam satu file, Anda dapat menonaktifkan pemisahan kode CSS dengan mengatur [`build.cssCodeSplit`](/config/build-options.md#build-csscodesplit) menjadi `false`.
 
-### Preload Directives Generation
+### Pembangkitan Direktif Preload
 
-Vite automatically generates `<link rel="modulepreload">` directives for entry chunks and their direct imports in the built HTML.
+Vite secara otomatis menghasilkan direktif `<link rel="modulepreload">` untuk chunk entri dan impor langsung mereka dalam HTML yang dibangun.
 
-### Async Chunk Loading Optimization
+### Optimisasi Pemuatan Chunk Async
 
-In real world applications, Rollup often generates "common" chunks - code that is shared between two or more other chunks. Combined with dynamic imports, it is quite common to have the following scenario:
+Dalam aplikasi dunia nyata, Rollup sering kali menghasilkan "chunk umum" - kode yang dibagikan antara dua atau lebih chunk lainnya. Digabungkan dengan impor dinamis, sangat umum untuk memiliki skenario berikut:
 
+```html
 <script setup>
 import graphSvg from '../images/graph.svg?raw'
 </script>
 <svg-image :svg="graphSvg" />
-
-In the non-optimized scenarios, when async chunk `A` is imported, the browser will have to request and parse `A` before it can figure out that it also needs the common chunk `C`. This results in an extra network roundtrip:
-
-```
-Entry ---> A ---> C
 ```
 
-Vite automatically rewrites code-split dynamic import calls with a preload step so that when `A` is requested, `C` is fetched **in parallel**:
+Dalam skenario yang tidak dioptimalkan, ketika chunk async `A` diimpor, browser harus meminta dan menguraikan `A` sebelum dapat memahami bahwa ia juga membutuhkan chunk umum `C`. Hal ini mengakibatkan satu putaran tambahan jaringan:
 
 ```
-Entry ---> (A + C)
+Entri ---> A ---> C
 ```
 
-It is possible for `C` to have further imports, which will result in even more roundtrips in the un-optimized scenario. Vite's optimization will trace all the direct imports to completely eliminate the roundtrips regardless of import depth.
+Vite secara otomatis menulis ulang panggilan impor dinamis pembagi kode dengan langkah preload sehingga ketika `A` diminta, `C` diambil **secara paralel**:
+
+```
+Entri ---> (A + C)
+```
+
+Mungkin bagi `C` untuk memiliki impor lebih lanjut, yang akan menghasilkan lebih banyak putaran tambahan dalam skenario yang tidak dioptimalkan. Optimasi Vite akan melacak semua impor langsung untuk sepenuhnya menghilangkan putaran tambahan tanpa memperdulikan kedalaman impor.

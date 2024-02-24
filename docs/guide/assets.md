@@ -1,58 +1,58 @@
-# Static Asset Handling
+# Penanganan Aset Statis
 
-- Related: [Public Base Path](./build#public-base-path)
-- Related: [`assetsInclude` config option](/config/shared-options.md#assetsinclude)
+- Terkait: [Path Dasar Publik](./build#public-base-path)
+- Terkait: [Opsi konfigurasi `assetsInclude`](/config/shared-options.md#assetsinclude)
 
-## Importing Asset as URL
+## Mengimpor Aset sebagai URL
 
-Importing a static asset will return the resolved public URL when it is served:
+Mengimpor aset statis akan mengembalikan URL publik yang telah diselesaikan saat disajikan:
 
 ```js
 import imgUrl from './img.png'
 document.getElementById('hero-img').src = imgUrl
 ```
 
-For example, `imgUrl` will be `/img.png` during development, and become `/assets/img.2d8efhg.png` in the production build.
+Sebagai contoh, `imgUrl` akan menjadi `/img.png` selama pengembangan, dan menjadi `/assets/img.2d8efhg.png` dalam pembangunan produksi.
 
-The behavior is similar to webpack's `file-loader`. The difference is that the import can be either using absolute public paths (based on project root during dev) or relative paths.
+Perilaku ini mirip dengan `file-loader` webpack. Perbedaannya adalah impor dapat menggunakan path publik absolut (berdasarkan root proyek selama pengembangan) atau path relatif.
 
-- `url()` references in CSS are handled the same way.
+- `url()` dalam CSS ditangani dengan cara yang sama.
 
-- If using the Vue plugin, asset references in Vue SFC templates are automatically converted into imports.
+- Jika menggunakan plugin Vue, referensi aset dalam template SFC Vue secara otomatis diubah menjadi impor.
 
-- Common image, media, and font filetypes are detected as assets automatically. You can extend the internal list using the [`assetsInclude` option](/config/shared-options.md#assetsinclude).
+- Jenis file gambar, media, dan font umum dideteksi secara otomatis sebagai aset. Anda dapat memperluas daftar internal menggunakan opsi [`assetsInclude`](/config/shared-options.md#assetsinclude).
 
-- Referenced assets are included as part of the build assets graph, will get hashed file names, and can be processed by plugins for optimization.
+- Aset yang direferensikan disertakan sebagai bagian dari grafik aset pembangunan, akan mendapatkan nama file yang di-hash, dan dapat diproses oleh plugin untuk optimasi.
 
-- Assets smaller in bytes than the [`assetsInlineLimit` option](/config/build-options.md#build-assetsinlinelimit) will be inlined as base64 data URLs.
+- Aset yang lebih kecil dalam byte dari opsi [`assetsInlineLimit`](/config/build-options.md#build-assetsinlinelimit) akan di-inline sebagai URL data base64.
 
-- Git LFS placeholders are automatically excluded from inlining because they do not contain the content of the file they represent. To get inlining, make sure to download the file contents via Git LFS before building.
+- Penanda Git LFS secara otomatis dikecualikan dari inlining karena mereka tidak berisi konten dari file yang mereka wakili. Untuk melakukan inlining, pastikan untuk mengunduh konten file melalui Git LFS sebelum membangun.
 
-- TypeScript, by default, does not recognize static asset imports as valid modules. To fix this, include [`vite/client`](./features#client-types).
+- Secara default, TypeScript tidak mengenali impor aset statis sebagai modul yang valid. Untuk memperbaiki ini, sertakan [`vite/client`](./features#client-types).
 
-### Explicit URL Imports
+### Impor URL Eksplisit
 
-Assets that are not included in the internal list or in `assetsInclude`, can be explicitly imported as a URL using the `?url` suffix. This is useful, for example, to import [Houdini Paint Worklets](https://houdini.how/usage).
+Aset yang tidak termasuk dalam daftar internal atau dalam `assetsInclude`, dapat diimpor secara eksplisit sebagai URL menggunakan sufiks `?url`. Ini berguna, misalnya, untuk mengimpor [Houdini Paint Worklets](https://houdini.how/usage).
 
 ```js
 import workletURL from 'extra-scalloped-border/worklet.js?url'
 CSS.paintWorklet.addModule(workletURL)
 ```
 
-### Importing Asset as String
+### Mengimpor Aset sebagai String
 
-Assets can be imported as strings using the `?raw` suffix.
+Aset dapat diimpor sebagai string menggunakan sufiks `?raw`.
 
 ```js
 import shaderString from './shader.glsl?raw'
 ```
 
-### Importing Script as a Worker
+### Mengimpor Skrip sebagai Pekerja
 
-Scripts can be imported as web workers with the `?worker` or `?sharedworker` suffix.
+Skrip dapat diimpor sebagai pekerja web dengan sufiks `?worker` atau `?sharedworker`.
 
 ```js
-// Separate chunk in the production build
+// Chunks terpisah dalam pembangunan produksi
 import Worker from './shader.js?worker'
 const worker = new Worker()
 ```
@@ -64,32 +64,32 @@ const sharedWorker = new SharedWorker()
 ```
 
 ```js
-// Inlined as base64 strings
+// Di-inline sebagai string base64
 import InlineWorker from './shader.js?worker&inline'
 ```
 
-Check out the [Web Worker section](./features.md#web-workers) for more details.
+Periksa [bagian Pekerja Web](./features.md#web-workers) untuk detail lebih lanjut.
 
-## The `public` Directory
+## Direktori `public`
 
-If you have assets that are:
+Jika Anda memiliki aset yang:
 
-- Never referenced in source code (e.g. `robots.txt`)
-- Must retain the exact same file name (without hashing)
-- ...or you simply don't want to have to import an asset first just to get its URL
+- Tidak pernah dirujuk dalam kode sumber (misalnya, `robots.txt`)
+- Harus mempertahankan nama file yang sama persis (tanpa peng-hashingan)
+- ...atau Anda hanya tidak ingin harus mengimpor sebuah aset terlebih dahulu hanya untuk mendapatkan URL-nya
 
-Then you can place the asset in a special `public` directory under your project root. Assets in this directory will be served at root path `/` during dev, and copied to the root of the dist directory as-is.
+Maka Anda dapat menempatkan aset tersebut dalam direktori khusus bernama `public` di bawah root proyek Anda. Aset dalam direktori ini akan disajikan pada path root `/` selama pengembangan, dan disalin ke root dari direktori dist sebagaimana adanya.
 
-The directory defaults to `<root>/public`, but can be configured via the [`publicDir` option](/config/shared-options.md#publicdir).
+Direktori tersebut secara default berada di `<root>/public`, tetapi dapat dikonfigurasi melalui opsi [`publicDir`](/config/shared-options.md#publicdir).
 
-Note that:
+Perhatikan bahwa:
 
-- You should always reference `public` assets using root absolute path - for example, `public/icon.png` should be referenced in source code as `/icon.png`.
-- Assets in `public` cannot be imported from JavaScript.
+- Anda harus selalu merujuk aset dalam `public` menggunakan path absolut root - misalnya, `public/icon.png` harus dirujuk dalam kode sumber sebagai `/icon.png`.
+- Aset dalam `public` tidak dapat diimpor dari JavaScript.
 
 ## new URL(url, import.meta.url)
 
-[import.meta.url](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta) is a native ESM feature that exposes the current module's URL. Combining it with the native [URL constructor](https://developer.mozilla.org/en-US/docs/Web/API/URL), we can obtain the full, resolved URL of a static asset using relative path from a JavaScript module:
+[import.meta.url](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta) adalah fitur native ESM yang mengekspos URL modul saat ini. Dengan menggabungkannya dengan konstruktor [URL native](https://developer.mozilla.org/en-US/docs/Web/API/URL), kita dapat memperoleh URL lengkap dan terselaraskan dari suatu aset statis menggunakan path relatif dari sebuah modul JavaScript:
 
 ```js
 const imgUrl = new URL('./img.png', import.meta.url).href
@@ -97,9 +97,9 @@ const imgUrl = new URL('./img.png', import.meta.url).href
 document.getElementById('hero-img').src = imgUrl
 ```
 
-This works natively in modern browsers - in fact, Vite doesn't need to process this code at all during development!
+Ini berfungsi secara native di browser modern - bahkan, Vite tidak perlu memproses kode ini sama sekali selama pengembangan!
 
-This pattern also supports dynamic URLs via template literals:
+Pola ini juga mendukung URL dinamis melalui literal template:
 
 ```js
 function getImageUrl(name) {
@@ -107,13 +107,13 @@ function getImageUrl(name) {
 }
 ```
 
-During the production build, Vite will perform necessary transforms so that the URLs still point to the correct location even after bundling and asset hashing. However, the URL string must be static so it can be analyzed, otherwise the code will be left as is, which can cause runtime errors if `build.target` does not support `import.meta.url`
+Selama pembangunan produksi, Vite akan melakukan transformasi yang diperlukan sehingga URL masih menunjuk ke lokasi yang benar bahkan setelah penggabungan dan peng-hashingan aset. Namun, string URL harus statis agar dapat dianalisis, jika tidak kode akan dibiarkan apa adanya, yang dapat menyebabkan kesalahan saat runtime jika `build.target` tidak mendukung `import.meta.url`.
 
 ```js
-// Vite will not transform this
+// Vite tidak akan mengubah ini
 const imgUrl = new URL(imagePath, import.meta.url).href
 ```
 
-::: warning Does not work with SSR
-This pattern does not work if you are using Vite for Server-Side Rendering, because `import.meta.url` have different semantics in browsers vs. Node.js. The server bundle also cannot determine the client host URL ahead of time.
+::: peringatan Tidak Berfungsi dengan SSR
+Pola ini tidak berfungsi jika Anda menggunakan Vite untuk Server-Side Rendering, karena `import.meta.url` memiliki semantik yang berbeda di browser vs. Node.js. Bundle server juga tidak dapat menentukan URL host klien sebelumnya.
 :::

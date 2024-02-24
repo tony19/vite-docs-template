@@ -1,235 +1,237 @@
 # Troubleshooting
 
-See [Rollup's troubleshooting guide](https://rollupjs.org/troubleshooting/) for more information too.
+Lihat [panduan pemecahan masalah Rollup](https://rollupjs.org/troubleshooting/) untuk informasi lebih lanjut juga.
 
-If the suggestions here don't work, please try posting questions on [GitHub Discussions](https://github.com/vitejs/vite/discussions) or in the `#help` channel of [Vite Land Discord](https://chat.vitejs.dev).
+Jika saran di sini tidak berhasil, coba posting pertanyaan di [Diskusi GitHub](https://github.com/vitejs/vite/discussions) atau di saluran `#help` dari [Vite Land Discord](https://chat.vitejs.dev).
 
 ## CJS
 
-### Vite CJS Node API deprecated
+### Vite CJS Node API sudah tidak didukung
 
-The CJS build of Vite's Node API is deprecated and will be removed in Vite 6. See the [GitHub discussion](https://github.com/vitejs/vite/discussions/13928) for more context. You should update your files or frameworks to import the ESM build of Vite instead.
+Build CJS dari API Node Vite sudah tidak didukung dan akan dihapus dalam Vite 6. Lihat [diskusi GitHub](https://github.com/vitejs/vite/discussions/13928) untuk konteks lebih lanjut. Anda harus memperbarui file atau kerangka kerja Anda untuk mengimpor build ESM dari Vite sebagai gantinya.
 
-In a basic Vite project, make sure:
+Dalam proyek Vite dasar, pastikan:
 
-1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
+1. Konten file `vite.config.js` menggunakan sintaks ESM.
+2. File `package.json` terdekat memiliki `"type": "module"`, atau gunakan ekstensi `.mjs`/`.mts`, misalnya `vite.config.mjs` atau `vite.config.mts`.
 
-For other projects, there are a few general approaches:
+Untuk proyek lain, ada beberapa pendekatan umum:
 
-- **Configure ESM as default, opt-in to CJS if needed:** Add `"type": "module"` in the project `package.json`. All `*.js` files are now interpreted as ESM and needs to use the ESM syntax. You can rename a file with the `.cjs` extension to keep using CJS instead.
-- **Keep CJS as default, opt-in to ESM if needed:** If the project `package.json` does not have `"type": "module"`, all `*.js` files are interpreted as CJS. You can rename a file with the `.mjs` extension to use ESM instead.
-- **Dynamically import Vite:** If you need to keep using CJS, you can dynamically import Vite using `import('vite')` instead. This requires your code to be written in an `async` context, but should still be manageable as Vite's API is mostly asynchronous.
+- **Konfigurasi ESM sebagai default, menggunakan CJS jika diperlukan:** Tambahkan `"type": "module"` dalam `package.json` proyek. Semua file `*.js` sekarang diinterpretasikan sebagai ESM dan perlu menggunakan sintaks ESM. Anda dapat mengubah nama file dengan ekstensi `.cjs` untuk tetap menggunakan CJS.
+- **Menjaga CJS sebagai default, menggunakan ESM jika diperlukan:** Jika `package.json` proyek tidak memiliki `"type": "module"`, semua file `*.js` diinterpretasikan sebagai CJS. Anda dapat mengubah nama file dengan ekstensi `.mjs` untuk menggunakan ESM sebagai gantinya.
+- **Mengimpor Vite secara dinamis:** Jika Anda perlu tetap menggunakan CJS, Anda dapat mengimpor Vite secara dinamis menggunakan `import('vite')` sebagai gantinya. Ini memerlukan kode Anda ditulis dalam konteks `async`, tetapi seharusnya masih dapat dikelola karena API Vite sebagian besar bersifat asinkron.
 
-If you're unsure where the warning is coming from, you can run your script with the `VITE_CJS_TRACE=true` flag to log the stack trace:
+Jika Anda tidak yakin dari mana peringatan ini berasal, Anda dapat menjalankan skrip Anda dengan flag `VITE_CJS_TRACE=true` untuk mencatat jejak stack:
 
 ```bash
 VITE_CJS_TRACE=true vite dev
 ```
 
-If you'd like to temporarily ignore the warning, you can run your script with the `VITE_CJS_IGNORE_WARNING=true` flag:
+Jika Anda ingin mengabaikan peringatan sementara, Anda dapat menjalankan skrip Anda dengan flag `VITE_CJS_IGNORE_WARNING=true`:
 
 ```bash
 VITE_CJS_IGNORE_WARNING=true vite dev
 ```
 
-Note that postcss config files does not support ESM + TypeScript (`.mts` or `.ts` in `"type": "module"`) yet. If you have postcss configs with `.ts` and added `"type": "module"` to package.json, you'll also need to rename the postcss config to use `.cts`.
+Perhatikan bahwa file konfigurasi postcss belum mendukung ESM + TypeScript (`.mts` atau `.ts` dalam `"type": "module"`) belum. Jika Anda memiliki konfigurasi postcss dengan `.ts` dan menambahkan `"type": "module"` ke `package.json`, Anda juga perlu mengubah nama konfigurasi postcss untuk menggunakan `.cts`.
 
 ## CLI
 
 ### `Error: Cannot find module 'C:\foo\bar&baz\vite\bin\vite.js'`
 
-The path to your project folder may include `&`, which doesn't work with `npm` on Windows ([npm/cmd-shim#45](https://github.com/npm/cmd-shim/issues/45)).
+Jalur ke folder proyek Anda mungkin mencakup `&`, yang tidak berfungsi dengan `npm` di Windows ([npm/cmd-shim#45](https://github.com/npm/cmd-shim/issues/45)).
 
-You will need to either:
+Anda perlu melakukan salah satu dari:
 
-- Switch to another package manager (e.g. `pnpm`, `yarn`)
-- Remove `&` from the path to your project
+- Beralih ke manajer paket lain (misalnya `pnpm`, `yarn`)
+- Hapus `&` dari jalur ke proyek Anda
 
-## Config
+## Konfigurasi
 
-### This package is ESM only
+### Paket ini hanya ESM
 
-When importing a ESM only package by `require`, the following error happens.
+Ketika mengimpor paket hanya ESM dengan `require`, kesalahan berikut terjadi.
 
-> Failed to resolve "foo". This package is ESM only but it was tried to load by `require`.
+> Gagal memecahkan "foo". Paket ini hanya ESM tetapi mencoba untuk dimuat dengan `require`.
 
-> "foo" resolved to an ESM file. ESM file cannot be loaded by `require`.
+> "foo" dipecahkan menjadi file ESM. File ESM tidak dapat dimuat dengan `require`.
 
-ESM files cannot be loaded by [`require`](<https://nodejs.org/docs/latest-v18.x/api/esm.html#require:~:text=Using%20require%20to%20load%20an%20ES%20module%20is%20not%20supported%20because%20ES%20modules%20have%20asynchronous%20execution.%20Instead%2C%20use%20import()%20to%20load%20an%20ES%20module%20from%20a%20CommonJS%20module.>).
+File ESM tidak dapat dimuat dengan [`require`](<https://nodejs.org/docs/latest-v18.x/api/esm.html#require:~:text=Using%20require%20to%20load%20an%20ES%20module%20is%20not%20supported%20because%20ES%20modules%20have%20asynchronous%20execution.%20Instead%2C%20use%20import()%20to%20load%20an%20ES%20module%20from%20a%20CommonJS%20module.>).
 
-We recommend converting your config to ESM by either:
+Kami merekom
 
-- adding `"type": "module"` to the nearest `package.json`
-- renaming `vite.config.js`/`vite.config.ts` to `vite.config.mjs`/`vite.config.mts`
+endasikan untuk mengonversi konfigurasi Anda menjadi ESM dengan cara:
 
-## Dev Server
+- menambahkan `"type": "module"` ke `package.json` terdekat
+- mengubah nama `vite.config.js`/`vite.config.ts` menjadi `vite.config.mjs`/`vite.config.mts`
 
-### Requests are stalled forever
+## Server Pengembangan
 
-If you are using Linux, file descriptor limits and inotify limits may be causing the issue. As Vite does not bundle most of the files, browsers may request many files which require many file descriptors, going over the limit.
+### Permintaan Terhenti Selamanya
 
-To solve this:
+Jika Anda menggunakan Linux, batasan deskriptor file dan batasan inotify mungkin menyebabkan masalah. Karena Vite tidak membundle sebagian besar file, browser dapat meminta banyak file yang memerlukan banyak deskriptor file, melebihi batas.
 
-- Increase file descriptor limit by `ulimit`
+Untuk memecahkan masalah ini:
+
+- Tingkatkan batasan deskriptor file dengan `ulimit`
 
   ```shell
-  # Check current limit
+  # Periksa batasan saat ini
   $ ulimit -Sn
-  # Change limit (temporary)
-  $ ulimit -Sn 10000 # You might need to change the hard limit too
-  # Restart your browser
+  # Ubah batasan (sementara)
+  $ ulimit -Sn 10000 # Anda mungkin perlu mengubah batas keras juga
+  # Mulai ulang browser Anda
   ```
 
-- Increase the following inotify related limits by `sysctl`
+- Tingkatkan batasan terkait inotify berikut dengan `sysctl`
 
   ```shell
-  # Check current limits
+  # Periksa batasan saat ini
   $ sysctl fs.inotify
-  # Change limits (temporary)
+  # Ubah batasan (sementara)
   $ sudo sysctl fs.inotify.max_queued_events=16384
   $ sudo sysctl fs.inotify.max_user_instances=8192
   $ sudo sysctl fs.inotify.max_user_watches=524288
   ```
 
-If the above steps don't work, you can try adding `DefaultLimitNOFILE=65536` as an un-commented config to the following files:
+Jika langkah-langkah di atas tidak berhasil, Anda dapat mencoba menambahkan `DefaultLimitNOFILE=65536` sebagai konfigurasi yang tidak di-komentari ke file-file berikut:
 
 - /etc/systemd/system.conf
 - /etc/systemd/user.conf
 
-For Ubuntu Linux, you may need to add the line `* - nofile 65536` to the file `/etc/security/limits.conf` instead of updating systemd config files.
+Untuk Ubuntu Linux, Anda mungkin perlu menambahkan baris `* - nofile 65536` ke file `/etc/security/limits.conf` daripada memperbarui file konfigurasi systemd.
 
-Note that these settings persist but a **restart is required**.
+Perhatikan bahwa pengaturan ini persisten tetapi **memerlukan restart**.
 
-### Network requests stop loading
+### Permintaan Jaringan Berhenti Memuat
 
-When using a self-signed SSL certificate, Chrome ignores all caching directives and reloads the content. Vite relies on these caching directives.
+Saat menggunakan sertifikat SSL yang ditandai sendiri, Chrome mengabaikan semua arahan caching dan memuat ulang konten. Vite bergantung pada arahan caching ini.
 
-To resolve the problem use a trusted SSL cert.
+Untuk memecahkan masalah tersebut, gunakan sertifikat SSL yang terpercaya.
 
-See: [Cache problems](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html), [Chrome issue](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
+Lihat: [Masalah Cache](https://helpx.adobe.com/mt/experience-manager/kb/cache-problems-on-chrome-with-SSL-certificate-errors.html), [Masalah Chrome](https://bugs.chromium.org/p/chromium/issues/detail?id=110649#c8)
 
 #### macOS
 
-You can install a trusted cert via the CLI with this command:
+Anda dapat menginstal sertifikat yang terpercaya melalui CLI dengan perintah ini:
 
 ```
 security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db your-cert.cer
 ```
 
-Or, by importing it into the Keychain Access app and updating the trust of your cert to "Always Trust."
+Atau, dengan mengimpor ke aplikasi Keychain Access dan memperbarui kepercayaan sertifikat Anda menjadi "Selalu Percaya."
 
-### 431 Request Header Fields Too Large
+### 431 Permintaan Header Terlalu Besar
 
-When the server / WebSocket server receives a large HTTP header, the request will be dropped and the following warning will be shown.
+Ketika server / server WebSocket menerima header HTTP yang besar, permintaan akan dibuang dan peringatan berikut akan ditampilkan.
 
-> Server responded with status code 431. See https://vitejs.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.
+> Server merespons dengan kode status 431. Lihat https://vitejs.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.
 
-This is because Node.js limits request header size to mitigate [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121).
+Ini karena Node.js membatasi ukuran header permintaan untuk meredam [CVE-2018-12121](https://www.cve.org/CVERecord?id=CVE-2018-12121).
 
-To avoid this, try to reduce your request header size. For example, if the cookie is long, delete it. Or you can use [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) to change max header size.
+Untuk menghindari ini, coba kurangi ukuran header permintaan Anda. Misalnya, jika cookie panjang, hapus itu. Atau Anda dapat menggunakan [`--max-http-header-size`](https://nodejs.org/api/cli.html#--max-http-header-sizesize) untuk mengubah ukuran header maksimum.
 
 ## HMR
 
-### Vite detects a file change but the HMR is not working
+### Vite Mendeteksi Perubahan Berkas tetapi HMR Tidak Berfungsi
 
-You may be importing a file with a different case. For example, `src/foo.js` exists and `src/bar.js` contains:
+Mungkin Anda mengimpor sebuah berkas dengan huruf kapital yang berbeda. Misalnya, `src/foo.js` ada dan `src/bar.js` berisi:
 
 ```js
-import './Foo.js' // should be './foo.js'
+import './Foo.js' // seharusnya './foo.js'
 ```
 
-Related issue: [#964](https://github.com/vitejs/vite/issues/964)
+Issue terkait: [#964](https://github.com/vitejs/vite/issues/964)
 
-### Vite does not detect a file change
+### Vite Tidak Mendeteksi Perubahan Berkas
 
-If you are running Vite with WSL2, Vite cannot watch file changes in some conditions. See [`server.watch` option](/config/server-options.md#server-watch).
+Jika Anda menjalankan Vite dengan WSL2, Vite tidak dapat memantau perubahan berkas dalam beberapa kondisi. Lihat opsi [`server.watch`](/config/server-options.md#server-watch).
 
-### A full reload happens instead of HMR
+### Terjadi Pemuatan Ulang Penuh Alih-alih HMR
 
-If HMR is not handled by Vite or a plugin, a full reload will happen as it's the only way to refresh the state.
+Jika HMR tidak ditangani oleh Vite atau plugin, pemuatan ulang penuh akan terjadi karena itu adalah satu-satunya cara untuk menyegarkan status.
 
-If HMR is handled but it is within a circular dependency, a full reload will also happen to recover the execution order. To solve this, try breaking the loop. You can run `vite --debug hmr` to log the circular dependency path if a file change triggered it.
+Jika HMR ditangani tetapi berada dalam dependensi sirkular, pemuatan ulang penuh juga akan terjadi untuk memulihkan urutan eksekusi. Untuk memecahkan masalah ini, coba pecahkan loop. Anda dapat menjalankan `vite --debug hmr` untuk mencatat jalur dependensi sirkular jika perubahan berkas memicunya.
 
 ## Build
 
-### Built file does not work because of CORS error
+### Berkas yang Dibangun Tidak Berfungsi karena Kesalahan CORS
 
-If the HTML file output was opened with `file` protocol, the scripts won't run with the following error.
+Jika keluaran berkas HTML dibuka dengan protokol `file`, skrip tidak akan berjalan dengan kesalahan berikut.
 
 > Access to script at 'file:///foo/bar.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome, https, chrome-untrusted.
 
 > Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///foo/bar.js. (Reason: CORS request not http).
 
-See [Reason: CORS request not HTTP - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) for more information about why this happens.
+Lihat [Reason: CORS request not HTTP - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp) untuk informasi lebih lanjut mengenai mengapa ini terjadi.
 
-You will need to access the file with `http` protocol. The easiest way to achieve this is to run `npx vite preview`.
+Anda perlu mengakses berkas dengan protokol `http`. Cara termudah untuk mencapainya adalah dengan menjalankan `npx vite preview`.
 
-## Optimized Dependencies
+## Dependensi yang Dioptimalkan
 
-### Outdated pre-bundled deps when linking to a local package
+### Dependensi pra-bundel usang saat menghubungkan ke paket lokal
 
-The hash key used to invalidate optimized dependencies depend on the package lock contents, the patches applied to dependencies, and the options in the Vite config file that affects the bundling of node modules. This means that Vite will detect when a dependency is overridden using a feature as [npm overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides), and re-bundle your dependencies on the next server start. Vite won't invalidate the dependencies when you use a feature like [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link). In case you link or unlink a dependency, you'll need to force re-optimization on the next server start by using `vite --force`. We recommend using overrides instead, which are supported now by every package manager (see also [pnpm overrides](https://pnpm.io/package_json#pnpmoverrides) and [yarn resolutions](https://yarnpkg.com/configuration/manifest/#resolutions)).
+Kunci hash yang digunakan untuk membatalkan dependensi yang dioptimalkan tergantung pada konten kunci paket, patch yang diterapkan pada dependensi, dan opsi dalam file konfigurasi Vite yang memengaruhi pengikatan modul node. Ini berarti bahwa Vite akan mendeteksi ketika sebuah dependensi digantikan menggunakan fitur seperti [npm overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides), dan akan mem-bundle kembali dependensi Anda pada mulai server berikutnya. Vite tidak akan membatalkan dependensi saat Anda menggunakan fitur seperti [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link). Jika Anda menghubungkan atau memutuskan hubungan dengan sebuah dependensi, Anda perlu memaksa re-optimisasi pada mulai server berikutnya dengan menggunakan `vite --force`. Kami sarankan untuk menggunakan overrides, yang sekarang didukung oleh setiap manajer paket (lihat juga [npm overrides](https://pnpm.io/package_json#pnpmoverrides) dan [yarn resolutions](https://yarnpkg.com/configuration/manifest/#resolutions)).
 
-## Performance bottlenecks
+## Engkel Lebih Lambat
 
-If you suffer any application performance bottlenecks resulting in slow load times, you can start the built-in Node.js inspector with your Vite dev server or when building your application to create the CPU profile:
+Jika Anda mengalami bottleneck kinerja aplikasi yang mengakibatkan waktu muat yang lambat, Anda dapat memulai inspektor Node.js bawaan dengan server pengembangan Vite atau saat membangun aplikasi Anda untuk membuat profil CPU:
 
 ::: code-group
 
-```bash [dev server]
+```bash [server pengembangan]
 vite --profile --open
 ```
 
-```bash [build]
+```bash [membangun]
 vite build --profile
 ```
 
 :::
 
-::: tip Vite Dev Server
-Once your application is opened in the browser, just await finish loading it and then go back to the terminal and press `p` key (will stop the Node.js inspector) then press `q` key to stop the dev server.
+::: tip Server Pengembangan Vite
+Setelah aplikasi Anda dibuka di browser, tunggu hingga selesai memuatnya, kemudian kembali ke terminal dan tekan tombol `p` (akan menghentikan inspektur Node.js) lalu tekan tombol `q` untuk menghentikan server pengembangan.
 :::
 
-Node.js inspector will generate `vite-profile-0.cpuprofile` in the root folder, go to https://www.speedscope.app/, and upload the CPU profile using the `BROWSE` button to inspect the result.
+Inspektur Node.js akan menghasilkan `vite-profile-0.cpuprofile` di folder root, buka https://www.speedscope.app/, dan unggah profil CPU menggunakan tombol `BROWSE` untuk memeriksa hasilnya.
 
-You can install [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect), which lets you inspect the intermediate state of Vite plugins and can also help you to identify which plugins or middlewares are the bottleneck in your applications. The plugin can be used in both dev and build modes. Check the readme file for more details.
+Anda dapat menginstal [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect), yang memungkinkan Anda memeriksa status intermediat dari plugin Vite dan juga dapat membantu Anda mengidentifikasi plugin atau middlewares mana yang menjadi bottleneck dalam aplikasi Anda. Plugin ini dapat digunakan dalam mode pengembangan dan pembangunan. Periksa file readme untuk informasi lebih lanjut.
 
-## Others
+## Lainnya
 
-### Module externalized for browser compatibility
+### Modul Di-eksternalisasi untuk Kompatibilitas Browser
 
-When you use a Node.js module in the browser, Vite will output the following warning.
+Ketika Anda menggunakan modul Node.js di browser, Vite akan menghasilkan peringatan berikut.
 
-> Module "fs" has been externalized for browser compatibility. Cannot access "fs.readFile" in client code.
+> Modul "fs" telah di-eksternalisasi untuk kompatibilitas browser. Tidak dapat mengakses "fs.readFile" dalam kode klien.
 
-This is because Vite does not automatically polyfill Node.js modules.
+Hal ini karena Vite tidak secara otomatis mempolyfill modul Node.js.
 
-We recommend avoiding Node.js modules for browser code to reduce the bundle size, although you can add polyfills manually. If the module is imported from a third-party library (that's meant to be used in the browser), it's advised to report the issue to the respective library.
+Kami menyarankan untuk menghindari modul Node.js untuk kode browser untuk mengurangi ukuran bundel, meskipun Anda dapat menambahkan polyfill secara manual. Jika modul diimpor dari pustaka pihak ketiga (yang dimaksudkan untuk digunakan di browser), disarankan untuk melaporkan masalah ini ke pustaka yang bersangkutan.
 
-### Syntax Error / Type Error happens
+### Terjadi Kesalahan Syntax / Tipe
 
-Vite cannot handle and does not support code that only runs on non-strict mode (sloppy mode). This is because Vite uses ESM and it is always [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) inside ESM.
+Vite tidak dapat menangani dan tidak mendukung kode yang hanya berjalan pada mode non-strict (mode longgar). Hal ini karena Vite menggunakan ESM dan selalu [mode ketat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) di dalam ESM.
 
-For example, you might see these errors.
+Sebagai contoh, Anda mungkin melihat kesalahan berikut.
 
-> [ERROR] With statements cannot be used with the "esm" output format due to strict mode
+> [ERROR] Pernyataan With tidak dapat digunakan dengan format keluaran "esm" karena mode ketat
 
-> TypeError: Cannot create property 'foo' on boolean 'false'
+> TypeError: Tidak dapat membuat properti 'foo' pada boolean 'false'
 
-If these code are used inside dependencies, you could use [`patch-package`](https://github.com/ds300/patch-package) (or [`yarn patch`](https://yarnpkg.com/cli/patch) or [`pnpm patch`](https://pnpm.io/cli/patch)) for an escape hatch.
+Jika kode ini digunakan di dalam dependensi, Anda bisa menggunakan [`patch-package`](https://github.com/ds300/patch-package) (atau [`yarn patch`](https://yarnpkg.com/cli/patch) atau [`pnpm patch`](https://pnpm.io/cli/patch)) sebagai sarana penghindaran.
 
-### Browser extensions
+### Ekstensi Browser
 
-Some browser extensions (like ad-blockers) may prevent the Vite client from sending requests to the Vite dev server. You may see a white screen without logged errors in this case. Try disabling extensions if you have this issue.
+Beberapa ekstensi browser (seperti pemblokir iklan) mungkin mencegah klien Vite mengirim permintaan ke server pengembangan Vite. Anda mungkin melihat layar putih tanpa kesalahan yang tercatat dalam kasus ini. Cobalah menonaktifkan ekstensi jika Anda mengalami masalah ini.
 
-### Cross drive links on Windows
+### Tautan silang drive di Windows
 
-If there's a cross drive links in your project on Windows, Vite may not work.
+Jika ada tautan silang drive dalam proyek Anda di Windows, Vite mungkin tidak akan berfungsi.
 
-An example of cross drive links are:
+Contoh tautan silang drive adalah:
 
-- a virtual drive linked to a folder by `subst` command
-- a symlink/junction to a different drive by `mklink` command (e.g. Yarn global cache)
+- sebuah drive virtual yang dihubungkan ke folder dengan perintah `subst`
+- sebuah symlink/junction ke drive yang berbeda dengan perintah `mklink` (mis., Cache global Yarn)
 
-Related issue: [#10802](https://github.com/vitejs/vite/issues/10802)
+Issue terkait: [#10802](https://github.com/vitejs/vite/issues/10802)

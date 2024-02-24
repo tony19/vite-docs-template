@@ -1,16 +1,16 @@
-# JavaScript API
+# API JavaScript
 
-Vite's JavaScript APIs are fully typed, and it's recommended to use TypeScript or enable JS type checking in VS Code to leverage the intellisense and validation.
+API JavaScript Vite sepenuhnya berjenis data, dan disarankan untuk menggunakan TypeScript atau mengaktifkan pengecekan tipe JS di VS Code untuk memaksimalkan intellisense dan validasi.
 
 ## `createServer`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function createServer(inlineConfig?: InlineConfig): Promise<ViteDevServer>
 ```
 
-**Example Usage:**
+**Contoh Penggunaan:**
 
 ```js
 import { fileURLToPath } from 'url'
@@ -20,7 +20,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 ;(async () => {
   const server = await createServer({
-    // any valid user config options, plus `mode` and `configFile`
+    // opsi konfigurasi pengguna yang valid, ditambah `mode` dan `configFile`
     configFile: false,
     root: __dirname,
     server: {
@@ -34,34 +34,34 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 })()
 ```
 
-::: tip NOTE
-When using `createServer` and `build` in the same Node.js process, both functions rely on `process.env.NODE_ENV` to work properly, which also depends on the `mode` config option. To prevent conflicting behavior, set `process.env.NODE_ENV` or the `mode` of the two APIs to `development`. Otherwise, you can spawn a child process to run the APIs separately.
+::: tip CATATAN
+Saat menggunakan `createServer` dan `build` dalam proses Node.js yang sama, kedua fungsi mengandalkan `process.env.NODE_ENV` untuk bekerja dengan benar, yang juga tergantung pada opsi konfigurasi `mode`. Untuk mencegah perilaku yang bertentangan, atur `process.env.NODE_ENV` atau `mode` dari kedua API ke `development`. Jika tidak, Anda dapat menjalankan proses anak untuk menjalankan API secara terpisah.
 :::
 
-::: tip NOTE
-When using [middleware mode](/config/server-options.html#server-middlewaremode) combined with [proxy config for WebSocket](/config/server-options.html#server-proxy), the parent http server should be provided in `middlewareMode` to bind the proxy correctly.
+::: tip CATATAN
+Saat menggunakan [mode middleware](/config/server-options.html#server-middlewaremode) yang digabungkan dengan [konfigurasi proxy untuk WebSocket](/config/server-options.html#server-proxy), server http induk harus disediakan di `middlewareMode` untuk mengikat proxy dengan benar.
 
 <details>
-<summary>Example</summary>
+<summary>Contoh</summary>
 
 ```ts
 import http from 'http'
 import { createServer } from 'vite'
 
-const parentServer = http.createServer() // or express, koa, etc.
+const parentServer = http.createServer() // atau express, koa, dll.
 
 const vite = await createServer({
   server: {
-    // Enable middleware mode
+    // Aktifkan mode middleware
     middlewareMode: {
-      // Provide the parent http server for proxy WebSocket
+      // Sediakan server http induk untuk proxy WebSocket
       server: parentServer,
     },
   },
   proxy: {
     '/ws': {
       target: 'ws://localhost:3000',
-      // Proxying WebSocket
+      // Meneruskan WebSocket
       ws: true,
     },
   },
@@ -75,112 +75,108 @@ parentServer.use(vite.middlewares)
 
 ## `InlineConfig`
 
-The `InlineConfig` interface extends `UserConfig` with additional properties:
+Interface `InlineConfig` memperluas `UserConfig` dengan properti tambahan:
 
-- `configFile`: specify config file to use. If not set, Vite will try to automatically resolve one from project root. Set to `false` to disable auto resolving.
-- `envFile`: Set to `false` to disable `.env` files.
+- `configFile`: tentukan file konfigurasi yang akan digunakan. Jika tidak diatur, Vite akan mencoba secara otomatis menyelesaikannya dari root proyek. Atur ke `false` untuk menonaktifkan penyelesaian otomatis.
+- `envFile`: Atur ke `false` untuk menonaktifkan file `.env`.
 
 ## `ResolvedConfig`
 
-The `ResolvedConfig` interface has all the same properties of a `UserConfig`, except most properties are resolved and non-undefined. It also contains utilities like:
+Interface `ResolvedConfig` memiliki semua properti yang sama dengan `UserConfig`, kecuali sebagian besar propertinya sudah diselesaikan dan tidak `undefined`. Ini juga berisi utilitas seperti:
 
-- `config.assetsInclude`: A function to check if an `id` is considered an asset.
-- `config.logger`: Vite's internal logger object.
+- `config.assetsInclude`: Sebuah fungsi untuk memeriksa apakah suatu `id` dianggap sebagai aset.
+- `config.logger`: Objek logger internal Vite.
 
 ## `ViteDevServer`
 
 ```ts
 interface ViteDevServer {
   /**
-   * The resolved Vite config object.
+   * Objek konfigurasi Vite yang sudah diselesaikan.
    */
   config: ResolvedConfig
   /**
-   * A connect app instance
-   * - Can be used to attach custom middlewares to the dev server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks.
+   * Instance aplikasi Connect
+   * - Dapat digunakan untuk menambahkan middleware kustom ke server pengembangan.
+   * - Juga dapat digunakan sebagai fungsi handler dari server http kustom
+   *   atau sebagai middleware dalam kerangka kerja Node.js gaya Connect mana pun.
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * Native Node http server instance.
-   * Will be null in middleware mode.
+   * Instance server http Node asli.
+   * Akan null dalam mode middleware.
    */
   httpServer: http.Server | null
   /**
-   * Chokidar watcher instance. If `config.server.watch` is set to `null`,
-   * returns a noop event emitter.
+   * Instance peninjau Chokidar. Jika `config.server.watch` diatur ke `null`,
+   * mengembalikan event emitter noop.
    * https://github.com/paulmillr/chokidar#api
    */
   watcher: FSWatcher
   /**
-   * Web socket server with `send(payload)` method.
+   * Server web socket dengan metode `send(payload)`.
    */
   ws: WebSocketServer
   /**
-   * Rollup plugin container that can run plugin hooks on a given file.
+   * Wadah plugin Rollup yang dapat menjalankan hook plugin pada file tertentu.
    */
   pluginContainer: PluginContainer
   /**
-   * Module graph that tracks the import relationships, url to file mapping
-   * and hmr state.
+   * Grafik modul yang melacak hubungan impor, pemetaan url ke file
+   * dan status hmr.
    */
   moduleGraph: ModuleGraph
   /**
-   * The resolved urls Vite prints on the CLI. null in middleware mode or
-   * before `server.listen` is called.
+   * URL yang sudah diselesaikan yang dicetak Vite di CLI. null dalam mode middleware atau
+   * sebelum `server.listen` dipanggil.
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Programmatically resolve, load and transform a URL and get the result
-   * without going through the http request pipeline.
+   * Menyelesaikan, memuat, dan mengubah URL secara terprogram, dan dapatkan hasilnya
+   * tanpa melewati pipeline permintaan http.
    */
   transformRequest(
     url: string,
     options?: TransformOptions,
   ): Promise<TransformResult | null>
   /**
-   * Apply Vite built-in HTML transforms and any plugin HTML transforms.
+   * Terapkan transformasi HTML bawaan Vite dan transformasi HTML plugin apa pun.
    */
-  transformIndexHtml(
-    url: string,
-    html: string,
-    originalUrl?: string,
-  ): Promise<string>
+  transformIndexHtml(url: string, html: string): Promise<string>
   /**
-   * Load a given URL as an instantiated module for SSR.
+   * Memuat URL tertentu sebagai modul yang diinstansiasi untuk SSR.
    */
   ssrLoadModule(
     url: string,
     options?: { fixStacktrace?: boolean },
   ): Promise<Record<string, any>>
   /**
-   * Fix ssr error stacktrace.
+   * Perbaiki tumpukan kesalahan ssr.
    */
   ssrFixStacktrace(e: Error): void
   /**
-   * Triggers HMR for a module in the module graph. You can use the `server.moduleGraph`
-   * API to retrieve the module to be reloaded. If `hmr` is false, this is a no-op.
+   * Pemicu HMR untuk modul dalam grafik modul. Anda dapat menggunakan `server.moduleGraph`
+   * API untuk mengambil modul yang akan dimuat ulang. Jika `hmr` adalah false, ini adalah operasi tanpa efek.
    */
   reloadModule(module: ModuleNode): Promise<void>
   /**
-   * Start the server.
+   * Mulai server.
    */
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
   /**
-   * Restart the server.
+   * Mulai ulang server.
    *
-   * @param forceOptimize - force the optimizer to re-bundle, same as --force cli flag
+   * @param forceOptimize - memaksa pengoptimal untuk membuat bundle ulang, sama seperti flag CLI --force
    */
   restart(forceOptimize?: boolean): Promise<void>
   /**
-   * Stop the server.
+   * Hentikan server.
    */
   close(): Promise<void>
   /**
-   * Bind CLI shortcuts
+   * Ikat pintasan CLI
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<ViteDevServer>): void
 }
@@ -188,7 +184,7 @@ interface ViteDevServer {
 
 ## `build`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function build(
@@ -196,7 +192,7 @@ async function build(
 ): Promise<RollupOutput | RollupOutput[]>
 ```
 
-**Example Usage:**
+**Contoh Penggunaan:**
 
 ```js
 import path from 'path'
@@ -220,19 +216,19 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 ## `preview`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function preview(inlineConfig?: InlineConfig): Promise<PreviewServer>
 ```
 
-**Example Usage:**
+**Contoh Penggunaan:**
 
 ```js
 import { preview } from 'vite'
 ;(async () => {
   const previewServer = await preview({
-    // any valid user config options, plus `mode` and `configFile`
+    // semua opsi konfigurasi pengguna yang valid, ditambah `mode` dan `configFile`
     preview: {
       port: 8080,
       open: true,
@@ -249,33 +245,33 @@ import { preview } from 'vite'
 ```ts
 interface PreviewServer {
   /**
-   * The resolved vite config object
+   * Objek konfigurasi vite yang sudah diselesaikan
    */
   config: ResolvedConfig
   /**
-   * A connect app instance.
-   * - Can be used to attach custom middlewares to the preview server.
-   * - Can also be used as the handler function of a custom http server
-   *   or as a middleware in any connect-style Node.js frameworks
+   * Instance aplikasi Connect.
+   * - Dapat digunakan untuk menambahkan middleware kustom ke server pratinjau.
+   * - Juga dapat digunakan sebagai fungsi penangan dari server http kustom
+   *   atau sebagai middleware dalam kerangka kerja Node.js gaya Connect apa pun
    *
    * https://github.com/senchalabs/connect#use-middleware
    */
   middlewares: Connect.Server
   /**
-   * native Node http server instance
+   * instance server http Node asli
    */
   httpServer: http.Server
   /**
-   * The resolved urls Vite prints on the CLI.
-   * null before server is listening.
+   * URL yang sudah diselesaikan yang dicetak Vite di CLI.
+   * null sebelum server mendengarkan.
    */
   resolvedUrls: ResolvedServerUrls | null
   /**
-   * Print server urls
+   * Cetak URL server
    */
   printUrls(): void
   /**
-   * Bind CLI shortcuts
+   * Ikat pintasan CLI
    */
   bindCLIShortcuts(options?: BindCLIShortcutsOptions<PreviewServer>): void
 }
@@ -283,7 +279,7 @@ interface PreviewServer {
 
 ## `resolveConfig`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function resolveConfig(
@@ -295,11 +291,11 @@ async function resolveConfig(
 ): Promise<ResolvedConfig>
 ```
 
-The `command` value is `serve` in dev and preview, and `build` in build.
+Nilai `command` adalah `serve` dalam pengembangan dan pratinjau, dan `build` dalam pembangunan.
 
 ## `mergeConfig`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 function mergeConfig(
@@ -309,12 +305,12 @@ function mergeConfig(
 ): Record<string, any>
 ```
 
-Deeply merge two Vite configs. `isRoot` represents the level within the Vite config which is being merged. For example, set `false` if you're merging two `build` options.
+Gabungkan secara mendalam dua konfigurasi Vite. `isRoot` mewakili tingkat dalam konfigurasi Vite yang sedang digabungkan. Misalnya, atur `false` jika Anda menggabungkan dua opsi `build`.
 
-::: tip NOTE
-`mergeConfig` accepts only config in object form. If you have a config in callback form, you should call it before passing into `mergeConfig`.
+::: tip CATATAN
+`mergeConfig` hanya menerima konfigurasi dalam bentuk objek. Jika Anda memiliki konfigurasi dalam bentuk panggilan kembali, Anda harus memanggilnya sebelum melewatkan ke `mergeConfig`.
 
-You can use the `defineConfig` helper to merge a config in callback form with another config:
+Anda dapat menggunakan helper `defineConfig` untuk menggabungkan konfigurasi dalam bentuk panggilan kembali dengan konfigurasi lain:
 
 ```ts
 export default defineConfig((configEnv) =>
@@ -326,7 +322,7 @@ export default defineConfig((configEnv) =>
 
 ## `searchForWorkspaceRoot`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 function searchForWorkspaceRoot(
@@ -335,18 +331,18 @@ function searchForWorkspaceRoot(
 ): string
 ```
 
-**Related:** [server.fs.allow](/config/server-options.md#server-fs-allow)
+**Terkait:** [server.fs.allow](/config/server-options.md#server-fs-allow)
 
-Search for the root of the potential workspace if it meets the following conditions, otherwise it would fallback to `root`:
+Cari root dari workspace yang potensial jika memenuhi syarat berikut, jika tidak, akan kembali ke `root`:
 
-- contains `workspaces` field in `package.json`
-- contains one of the following file
+- berisi bidang `workspaces` di `package.json`
+- berisi salah satu dari file berikut
   - `lerna.json`
   - `pnpm-workspace.yaml`
 
 ## `loadEnv`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 function loadEnv(
@@ -356,25 +352,25 @@ function loadEnv(
 ): Record<string, string>
 ```
 
-**Related:** [`.env` Files](./env-and-mode.md#env-files)
+**Terkait:** [`.env` Files](./env-and-mode.md#env-files)
 
-Load `.env` files within the `envDir`. By default, only env variables prefixed with `VITE_` are loaded, unless `prefixes` is changed.
+Muat file `.env` dalam `envDir`. Secara default, hanya variabel lingkungan yang diawali dengan `VITE_` yang dimuat, kecuali `prefixes` diubah.
 
 ## `normalizePath`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 function normalizePath(id: string): string
 ```
 
-**Related:** [Path Normalization](./api-plugin.md#path-normalization)
+**Terkait:** [Normalisasi Path](./api-plugin.md#path-normalization)
 
-Normalizes a path to interoperate between Vite plugins.
+Normalisasi path untuk berinteraksi antara plugin Vite.
 
 ## `transformWithEsbuild`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function transformWithEsbuild(
@@ -385,11 +381,11 @@ async function transformWithEsbuild(
 ): Promise<ESBuildTransformResult>
 ```
 
-Transform JavaScript or TypeScript with esbuild. Useful for plugins that prefer matching Vite's internal esbuild transform.
+Mentransformasi JavaScript atau TypeScript dengan esbuild. Berguna untuk plugin yang lebih memilih transformasi esbuild internal Vite.
 
 ## `loadConfigFromFile`
 
-**Type Signature:**
+**Tanda Tangan Tipe:**
 
 ```ts
 async function loadConfigFromFile(
@@ -397,7 +393,6 @@ async function loadConfigFromFile(
   configFile?: string,
   configRoot: string = process.cwd(),
   logLevel?: LogLevel,
-  customLogger?: Logger,
 ): Promise<{
   path: string
   config: UserConfig
@@ -405,4 +400,4 @@ async function loadConfigFromFile(
 } | null>
 ```
 
-Load a Vite config file manually with esbuild.
+Muat file konfigurasi Vite secara manual dengan esbuild.

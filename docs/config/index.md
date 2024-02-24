@@ -1,31 +1,31 @@
 ---
-title: Configuring Vite
+title: Mengkonfigurasi Vite
 ---
 
-# Configuring Vite
+# Mengkonfigurasi Vite
 
-When running `vite` from the command line, Vite will automatically try to resolve a config file named `vite.config.js` inside [project root](/guide/#index-html-and-project-root) (other JS and TS extensions are also supported).
+Ketika menjalankan `vite` dari baris perintah, Vite secara otomatis akan mencoba untuk memecahkan file konfigurasi yang bernama `vite.config.js` di dalam [root proyek](/guide/#index-html-and-project-root) (ekstensi JS dan TS lainnya juga didukung).
 
-The most basic config file looks like this:
+File konfigurasi paling dasar terlihat seperti ini:
 
 ```js
 // vite.config.js
 export default {
-  // config options
+  // opsi konfigurasi
 }
 ```
 
-Note Vite supports using ES modules syntax in the config file even if the project is not using native Node ESM, e.g. `type: "module"` in `package.json`. In this case, the config file is auto pre-processed before load.
+Perhatikan bahwa Vite mendukung penggunaan sintaksis modul ES dalam file konfigurasi bahkan jika proyek tidak menggunakan ESM asli Node, misalnya `type: "module"` di `package.json`. Dalam kasus ini, file konfigurasi diproses sebelum dimuat.
 
-You can also explicitly specify a config file to use with the `--config` CLI option (resolved relative to `cwd`):
+Anda juga dapat secara eksplisit menentukan file konfigurasi yang akan digunakan dengan opsi CLI `--config` (dipecahkan relatif terhadap `cwd`):
 
 ```bash
 vite --config my-config.js
 ```
 
-## Config Intellisense
+## Intellisense Konfigurasi
 
-Since Vite ships with TypeScript typings, you can leverage your IDE's intellisense with jsdoc type hints:
+Karena Vite dilengkapi dengan typings TypeScript, Anda dapat memanfaatkan intellisense IDE Anda dengan petunjuk tipe jsdoc:
 
 ```js
 /** @type {import('vite').UserConfig} */
@@ -34,7 +34,7 @@ export default {
 }
 ```
 
-Alternatively, you can use the `defineConfig` helper which should provide intellisense without the need for jsdoc annotations:
+Sebagai alternatif, Anda dapat menggunakan helper `defineConfig` yang seharusnya memberikan intellisense tanpa perlu menggunakan anotasi jsdoc:
 
 ```js
 import { defineConfig } from 'vite'
@@ -44,62 +44,62 @@ export default defineConfig({
 })
 ```
 
-Vite also directly supports TS config files. You can use `vite.config.ts` with the `defineConfig` helper as well.
+Vite juga mendukung langsung file konfigurasi TS. Anda dapat menggunakan `vite.config.ts` dengan helper `defineConfig` juga.
 
-## Conditional Config
+## Konfigurasi Kondisional
 
-If the config needs to conditionally determine options based on the command (`serve` or `build`), the [mode](/guide/env-and-mode) being used, if it's an SSR build (`isSsrBuild`), or is previewing the build (`isPreview`), it can export a function instead:
+Jika konfigurasi perlu secara kondisional menentukan opsi berdasarkan perintah (`serve` atau `build`), [mode](/guide/env-and-mode) yang digunakan, apakah itu pembuatan SSR (`isSsrBuild`), atau sedang melakukan pratinjau pembuatan (`isPreview`), maka bisa mengekspor sebuah fungsi sebagai gantinya:
 
 ```js
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   if (command === 'serve') {
     return {
-      // dev specific config
-    }
+      // konfigurasi khusus dev
+    };
   } else {
     // command === 'build'
     return {
-      // build specific config
-    }
+      // konfigurasi khusus build
+    };
   }
-})
+});
 ```
 
-It is important to note that in Vite's API the `command` value is `serve` during dev (in the cli `vite`, `vite dev`, and `vite serve` are aliases), and `build` when building for production (`vite build`).
+Penting untuk dicatat bahwa dalam API Vite, nilai `command` adalah `serve` saat pengembangan (dalam cli `vite`, `vite dev`, dan `vite serve` adalah alias), dan `build` saat membangun untuk produksi (`vite build`).
 
-`isSsrBuild` and `isPreview` are additional optional flags to differentiate the kind of `build` and `serve` commands respectively. Some tools that load the Vite config may not support these flags and will pass `undefined` instead. Hence, it's recommended to use explicit comparison against `true` and `false`.
+`isSsrBuild` dan `isPreview` adalah bendera opsional tambahan untuk membedakan jenis perintah `build` dan `serve` masing-masing. Beberapa alat yang memuat konfigurasi Vite mungkin tidak mendukung bendera ini dan akan melewatkan `undefined` sebagai gantinya. Oleh karena itu, disarankan untuk menggunakan perbandingan eksplisit terhadap `true` dan `false`.
 
-## Async Config
+## Konfigurasi Async
 
-If the config needs to call async functions, it can export an async function instead. And this async function can also be passed through `defineConfig` for improved intellisense support:
+Jika konfigurasi perlu memanggil fungsi async, maka dapat mengekspor sebuah fungsi async sebagai gantinya. Dan fungsi async ini juga dapat dilewatkan melalui `defineConfig` untuk mendukung intellisense yang lebih baik:
 
 ```js
 export default defineConfig(async ({ command, mode }) => {
-  const data = await asyncFunction()
+  const data = await asyncFunction();
   return {
-    // vite config
-  }
-})
+    // konfigurasi Vite
+  };
+});
 ```
 
-## Using Environment Variables in Config
+## Menggunakan Variabel Lingkungan dalam Konfigurasi
 
-Environmental Variables can be obtained from `process.env` as usual.
+Variabel Lingkungan dapat diperoleh dari `process.env` seperti biasa.
 
-Note that Vite doesn't load `.env` files by default as the files to load can only be determined after evaluating the Vite config, for example, the `root` and `envDir` options affect the loading behaviour. However, you can use the exported `loadEnv` helper to load the specific `.env` file if needed.
+Perhatikan bahwa Vite tidak memuat file `.env` secara default karena file yang akan dimuat hanya dapat ditentukan setelah mengevaluasi konfigurasi Vite, misalnya, opsi `root` dan `envDir` memengaruhi perilaku pemuatan. Namun, Anda dapat menggunakan helper `loadEnv` yang diekspor untuk memuat file `.env` tertentu jika diperlukan.
 
 ```js
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ command, mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '')
+  // Memuat file env berdasarkan `mode` di direktori kerja saat ini.
+  // Atur parameter ketiga ke '' untuk memuat semua env tanpa memperhatikan awalan `VITE_`.
+  const env = loadEnv(mode, process.cwd(), '');
   return {
-    // vite config
+    // konfigurasi Vite
     define: {
       __APP_ENV__: JSON.stringify(env.APP_ENV),
     },
-  }
-})
+  };
+});
 ```

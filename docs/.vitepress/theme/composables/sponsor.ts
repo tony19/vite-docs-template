@@ -49,16 +49,6 @@ const viteSponsors: Pick<Sponsors, 'special' | 'gold'> = {
       url: 'https://remix.run/',
       img: '/remix.svg',
     },
-    {
-      name: 'Nx',
-      url: 'https://nx.dev/',
-      img: '/nx.svg',
-    },
-    {
-      name: 'Transloadit',
-      url: 'https://transloadit.com/?utm_source=vite&utm_medium=referral&utm_campaign=sponsorship&utm_content=website',
-      img: '/transloadit.svg',
-    },
   ],
 }
 
@@ -82,19 +72,19 @@ export function useSponsor() {
 function mapSponsors(sponsors: Sponsors) {
   return [
     {
-      tier: 'Special Sponsors',
+      tier: 'Sponsor Khusus',
       size: 'big',
       items: viteSponsors['special'],
     },
     {
-      tier: 'Platinum Sponsors',
+      tier: 'Sponsor Platinum',
       size: 'big',
       items: mapImgPath(sponsors['platinum']),
     },
     {
-      tier: 'Gold Sponsors',
+      tier: 'Sponsor Emas',
       size: 'medium',
-      items: [...mapImgPath(sponsors['gold']), ...viteSponsors['gold']],
+      items: viteSponsors['gold'].concat(mapImgPath(sponsors['gold'])),
     },
   ]
 }

@@ -1,30 +1,30 @@
-# Preview Options
+# Opsi Pratinjau
 
 ## preview.host
 
-- **Type:** `string | boolean`
+- **Tipe:** `string | boolean`
 - **Default:** [`server.host`](./server-options#server-host)
 
-Specify which IP addresses the server should listen on.
-Set this to `0.0.0.0` or `true` to listen on all addresses, including LAN and public addresses.
+Tentukan alamat IP mana yang harus didengarkan oleh server.
+Atur ini menjadi `0.0.0.0` atau `true` untuk mendengarkan semua alamat, termasuk alamat LAN dan publik.
 
-This can be set via the CLI using `--host 0.0.0.0` or `--host`.
+Ini dapat diatur melalui CLI menggunakan `--host 0.0.0.0` atau `--host`.
 
-::: tip NOTE
+::: tip CATATAN
 
-There are cases when other servers might respond instead of Vite.
-See [`server.host`](./server-options#server-host) for more details.
+Ada kasus di mana server lain mungkin akan merespons daripada Vite.
+Lihat [`server.host`](./server-options#server-host) untuk lebih jelasnya.
 
 :::
 
 ## preview.port
 
-- **Type:** `number`
+- **Tipe:** `number`
 - **Default:** `4173`
 
-Specify server port. Note if the port is already being used, Vite will automatically try the next available port so this may not be the actual port the server ends up listening on.
+Tentukan port server. Perhatikan jika port sudah digunakan, Vite secara otomatis akan mencoba port berikutnya yang tersedia sehingga ini mungkin bukan port aktual tempat server berakhir mendengarkan.
 
-**Example:**
+**Contoh:**
 
 ```js
 export default defineConfig({
@@ -39,47 +39,47 @@ export default defineConfig({
 
 ## preview.strictPort
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** [`server.strictPort`](./server-options#server-strictport)
 
-Set to `true` to exit if port is already in use, instead of automatically trying the next available port.
+Setel ke `true` untuk keluar jika port sudah digunakan, daripada secara otomatis mencoba port berikutnya yang tersedia.
 
 ## preview.https
 
-- **Type:** `boolean | https.ServerOptions`
+- **Tipe:** `boolean | https.ServerOptions`
 - **Default:** [`server.https`](./server-options#server-https)
 
-Enable TLS + HTTP/2. Note this downgrades to TLS only when the [`server.proxy` option](./server-options#server-proxy) is also used.
+Aktifkan TLS + HTTP/2. Perhatikan ini downgrade menjadi hanya TLS ketika opsi [`server.proxy`](./server-options#server-proxy) juga digunakan.
 
-The value can also be an [options object](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) passed to `https.createServer()`.
+Nilainya juga bisa berupa objek opsi yang dilewatkan ke `https.createServer()`.
 
 ## preview.open
 
-- **Type:** `boolean | string`
+- **Tipe:** `boolean | string`
 - **Default:** [`server.open`](./server-options#server-open)
 
-Automatically open the app in the browser on server start. When the value is a string, it will be used as the URL's pathname. If you want to open the server in a specific browser you like, you can set the env `process.env.BROWSER` (e.g. `firefox`). You can also set `process.env.BROWSER_ARGS` to pass additional arguments (e.g. `--incognito`).
+Secara otomatis membuka aplikasi di browser saat server mulai. Ketika nilainya adalah sebuah string, itu akan digunakan sebagai pathname URL. Jika Anda ingin membuka server di browser tertentu yang Anda sukai, Anda dapat mengatur env `process.env.BROWSER` (misalnya `firefox`). Anda juga dapat mengatur `process.env.BROWSER_ARGS` untuk meneruskan argumen tambahan (misalnya `--incognito`).
 
-`BROWSER` and `BROWSER_ARGS` are also special environment variables you can set in the `.env` file to configure it. See [the `open` package](https://github.com/sindresorhus/open#app) for more details.
+`BROWSER` dan `BROWSER_ARGS` juga merupakan variabel lingkungan khusus yang dapat Anda atur di file `.env` untuk mengkonfigurasinya. Lihat [pakaiannya `open`](https://github.com/sindresorhus/open#app) untuk detail lebih lanjut.
 
 ## preview.proxy
 
-- **Type:** `Record<string, string | ProxyOptions>`
+- **Tipe:** `Record<string, string | ProxyOptions>`
 - **Default:** [`server.proxy`](./server-options#server-proxy)
 
-Configure custom proxy rules for the preview server. Expects an object of `{ key: options }` pairs. If the key starts with `^`, it will be interpreted as a `RegExp`. The `configure` option can be used to access the proxy instance.
+Konfigurasikan aturan proxy kustom untuk server pratinjau. Mengharapkan objek dari pasangan `{ key: options }`. Jika kunci dimulai dengan `^`, itu akan diinterpretasikan sebagai `RegExp`. Opsi `configure` dapat digunakan untuk mengakses instance proxy.
 
-Uses [`http-proxy`](https://github.com/http-party/node-http-proxy). Full options [here](https://github.com/http-party/node-http-proxy#options).
+Menggunakan [`http-proxy`](https://github.com/http-party/node-http-proxy). Opsi lengkap [di sini](https://github.com/http-party/node-http-proxy#options).
 
 ## preview.cors
 
-- **Type:** `boolean | CorsOptions`
+- **Tipe:** `boolean | CorsOptions`
 - **Default:** [`server.cors`](./server-options#server-cors)
 
-Configure CORS for the preview server. This is enabled by default and allows any origin. Pass an [options object](https://github.com/expressjs/cors#configuration-options) to fine tune the behavior or `false` to disable.
+Konfigurasikan CORS untuk server pratinjau. Ini diaktifkan secara default dan mengizinkan origin apa pun. Berikan sebuah [objek opsi](https://github.com/expressjs/cors#configuration-options) untuk menyesuaikan perilaku atau `false` untuk menonaktifkan.
 
 ## preview.headers
 
-- **Type:** `OutgoingHttpHeaders`
+- **Tipe:** `OutgoingHttpHeaders`
 
-Specify server response headers.
+Tentukan header respons server.

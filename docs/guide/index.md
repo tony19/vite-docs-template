@@ -1,34 +1,34 @@
-# Getting Started
+# Memulai
 
 <audio id="vite-audio">
   <source src="/vite.mp3" type="audio/mpeg">
 </audio>
 
-## Overview
+## Gambaran
 
-Vite (French word for "quick", pronounced `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
+Vite (kata bahasa Prancis yang berarti "cepat", dieja `/vit/`<button style="border:none;padding:3px;border-radius:4px;vertical-align:bottom" id="play-vite-audio" onclick="document.getElementById('vite-audio').play();"><svg style="height:2em;width:2em"><use href="/voice.svg#voice" /></svg></button>, seperti "veet") adalah sebuah alat pembangunan yang bertujuan untuk menyediakan pengalaman pengembangan yang lebih cepat dan ringan untuk proyek web modern. Ini terdiri dari dua bagian utama:
 
-- A dev server that provides [rich feature enhancements](./features) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](./features#hot-module-replacement).
+- Sebuah server pengembangan yang menyediakan [pengaya fitur lengkap](./features) di atas [modul ES asli](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), misalnya penggantian modul panas (Hot Module Replacement/HMR) yang sangat cepat [HMR (Hot Module Replacement)](./features#hot-module-replacement).
 
-- A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production.
+- Sebuah perintah pembangunan yang mengikat kode Anda dengan [Rollup](https://rollupjs.org), yang telah dikonfigurasi sebelumnya untuk menghasilkan aset statis yang sangat dioptimalkan untuk produksi.
 
-Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the [Features Guide](./features). Support for frameworks or integration with other tools is possible through [Plugins](./using-plugins). The [Config Section](../config/) explains how to adapt Vite to your project if needed.
+Vite memiliki opini dan datang dengan default yang masuk akal dari kotak. Baca tentang apa yang mungkin dalam [Panduan Fitur](./features). Dukungan untuk kerangka kerja atau integrasi dengan alat lain memungkinkan melalui [Plugin](./using-plugins). Bagian [Seksi Konfigurasi](../config/) menjelaskan cara menyesuaikan Vite dengan proyek Anda jika diperlukan.
 
-Vite is also highly extensible via its [Plugin API](./api-plugin) and [JavaScript API](./api-javascript) with full typing support.
+Vite juga sangat dapat diperluas melalui [API Plugin](./api-plugin) dan [API JavaScript](./api-javascript) dengan dukungan pengetikan penuh.
 
-You can learn more about the rationale behind the project in the [Why Vite](./why) section.
+Anda dapat mempelajari lebih lanjut tentang alasan di balik proyek ini di bagian [Mengapa Vite](./why).
 
-## Browser Support
+## Dukungan Browser
 
-During development, Vite sets [`esnext` as the transform target](https://esbuild.github.io/api/#target), because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.
+Selama pengembangan, Vite mengatur [`esnext` sebagai target transformasi](https://esbuild.github.io/api/#target), karena kami mengasumsikan bahwa browser modern digunakan dan mendukung semua fitur JavaScript dan CSS terbaru. Hal ini mencegah penurunan sintaks, membiarkan Vite melayani modul sesuai mungkin dengan kode sumber asli.
 
-For the production build, by default Vite targets browsers that support [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta). Legacy browsers can be supported via the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). See the [Building for Production](./build) section for more details.
+Untuk pembangunan produksi, secara default Vite menargetkan browser yang mendukung [Modul ES Asli](https://caniuse.com/es6-module), [impor dinamis ESM asli](https://caniuse.com/es6-module-dynamic-import), dan [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta). Browser warisan dapat didukung melalui plugin resmi [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy). Lihat bagian [Membangun untuk Produksi](./build) untuk lebih banyak detail.
 
-## Trying Vite Online
+## Mencoba Vite secara Online
 
-You can try Vite online on [StackBlitz](https://vite.new/). It runs the Vite-based build setup directly in the browser, so it is almost identical to the local setup but doesn't require installing anything on your machine. You can navigate to `vite.new/{template}` to select which framework to use.
+Anda dapat mencoba Vite secara online di [StackBlitz](https://vite.new/). Ini menjalankan pengaturan pembangunan berbasis Vite langsung di browser, sehingga hampir identik dengan pengaturan lokal tetapi tidak memerlukan instalasi apa pun di mesin Anda. Anda dapat navigasi ke `vite.new/{template}` untuk memilih kerangka kerja apa yang ingin digunakan.
 
-The supported template presets are:
+Preset template yang didukung adalah:
 
 |             JavaScript              |                TypeScript                 |
 | :---------------------------------: | :---------------------------------------: |
@@ -41,10 +41,10 @@ The supported template presets are:
 |   [solid](https://vite.new/solid)   |   [solid-ts](https://vite.new/solid-ts)   |
 |    [qwik](https://vite.new/qwik)    |    [qwik-ts](https://vite.new/qwik-ts)    |
 
-## Scaffolding Your First Vite Project
+## Memulai Proyek Vite Pertama Anda
 
-::: tip Compatibility Note
-Vite requires [Node.js](https://nodejs.org/en/) version 18+. 20+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.
+::: tip Catatan Kompatibilitas
+Vite memerlukan versi [Node.js](https://nodejs.org/en/) 18+. 20+. Namun, beberapa template memerlukan versi Node.js yang lebih tinggi untuk dapat berfungsi, harap tingkatkan versinya jika manajer paket Anda memberikan peringatan tentang hal tersebut.
 :::
 
 ::: code-group
@@ -67,12 +67,12 @@ $ bun create vite
 
 :::
 
-Then follow the prompts!
+Kemudian ikuti petunjuknya!
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:
+Anda juga dapat langsung menentukan nama proyek dan template yang ingin Anda gunakan melalui opsi baris perintah tambahan. Misalnya, untuk memulai proyek Vite + Vue, jalankan:
 
 ```bash
-# npm 7+, extra double-dash is needed:
+# npm 7+, tambahan double-dash diperlukan:
 npm create vite@latest my-vue-app -- --template vue
 
 # yarn
@@ -85,15 +85,15 @@ pnpm create vite my-vue-app --template vue
 bun create vite my-vue-app --template vue
 ```
 
-See [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) for more details on each supported template: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
+Lihat [create-vite](https://github.com/vitejs/vite/tree/main/packages/create-vite) untuk lebih banyak detail tentang setiap template yang didukung: `vanilla`, `vanilla-ts`, `vue`, `vue-ts`, `react`, `react-ts`, `react-swc`, `react-swc-ts`, `preact`, `preact-ts`, `lit`, `lit-ts`, `svelte`, `svelte-ts`, `solid`, `solid-ts`, `qwik`, `qwik-ts`.
 
-## Community Templates
+## Template Komunitas
 
-create-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks.
+create-vite adalah alat untuk dengan cepat memulai proyek dari template dasar untuk kerangka kerja populer. Periksa Awesome Vite untuk [template yang dipelihara komunitas](https://github.com/vitejs/awesome-vite#templates) yang mencakup alat lain atau menargetkan kerangka kerja yang berbeda.
 
-For a template at `https://github.com/user/project`, you can try it out online using `https://github.stackblitz.com/user/project` (adding `.stackblitz` after `github` to the URL of the project).
+Untuk template di `https://github.com/user/project`, Anda dapat mencobanya secara online menggunakan `https://github.stackblitz.com/user/project` (menambahkan `.stackblitz` setelah `github` pada URL proyek).
 
-You can also use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates. Assuming the project is on GitHub and uses `main` as the default branch, you can create a local copy using:
+Anda juga dapat menggunakan alat seperti [degit](https://github.com/Rich-Harris/degit) untuk memulai proyek Anda dengan salah satu template. Mengasumsikan proyek berada di GitHub dan menggunakan `main` sebagai cabang default, Anda dapat membuat salinan lokal menggunakan:
 
 ```bash
 npx degit user/project#main my-project
@@ -103,43 +103,43 @@ npm install
 npm run dev
 ```
 
-## `index.html` and Project Root
+## `index.html` dan Root Proyek
 
-One thing you may have noticed is that in a Vite project, `index.html` is front-and-central instead of being tucked away inside `public`. This is intentional: during development Vite is a server, and `index.html` is the entry point to your application.
+Salah satu hal yang mungkin Anda perhatikan adalah dalam proyek Vite, `index.html` berada di pusat perhatian bukan tersembunyi di dalam `public`. Ini sengaja dilakukan: selama pengembangan Vite adalah server, dan `index.html` adalah titik masuk ke aplikasi Anda.
 
-Vite treats `index.html` as source code and part of the module graph. It resolves `<script type="module" src="...">` that references your JavaScript source code. Even inline `<script type="module">` and CSS referenced via `<link href>` also enjoy Vite-specific features. In addition, URLs inside `index.html` are automatically rebased so there's no need for special `%PUBLIC_URL%` placeholders.
+Vite memperlakukan `index.html` sebagai kode sumber dan bagian dari grafik modul. Ini menyelesaikan `<script type="module" src="...">` yang merujuk ke kode sumber JavaScript Anda. Bahkan inline `<script type="module">` dan CSS yang dirujuk melalui `<link href>` juga menikmati fitur khusus Vite. Selain itu, URL di dalam `index.html` secara otomatis disesuaikan sehingga tidak perlu menggunakan placeholder khusus `%PUBLIC_URL%`.
 
-Similar to static http servers, Vite has the concept of a "root directory" which your files are served from. You will see it referenced as `<root>` throughout the rest of the docs. Absolute URLs in your source code will be resolved using the project root as base, so you can write code as if you are working with a normal static file server (except way more powerful!). Vite is also capable of handling dependencies that resolve to out-of-root file system locations, which makes it usable even in a monorepo-based setup.
+Mirip dengan server http statis, Vite memiliki konsep "direktori root" dari mana file Anda disajikan. Anda akan melihatnya dirujuk sebagai `<root>` di seluruh dokumen lainnya. URL absolut dalam kode sumber Anda akan diselesaikan menggunakan root proyek sebagai dasar, sehingga Anda dapat menulis kode seolah-olah Anda sedang bekerja dengan server file statis normal (kecuali lebih kuat!). Vite juga mampu menangani dependensi yang menyelesaikan lokasi sistem file di luar root, yang membuatnya dapat digunakan bahkan dalam setup berbasis monorepo.
 
-Vite also supports [multi-page apps](./build#multi-page-app) with multiple `.html` entry points.
+Vite juga mendukung [aplikasi multi-halaman](./build#multi-page-app) dengan beberapa titik masuk `.html`.
 
-#### Specifying Alternative Root
+#### Menentukan Root Alternatif
 
-Running `vite` starts the dev server using the current working directory as root. You can specify an alternative root with `vite serve some/sub/dir`.
-Note that Vite will also resolve [its config file (i.e. `vite.config.js`)](/config/#configuring-vite) inside the project root, so you'll need to move it if the root is changed.
+Menjalankan `vite` memulai server pengembangan menggunakan direktori kerja saat ini sebagai root. Anda dapat menentukan root alternatif dengan `vite serve some/sub/dir`.
+Perhatikan bahwa Vite juga akan menyelesaikan [file konfigurasi (yaitu `vite.config.js`)](/config/#configuring-vite) di dalam root proyek, jadi Anda perlu memindahkannya jika root berubah.
 
-## Command Line Interface
+## Antarmuka Baris Perintah
 
-In a project where Vite is installed, you can use the `vite` binary in your npm scripts, or run it directly with `npx vite`. Here are the default npm scripts in a scaffolded Vite project:
+Dalam proyek di mana Vite diinstal, Anda dapat menggunakan biner `vite` dalam skrip npm Anda, atau menjalankannya langsung dengan `npx vite`. Berikut ini adalah skrip npm default dalam proyek Vite yang dibuat:
 
 <!-- prettier-ignore -->
 ```json
 {
   "scripts": {
-    "dev": "vite", // start dev server, aliases: `vite dev`, `vite serve`
-    "build": "vite build", // build for production
-    "preview": "vite preview" // locally preview production build
+    "dev": "vite", // memulai server pengembangan, alias: `vite dev`, `vite serve`
+    "build": "vite build", // membangun untuk produksi
+    "preview": "vite preview" // pratinjau lokal pembangunan produksi
   }
 }
 ```
 
-You can specify additional CLI options like `--port` or `--open`. For a full list of CLI options, run `npx vite --help` in your project.
+Anda dapat menentukan opsi CLI tambahan seperti `--port` atau `--open`. Untuk daftar lengkap opsi CLI, jalankan `npx vite --help` di proyek Anda.
 
-Learn more about the [Command Line Interface](./cli.md)
+Pelajari lebih lanjut tentang [Antarmuka Baris Perintah](./cli.md)
 
-## Using Unreleased Commits
+## Menggunakan Komit yang Belum Dirilis
 
-If you can't wait for a new release to test the latest features, you will need to clone the [vite repo](https://github.com/vitejs/vite) to your local machine and then build and link it yourself ([pnpm](https://pnpm.io/) is required):
+Jika Anda tidak sabar untuk menguji fitur terbaru sebelum rilis baru, Anda perlu mengklon repo [vite](https://github.com/vitejs/vite) ke mesin lokal Anda dan kemudian membangun dan menghubungkannya sendiri ([pnpm](https://pnpm.io/) diperlukan):
 
 ```bash
 git clone https://github.com/vitejs/vite.git
@@ -147,11 +147,11 @@ cd vite
 pnpm install
 cd packages/vite
 pnpm run build
-pnpm link --global # use your preferred package manager for this step
+pnpm link --global # gunakan manajer paket pilihan Anda untuk langkah ini
 ```
 
-Then go to your Vite based project and run `pnpm link --global vite` (or the package manager that you used to link `vite` globally). Now restart the development server to ride on the bleeding edge!
+Kemudian pergi ke proyek berbasis Vite Anda dan jalankan `pnpm link --global vite` (atau manajer paket yang Anda gunakan untuk menghubungkan `vite` secara global). Sekarang mulai ulang server pengembangan untuk menggunakan fitur terbaru!
 
-## Community
+## Komunitas
 
-If you have questions or need help, reach out to the community at [Discord](https://chat.vitejs.dev) and [GitHub Discussions](https://github.com/vitejs/vite/discussions).
+Jika Anda memiliki pertanyaan atau membutuhkan bantuan, jangkau komunitas di [Discord](https://chat.vitejs.dev) dan [Diskusi GitHub](https://github.com/vitejs/vite/discussions).

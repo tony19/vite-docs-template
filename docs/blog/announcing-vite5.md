@@ -25,86 +25,86 @@ head:
       content: summary_large_image
 ---
 
-# Vite 5.0 is out!
+# Vite 5.0 Telah Dirilis!
 
-_November 16, 2023_
+_16 November 2023_
 
-![Vite 5 Announcement Cover Image](/og-image-announcing-vite5.png)
+![Gambar Sampul Pengumuman Vite 5](/og-image-announcing-vite5.png)
 
-Vite 4 [was released](./announcing-vite4.md) almost a year ago, and it served as a solid base for the ecosystem. npm downloads per week jumped from 2.5 million to 7.5 million, as projects keep building on a shared infrastructure. Frameworks continued to innovate, and on top of [Astro](https://astro.build/), [Nuxt](https://nuxt.com/), [SvelteKit](https://kit.svelte.dev/), [Solid Start](https://www.solidjs.com/blog/introducing-solidstart), [Qwik City](https://qwik.builder.io/qwikcity/overview/), between others, we saw new frameworks joining and making the ecosystem stronger. [RedwoodJS](https://redwoodjs.com/) and [Remix](https://remix.run/) switching to Vite paves the way for further adoption in the React ecosystem. [Vitest](https://vitest.dev) kept growing at an even faster pace than Vite. Its team has been hard at work and will soon [release Vitest 1.0](https://github.com/vitest-dev/vitest/issues/3596). The story of Vite when used with other tools such as [Storybook](https://storybook.js.org), [Nx](https://nx.dev), and [Playwright](https://playwright.dev) kept improving, and the same goes for environments, with Vite dev working both in [Deno](https://deno.com) and [Bun](https://bun.sh).
+Vite 4 [dirilis](./announcing-vite4.md) hampir satu tahun yang lalu, dan menjadi dasar yang kokoh bagi ekosistem. Unduhan npm per minggu melonjak dari 2,5 juta menjadi 7,5 juta, karena proyek-proyek terus membangun infrastruktur bersama. Kerangka kerja terus berinovasi, dan di atas [Astro](https://astro.build/), [Nuxt](https://nuxt.com/), [SvelteKit](https://kit.svelte.dev/), [Solid Start](https://www.solidjs.com/blog/introducing-solidstart), [Qwik City](https://qwik.builder.io/qwikcity/overview/), di antara lain, kami melihat kerangka kerja baru bergabung dan memperkuat ekosistem. [RedwoodJS](https://redwoodjs.com/) dan [Remix](https://remix.run/) beralih ke Vite membuka jalan bagi adopsi lebih lanjut dalam ekosistem React. [Vitest](https://vitest.dev) terus berkembang dengan kecepatan yang bahkan lebih cepat dari Vite. Timnya telah bekerja keras dan akan segera [merilis Vitest 1.0](https://github.com/vitest-dev/vitest/issues/3596). Cerita Vite saat digunakan dengan alat-alat lain seperti [Storybook](https://storybook.js.org), [Nx](https://nx.dev), dan [Playwright](https://playwright.dev) terus meningkat, demikian juga dengan lingkungan, dengan pengembangan Vite bekerja baik dalam [Deno](https://deno.com) maupun [Bun](https://bun.sh).
 
-We had the second edition of [ViteConf](https://viteconf.org/23/replay) a month ago, hosted by [StackBlitz](https://stackblitz.com). Like last year, most of the projects in the ecosystem got together to share ideas and connect to keep expanding the commons. We're also seeing new pieces complement the meta-framework toolbelt like [Volar](https://volarjs.dev/) and [Nitro](https://nitro.unjs.io/). The Rollup team released [Rollup 4](https://rollupjs.org) that same day, a tradition Lukas started last year.
+Kami memiliki edisi kedua dari [ViteConf](https://viteconf.org/23/replay) sebulan yang lalu, yang diselenggarakan oleh [StackBlitz](https://stackblitz.com). Seperti tahun lalu, sebagian besar proyek dalam ekosistem berkumpul untuk berbagi ide dan terhubung untuk terus memperluas area umum. Kami juga melihat bagian-bagian baru melengkapi alat meta-framework seperti [Volar](https://volarjs.dev/) dan [Nitro](https://nitro.unjs.io/). Tim Rollup merilis [Rollup 4](https://rollupjs.org) pada hari yang sama, sebuah tradisi yang dimulai Lukas tahun lalu.
 
-Six months ago, Vite 4.3 [was released](./announcing-vite4.md). This release significantly improved the dev server performance. However, there is still ample room for improvement. At ViteConf, [Evan You unveiled Vite's long-term plan to work on Rolldown](https://www.youtube.com/watch?v=hrdwQHoAp0M), a Rust-port of Rollup with compatible APIs. Once it is ready, we intend to use it in Vite Core to take on the tasks of both Rollup and esbuild. This will mean a boost in build performance (and later on in dev performance too as we move perf-sensitive parts of Vite itself to Rust), and a big reduction of inconsistencies between dev and build. Rolldown is currently in early stages and the team is preparing to open source the codebase before the end of the year. Stay tuned!
+Enam bulan yang lalu, Vite 4.3 [dirilis](./announcing-vite4.md). Rilis ini secara signifikan meningkatkan kinerja server pengembangan. Namun, masih ada banyak ruang untuk perbaikan. Di ViteConf, [Evan You mengungkapkan rencana jangka panjang Vite untuk bekerja pada Rolldown](https://www.youtube.com/watch?v=hrdwQHoAp0M), sebuah port Rust dari Rollup dengan API yang kompatibel. Begitu itu siap, kami bermaksud untuk menggunakannya di Vite Core untuk menangani tugas-tugas baik dari Rollup maupun esbuild. Ini akan berarti peningkatan kinerja pembangunan (dan kemudian pada kinerja pengembangan juga saat kami memindahkan bagian-bagian yang sensitif terhadap kinerja dari Vite sendiri ke Rust), dan pengurangan besar ketidak-konsistenan antara pengembangan dan pembangunan. Saat ini Rolldown berada pada tahap awal dan tim sedang mempersiapkan untuk merilis kode sumbernya sebelum akhir tahun. Tunggu kabar selanjutnya!
 
-Today, we mark another big milestone in Vite's path. The Vite [team](/team), [contributors](https://github.com/vitejs/vite/graphs/contributors), and ecosystem partners, are excited to announce the release of Vite 5. Vite is now using [Rollup 4](https://github.com/vitejs/vite/pull/14508), which already represents a big boost in build performance. And there are also new options to improve your dev server performance profile.
+Hari ini, kami menandai tonggak besar lainnya dalam perjalanan Vite. Tim [Vite](/team), [kontributor](https://github.com/vitejs/vite/graphs/contributors), dan mitra ekosistem, dengan gembira mengumumkan rilis Vite 5. Vite sekarang menggunakan [Rollup 4](https://github.com/vitejs/vite/pull/14508), yang sudah mewakili peningkatan besar dalam kinerja pembangunan. Dan juga ada opsi baru untuk meningkatkan profil kinerja server pengembangan Anda.
 
-Vite 5 focuses on cleaning up the API (removing deprecated features) and streamlines several features closing long-standing issues, for example switching `define` to use proper AST replacements instead of regexes. We also continue to take steps to future-proof Vite (Node.js 18+ is now required, and [the CJS Node API has been deprecated](/guide/migration#deprecate-cjs-node-api)).
+Vite 5 berfokus pada membersihkan API (menghapus fitur yang sudah tidak digunakan) dan menyederhanakan beberapa fitur dengan menutup beberapa masalah yang sudah lama ada, misalnya beralih `define` untuk menggunakan penggantian AST yang tepat alih-alih regex. Kami juga terus mengambil langkah-langkah untuk mempersiapkan Vite ke depan (Node.js 18+ sekarang diperlukan, dan [API Node CJS sudah dinyatakan usang](/guide/migration#deprecate-cjs-node-api)).
 
 Quick links:
 
-- [Docs](/)
-- [Migration Guide](/guide/migration)
+- [Dokumentasi](/)
+- [Panduan Migrasi](/guide/migration)
 - [Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#500-2023-11-16)
 
-Docs in other languages:
+Dokumentasi dalam bahasa lain:
 
 - [简体中文](https://cn.vitejs.dev/)
 - [日本語](https://ja.vitejs.dev/)
 - [Español](https://es.vitejs.dev/)
 - [Português](https://pt.vitejs.dev/)
 - [한국어](https://ko.vitejs.dev/)
-- [Deutsch](https://de.vitejs.dev/) (new translation!)
+- [Deutsch](https://de.vitejs.dev/) (terjemahan baru!)
 
-If you're new to Vite, we suggest reading first the [Getting Started](/guide/) and [Features](/guide/features) guides.
+Jika Anda baru mengenal Vite, kami menyarankan untuk membaca terlebih dahulu [Panduan Memulai](/guide/) dan [Fitur-fiturnya](/guide/features).
 
-We appreciate the more than [850 contributors to Vite Core](https://github.com/vitejs/vite/graphs/contributors), and the maintainers and contributors of Vite plugins, integrations, tools, and translations that have helped us reach here. We encourage you to get involved and continue to improve Vite with us. You can learn more at our [Contributing Guide](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md). To get started, we recommend [triaging issues](https://github.com/vitejs/vite/issues), [reviewing PRs](https://github.com/vitejs/vite/pulls), sending failing tests PRs based on open issues, and helping others in [Discussions](https://github.com/vitejs/vite/discussions) and Vite Land's [help forum](https://discord.com/channels/804011606160703521/1019670660856942652). You'll learn a lot along the way and have a smooth path to further contributions to the project. If you have doubts, join us on our [Discord community](http://chat.vitejs.dev/) and say hi on the [#contributing channel](https://discord.com/channels/804011606160703521/804439875226173480).
+Kami menghargai lebih dari [850 kontributor ke Vite Core](https://github.com/vitejs/vite/graphs/contributors), dan para pemelihara dan kontributor plugin Vite, integrasi, alat, dan terjemahan yang telah membantu kami mencapai tahap ini. Kami mendorong Anda untuk terlibat dan terus memperbaiki Vite bersama kami. Anda dapat mempelajari lebih lanjut di [Panduan Berkontribusi](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md) kami. Untuk memulai, kami merekomendasikan [menangani isu-isu](https://github.com/vitejs/vite/issues), [meninjau PR](https://github.com/vitejs/vite/pulls), mengirim PR tes yang gagal berdasarkan isu terbuka, dan membantu orang lain di [Diskusi](https://github.com/vitejs/vite/discussions) dan forum bantuan Vite Land's [di sini](https://discord.com/channels/804011606160703521/1019670660856942652). Anda akan belajar banyak sepanjang jalan dan memiliki jalur yang lancar untuk berkontribusi lebih lanjut pada proyek ini. Jika Anda memiliki keraguan, bergabunglah dengan kami di [komunitas Discord](http://chat.vitejs.dev/) kami dan sapa di saluran [#contributing](https://discord.com/channels/804011606160703521/804439875226173480).
 
-To stay up to date, follow us on [X](https://twitter.com/vite_js) or [Mastodon](https://webtoo.ls/@vite).
+Untuk tetap terkini, ikuti kami di [Twitter](https://twitter.com/vite_js) atau [Mastodon](https://webtoo.ls/@vite).
 
-## Quick start with Vite 5
+## Memulai Cepat dengan Vite 5
 
-Use `pnpm create vite` to scaffold a Vite project with your preferred framework, or open a started template online to play with Vite 5 using [vite.new](https://vite.new). You can also run `pnpm create vite-extra` to get access to templates from other frameworks and runtimes (Solid, Deno, SSR, and library starters). `create vite-extra` templates are also available when you run `create vite` under the `Others` option.
+Gunakan `pnpm create vite` untuk membangun proyek Vite dengan kerangka kerja pilihan Anda, atau buka template yang telah dimulai secara online untuk bermain dengan Vite 5 menggunakan [vite.new](https://vite.new). Anda juga dapat menjalankan `pnpm create vite-extra` untuk mengakses template dari kerangka kerja dan runtime lainnya (Solid, Deno, SSR, dan library starters). Template `create vite-extra` juga tersedia saat Anda menjalankan `create vite` di bawah opsi `Others`.
 
-Note that Vite starter templates are intended to be used as a playground to test Vite with different frameworks. When building your next project, we recommend reaching out to the starters recommended by each framework. Some frameworks now redirect in `create vite` to their starters too (`create-vue` and `Nuxt 3` for Vue, and `SvelteKit` for Svelte).
+Perhatikan bahwa template awal Vite dimaksudkan untuk digunakan sebagai tempat bermain untuk menguji Vite dengan kerangka kerja yang berbeda. Ketika membangun proyek berikutnya, kami sarankan untuk mencapai starter yang direkomendasikan oleh masing-masing kerangka kerja. Beberapa kerangka kerja sekarang mengarahkan di `create vite` ke starter mereka juga (`create-vue` dan `Nuxt 3` untuk Vue, dan `SvelteKit` untuk Svelte).
 
-## Node.js Support
+## Dukungan Node.js
 
-Vite no longer supports Node.js 14 / 16 / 17 / 19, which reached its EOL. Node.js 18 / 20+ is now required.
+Vite tidak lagi mendukung Node.js 14 / 16 / 17 / 19, yang telah mencapai akhir dari masa dukungannya. Node.js 18 / 20+ sekarang diperlukan.
 
-## Performance
+## Kinerja
 
-On top of Rollup 4's build performance improvements, there is a new guide to help you identify and fix common performance issues at [https://vitejs.dev/guide/performance](/guide/performance).
+Di atas perbaikan kinerja build dari Rollup 4, ada panduan baru untuk membantu Anda mengidentifikasi dan memperbaiki masalah kinerja umum di [https://vitejs.dev/guide/performance](/guide/performance).
 
-Vite 5 also introduces [server.warmup](/guide/performance.html#warm-up-frequently-used-files), a new feature to improve startup time. It lets you define a list of modules that should be pre-transformed as soon as the server starts. When using [`--open` or `server.open`](/config/server-options.html#server-open), Vite will also automatically warm up the entry point of your app or the provided URL to open.
+Vite 5 juga memperkenalkan [server.warmup](/guide/performance.html#warm-up-frequently-used-files), fitur baru untuk meningkatkan waktu startup. Ini memungkinkan Anda menentukan daftar modul yang harus dipre-transformasikan segera setelah server dimulai. Ketika menggunakan [`--open` atau `server.open`](/config/server-options.html#server-open), Vite juga secara otomatis akan memanaskan titik masuk aplikasi Anda atau URL yang disediakan untuk dibuka.
 
-## Main Changes
+## Perubahan Utama
 
-- [Vite is now powered by Rollup 4](/guide/migration#rollup-4)
-- [The CJS Node API has been deprecated](/guide/migration#deprecate-cjs-node-api)
-- [Rework `define` and `import.meta.env.*` replacement strategy](/guide/migration#rework-define-and-import-meta-env-replacement-strategy)
-- [SSR externalized modules value now matches production](/guide/migration#ssr-externalized-modules-value-now-matches-production)
-- [`worker.plugins` is now a function](/guide/migration#worker-plugins-is-now-a-function)
-- [Allow path containing `.` to fallback to index.html](/guide/migration#allow-path-containing-to-fallback-to-index-html)
-- [Align dev and preview HTML serving behavior](/guide/migration#align-dev-and-preview-html-serving-behaviour)
-- [Manifest files are now generated in `.vite` directory by default](/guide/migration#manifest-files-are-now-generated-in-vite-directory-by-default)
-- [CLI shortcuts require an additional `Enter` press](/guide/migration#cli-shortcuts-require-an-additional-enter-press)
-- [Update `experimentalDecorators` and `useDefineForClassFields` TypeScript behavior](/guide/migration#update-experimentaldecorators-and-usedefineforclassfields-typescript-behaviour)
-- [Remove `--https` flag and `https: true`](/guide/migration#remove-https-flag-and-https-true)
-- [Remove `resolvePackageEntry` and `resolvePackageData` APIs](/guide/migration#remove-resolvepackageentry-and-resolvepackagedata-apis)
-- [Removes previously deprecated APIs](/guide/migration#removed-deprecated-apis)
-- [Read more about advanced changes affecting plugin and tool authors](/guide/migration#advanced)
+- [Vite sekarang didukung oleh Rollup 4](/guide/migration#rollup-4)
+- [API Node CJS telah ditinggalkan](/guide/migration#deprecate-cjs-node-api)
+- [Strategi penggantian `define` dan `import.meta.env.*` telah diperbarui](/guide/migration#rework-define-and-import-meta-env-replacement-strategy)
+- [Nilai modul eksternal SSR sekarang sesuai dengan produksi](/guide/migration#ssr-externalized-modules-value-now-matches-production)
+- [`worker.plugins` sekarang merupakan fungsi](/guide/migration#worker-plugins-is-now-a-function)
+- [Izinkan jalur yang mengandung `.` untuk kembali ke index.html](/guide/migration#allow-path-containing-to-fallback-to-index-html)
+- [Selaraskan perilaku layanan HTML dev dan preview](/guide/migration#align-dev-and-preview-html-serving-behaviour)
+- [File manifest sekarang dihasilkan di direktori `.vite` secara default](/guide/migration#manifest-files-are-now-generated-in-vite-directory-by-default)
+- [Pintasan CLI memerlukan tekanan tambahan tombol `Enter`](/guide/migration#cli-shortcuts-require-an-additional-enter-press)
+- [Perbarui perilaku TypeScript `experimentalDecorators` dan `useDefineForClassFields`](/guide/migration#update-experimentaldecorators-and-usedefineforclassfields-typescript-behaviour)
+- [Hapus flag `--https` dan `https: true`](/guide/migration#remove-https-flag-and-https-true)
+- [Hapus API `resolvePackageEntry` dan `resolvePackageData`](/guide/migration#remove-resolvepackageentry-and-resolvepackagedata-apis)
+- [Hapus API yang sebelumnya sudah ditinggalkan](/guide/migration#removed-deprecated-apis)
+- [Baca lebih lanjut tentang perubahan lanjutan yang memengaruhi penulis plugin dan alat](/guide/migration#advanced)
 
-## Migrating to Vite 5
+## Migrasi ke Vite 5
 
-We have worked with ecosystem partners to ensure a smooth migration to this new major. Once again, [vite-ecosystem-ci](https://www.youtube.com/watch?v=7L4I4lDzO48) has been crucial to help us make bolder changes while avoiding regressions. We're thrilled to see other ecosystems adopt similar schemes to improve the collaboration between their projects and downstream maintainers.
+Kami telah bekerja dengan mitra ekosistem untuk memastikan migrasi yang lancar ke major baru ini. Sekali lagi, [vite-ecosystem-ci](https://www.youtube.com/watch?v=7L4I4lDzO48) telah menjadi sangat penting untuk membantu kami melakukan perubahan yang lebih besar sambil menghindari regresi. Kami sangat senang melihat ekosistem lain mengadopsi skema serupa untuk meningkatkan kerja sama antara proyek mereka dan para pengelola downstream.
 
-For most projects, the update to Vite 5 should be straight forward. But we advise reviewing the [detailed Migration Guide](/guide/migration) before upgrading.
+Untuk sebagian besar proyek, pembaruan ke Vite 5 seharusnya mudah dilakukan. Tetapi kami menyarankan untuk meninjau [Panduan Migrasi yang Detail](/guide/migration) sebelum melakukan upgrade.
 
-A low level breakdown with the full list of changes to Vite core can be found at the [Vite 5 Changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#500-2023-11-16).
+Pemecahan tingkat rendah dengan daftar lengkap perubahan inti Vite dapat ditemukan di [Changelog Vite 5](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#500-2023-11-16).
 
-## Acknowledgments
+## Penghargaan
 
-Vite 5 is the result of long hours of work by our community of contributors, downstream maintainers, plugins authors, and the [Vite Team](/team). A big shoutout to [Bjorn Lu](https://twitter.com/bluwyoo) for leading the release process for this major.
+Vite 5 adalah hasil dari jam kerja yang panjang dari komunitas kontributor kami, pengelola downstream, penulis plugin, dan [Tim Vite](/team). Terima kasih kepada [Bjorn Lu](https://twitter.com/bluwyoo) karena memimpin proses rilis untuk major ini.
 
-We're also thankful to individuals and companies sponsoring Vite development. [StackBlitz](https://stackblitz.com/), [Nuxt Labs](https://nuxtlabs.com/), and [Astro](https://astro.build) continue to invest in Vite by hiring Vite team members. A shoutout to sponsors on [Vite's GitHub Sponsors](https://github.com/sponsors/vitejs), [Vite's Open Collective](https://opencollective.com/vite), and [Evan You's GitHub Sponsors](https://github.com/sponsors/yyx990803). A special mention to [Remix](https://remix.run/) for becoming a Gold sponsor and contributing back after switching to Vite.
+Kami juga berterima kasih kepada individu dan perusahaan yang mensponsori pengembangan Vite. [StackBlitz](https://stackblitz.com/), [Nuxt Labs](https://nuxtlabs.com/), dan [Astro](https://astro.build) terus berinvestasi di Vite dengan mempekerjakan anggota tim Vite. Terima kasih kepada para sponsor di [GitHub Sponsors Vite](https://github.com/sponsors/vitejs), [Open Collective Vite](https://opencollective.com/vite), dan [GitHub Sponsors Evan You](https://github.com/sponsors/yyx990803). Penyebutan khusus untuk [Remix](https://remix.run/) karena menjadi sponsor Gold dan berkontribusi kembali setelah beralih ke Vite.

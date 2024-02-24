@@ -1,23 +1,23 @@
-# Worker Options
+# Opsi Pekerja
 
-Options related to Web Workers.
+Opsi terkait dengan Web Workers.
 
 ## worker.format
 
-- **Type:** `'es' | 'iife'`
+- **Tipe:** `'es' | 'iife'`
 - **Default:** `'iife'`
 
-Output format for worker bundle.
+Format output untuk bundel pekerja.
 
 ## worker.plugins
 
-- **Type:** [`() => (Plugin | Plugin[])[]`](./shared-options#plugins)
+- **Tipe:** [`() => (Plugin | Plugin[])[]`](./shared-options#plugins)
 
-Vite plugins that apply to the worker bundles. Note that [config.plugins](./shared-options#plugins) only applies to workers in dev, it should be configured here instead for build.
-The function should return new plugin instances as they are used in parallel rollup worker builds. As such, modifying `config.worker` options in the `config` hook will be ignored.
+Plugin Vite yang berlaku untuk bundel pekerja. Perhatikan bahwa [config.plugins](./shared-options#plugins) hanya berlaku untuk pekerja di dev, seharusnya dikonfigurasi di sini sebagai gantinya untuk build.
+Fungsi harus mengembalikan instance plugin baru karena mereka digunakan dalam pembangunan pekerja rollup yang paralel. Dengan demikian, memodifikasi opsi `config.worker` di hook `config` akan diabaikan.
 
 ## worker.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **Tipe:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Rollup options to build worker bundle.
+Opsi Rollup untuk membangun bundel pekerja.

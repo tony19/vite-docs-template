@@ -1,41 +1,41 @@
-# Dependency Pre-Bundling
+# Pre-Bundling Dependency
 
-When you run `vite` for the first time, Vite prebundles your project dependencies before loading your site locally. It is done automatically and transparently by default.
+Ketika Anda pertama kali menjalankan `vite`, Vite akan melakukan prebundling dependensi proyek Anda sebelum memuat situs Anda secara lokal. Ini dilakukan secara otomatis dan transparan secara default.
 
-## The Why
+## Mengapa
 
-This is Vite performing what we call "dependency pre-bundling". This process serves two purposes:
+Ini adalah Vite melakukan apa yang kami sebut "dependency pre-bundling" atau prebundling dependensi. Proses ini memiliki dua tujuan:
 
-1. **CommonJS and UMD compatibility:** During development, Vite's dev serves all code as native ESM. Therefore, Vite must convert dependencies that are shipped as CommonJS or UMD into ESM first.
+1. **Kompatibilitas CommonJS dan UMD:** Selama pengembangan, server pengembangan Vite melayani semua kode sebagai native ESM. Oleh karena itu, Vite harus mengonversi dependensi yang dikirim sebagai CommonJS atau UMD menjadi ESM terlebih dahulu.
 
-   When converting CommonJS dependencies, Vite performs smart import analysis so that named imports to CommonJS modules will work as expected even if the exports are dynamically assigned (e.g. React):
+   Saat mengonversi dependensi CommonJS, Vite melakukan analisis impor pintar sehingga impor bernama ke modul CommonJS akan berfungsi seperti yang diharapkan bahkan jika ekspornya ditugaskan secara dinamis (mis. React):
 
    ```js
-   // works as expected
+   // bekerja seperti yang diharapkan
    import React, { useState } from 'react'
    ```
 
-2. **Performance:** Vite converts ESM dependencies with many internal modules into a single module to improve subsequent page load performance.
+2. **Kinerja:** Vite mengonversi dependensi ESM dengan banyak modul internal menjadi satu modul untuk meningkatkan kinerja muat halaman selanjutnya.
 
-   Some packages ship their ES modules builds as many separate files importing one another. For example, [`lodash-es` has over 600 internal modules](https://unpkg.com/browse/lodash-es/)! When we do `import { debounce } from 'lodash-es'`, the browser fires off 600+ HTTP requests at the same time! Even though the server has no problem handling them, the large amount of requests create a network congestion on the browser side, causing the page to load noticeably slower.
+   Beberapa paket mengirimkan build modul ES mereka sebagai banyak file terpisah yang mengimpor satu sama lain. Misalnya, [`lodash-es` memiliki lebih dari 600 modul internal](https://unpkg.com/browse/lodash-es/)! Ketika kita melakukan `import { debounce } from 'lodash-es'`, browser memulai 600+ permintaan HTTP secara bersamaan! Meskipun server tidak memiliki masalah menanganinya, jumlah permintaan yang besar membuat kepadatan jaringan di sisi browser, menyebabkan halaman memuat lebih lambat secara nyata.
 
-   By pre-bundling `lodash-es` into a single module, we now only need one HTTP request instead!
+   Dengan melakukan pre-bundling `lodash-es` menjadi satu modul, sekarang kita hanya perlu satu permintaan HTTP saja!
 
-::: tip NOTE
-Dependency pre-bundling only applies in development mode, and uses `esbuild` to convert dependencies to ESM. In production builds, `@rollup/plugin-commonjs` is used instead.
+::: tip CATATAN
+Prebundling dependensi hanya berlaku dalam mode pengembangan, dan menggunakan `esbuild` untuk mengonversi dependensi menjadi ESM. Dalam pembangunan produksi, digunakan `@rollup/plugin-commonjs` sebagai gantinya.
 :::
 
-## Automatic Dependency Discovery
+## Penemuan Dependensi Otomatis
 
-If an existing cache is not found, Vite will crawl your source code and automatically discover dependency imports (i.e. "bare imports" that expect to be resolved from `node_modules`) and use these found imports as entry points for the pre-bundle. The pre-bundling is performed with `esbuild` so it's typically very fast.
+Jika cache yang ada tidak ditemukan, Vite akan menjelajahi kode sumber Anda secara otomatis dan menemukan impor dependensi (yaitu "bare imports" yang diharapkan untuk diselesaikan dari `node_modules`) dan menggunakan impor yang ditemukan ini sebagai titik masuk untuk pre-bundle. Pre-bundling dilakukan dengan `esbuild` sehingga biasanya sangat cepat.
 
-After the server has already started, if a new dependency import is encountered that isn't already in the cache, Vite will re-run the dep bundling process and reload the page if needed.
+Setelah server telah dimulai, jika impor dependensi baru ditemukan yang belum ada dalam cache, Vite akan menjalankan kembali proses bundling dependensi dan me-refresh halaman jika diperlukan.
 
-## Monorepos and Linked Dependencies
+## Monorepo dan Dependensi Terhubung
 
-In a monorepo setup, a dependency may be a linked package from the same repo. Vite automatically detects dependencies that are not resolved from `node_modules` and treats the linked dep as source code. It will not attempt to bundle the linked dep, and will analyze the linked dep's dependency list instead.
+Dalam setup monorepo, sebuah dependensi mungkin merupakan paket terhubung dari repositori yang sama. Vite secara otomatis mendeteksi dependensi yang tidak diselesaikan dari `node_modules` dan memperlakukan dependensi terhubung sebagai kode sumber. Ini tidak akan mencoba untuk mem-bundle dependensi terhubung, dan akan menganalisis daftar dependensi dependensi terhubung tersebut.
 
-However, this requires the linked dep to be exported as ESM. If not, you can add the dependency to [`optimizeDeps.include`](/config/dep-optimization-options.md#optimizedeps-include) and [`build.commonjsOptions.include`](/config/build-options.md#build-commonjsoptions) in your config.
+Namun, ini membutuhkan dependensi terhubung untuk diekspor sebagai ESM. Jika tidak, Anda dapat menambahkan dependensi tersebut ke dalam [`optimizeDeps.include`](/config/dep-optimization-options.md#optimizedeps-include) dan [`build.commonjsOptions.include`](/config/build-options.md#build-commonjsoptions) dalam konfigurasi Anda.
 
 ```js
 export default defineConfig({
@@ -50,37 +50,37 @@ export default defineConfig({
 })
 ```
 
-When making changes to the linked dep, restart the dev server with the `--force` command line option for the changes to take effect.
+Ketika melakukan perubahan pada dependensi terhubung, mulai ulang server pengembangan dengan opsi baris perintah `--force` agar perubahan tersebut berlaku.
 
-## Customizing the Behavior
+## Menyesuaikan Perilaku
 
-The default dependency discovery heuristics may not always be desirable. In cases where you want to explicitly include/exclude dependencies from the list, use the [`optimizeDeps` config options](/config/dep-optimization-options.md).
+Heuristik penemuan dependensi default mungkin tidak selalu diinginkan. Pada kasus di mana Anda ingin secara eksplisit menyertakan/mengesampingkan dependensi dari daftar, gunakan opsi konfigurasi [`optimizeDeps`](/config/dep-optimization-options.md).
 
-A typical use case for `optimizeDeps.include` or `optimizeDeps.exclude` is when you have an import that is not directly discoverable in the source code. For example, maybe the import is created as a result of a plugin transform. This means Vite won't be able to discover the import on the initial scan - it can only discover it after the file is requested by the browser and transformed. This will cause the server to immediately re-bundle after server start.
+Sebuah contoh penggunaan tipikal untuk `optimizeDeps.include` atau `optimizeDeps.exclude` adalah ketika Anda memiliki impor yang tidak langsung dapat ditemukan dalam kode sumber. Misalnya, mungkin impor tersebut dibuat sebagai hasil dari transformasi plugin. Ini berarti Vite tidak akan dapat menemukan impor tersebut pada pemindaian awal - hanya bisa menemukannya setelah file diminta oleh browser dan ditransformasikan. Hal ini akan menyebabkan server segera melakukan re-bundel setelah memulai server.
 
-Both `include` and `exclude` can be used to deal with this. If the dependency is large (with many internal modules) or is CommonJS, then you should include it; If the dependency is small and is already valid ESM, you can exclude it and let the browser load it directly.
+Baik `include` maupun `exclude` dapat digunakan untuk menangani hal ini. Jika dependensinya besar (dengan banyak modul internal) atau merupakan CommonJS, maka Anda harus menyertakannya; Jika dependensinya kecil dan sudah ESM yang valid, Anda bisa mengesampingkannya dan membiarkan browser memuatnya langsung.
 
-You can further customize esbuild too with the [`optimizeDeps.esbuildOptions` option](/config/dep-optimization-options.md#optimizedeps-esbuildoptions). For example, adding an esbuild plugin to handle special files in dependencies or changing the [build `target`](https://esbuild.github.io/api/#target).
+Anda juga dapat menyesuaikan esbuild lebih lanjut dengan opsi [`optimizeDeps.esbuildOptions`](/config/dep-optimization-options.md#optimizedeps-esbuildoptions). Misalnya, menambahkan plugin esbuild untuk menangani file khusus dalam dependensi atau mengubah [build `target`](https://esbuild.github.io/api/#target).
 
-## Caching
+## Penyimpanan Cache
 
-### File System Cache
+### Cache Sistem File
 
-Vite caches the pre-bundled dependencies in `node_modules/.vite`. It determines whether it needs to re-run the pre-bundling step based on a few sources:
+Vite menyimpan dependensi yang telah di-bundel sebelumnya di `node_modules/.vite`. Hal ini menentukan apakah perlu untuk menjalankan kembali langkah pre-bundling berdasarkan beberapa sumber:
 
-- Package manager lockfile content, e.g. `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml` or `bun.lockb`.
-- Patches folder modification time.
-- Relevant fields in your `vite.config.js`, if present.
-- `NODE_ENV` value.
+- Konten file kunci pengunci manajer paket, misalnya `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, atau `bun.lockb`.
+- Waktu modifikasi folder patch.
+- Bidang yang relevan dalam `vite.config.js` Anda, jika ada.
+- Nilai `NODE_ENV`.
 
-The pre-bundling step will only need to be re-run when one of the above has changed.
+Langkah pre-bundling hanya perlu dijalankan kembali ketika salah satu di atas telah berubah.
 
-If for some reason you want to force Vite to re-bundle deps, you can either start the dev server with the `--force` command line option, or manually delete the `node_modules/.vite` cache directory.
+Jika dengan beberapa alasan Anda ingin memaksa Vite untuk kembali mem-bundel dependensi, Anda dapat memulai server dev dengan opsi baris perintah `--force`, atau secara manual menghapus direktori cache `node_modules/.vite`.
 
-### Browser Cache
+### Cache Browser
 
-Resolved dependency requests are strongly cached with HTTP headers `max-age=31536000,immutable` to improve page reload performance during dev. Once cached, these requests will never hit the dev server again. They are auto invalidated by the appended version query if a different version is installed (as reflected in your package manager lockfile). If you want to debug your dependencies by making local edits, you can:
+Permintaan dependensi yang telah diselesaikan dicache dengan kuat menggunakan header HTTP `max-age=31536000,immutable` untuk meningkatkan kinerja reload halaman selama pengembangan. Setelah dicache, permintaan ini tidak akan pernah mengenai server dev lagi. Mereka otomatis tidak valid dengan menambahkan kueri versi jika versi yang berbeda diinstal (seperti yang tercermin dalam file kunci pengunci manajer paket Anda). Jika Anda ingin mendepan dependensi Anda dengan membuat edit lokal, Anda dapat:
 
-1. Temporarily disable cache via the Network tab of your browser devtools;
-2. Restart Vite dev server with the `--force` flag to re-bundle the deps;
-3. Reload the page.
+1. Sementara menonaktifkan cache melalui tab Jaringan di alat pengembangan browser Anda;
+2. Memulai ulang server dev Vite dengan flag `--force` untuk mem-bundel ulang dependensi;
+3. Muat ulang halaman.

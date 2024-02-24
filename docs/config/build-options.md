@@ -1,40 +1,40 @@
-# Build Options
+# Opsi Pembangunan
 
 ## build.target
 
-- **Type:** `string | string[]`
+- **Tipe:** `string | string[]`
 - **Default:** `'modules'`
-- **Related:** [Browser Compatibility](/guide/build#browser-compatibility)
+- **Terhubung:** [Kompatibilitas Browser](/guide/build#browser-compatibility)
 
-Browser compatibility target for the final bundle. The default value is a Vite special value, `'modules'`, which targets browsers with [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta) support. Vite will replace `'modules'` to `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
+Target kompatibilitas browser untuk bundel akhir. Nilai default adalah nilai khusus Vite, `'modules'`, yang ditargetkan pada browser dengan dukungan [Modul ES native](https://caniuse.com/es6-module), [import dinamis ESM native](https://caniuse.com/es6-module-dynamic-import), dan dukungan [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta). Vite akan mengganti `'modules'` menjadi `['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']`
 
-Another special value is `'esnext'` - which assumes native dynamic imports support and will transpile as little as possible:
+Nilai khusus lainnya adalah `'esnext'` - yang mengasumsikan dukungan impor dinamis native dan akan mentranspilasi sedikit mungkin:
 
-- If the [`build.minify`](#build-minify) option is `'terser'` and the installed Terser version is below 5.16.0, `'esnext'` will be forced down to `'es2021'`.
-- In other cases, it will perform no transpilation at all.
+- Jika opsi [`build.minify`](#build-minify) adalah `'terser'` dan versi Terser yang terpasang berada di bawah 5.16.0, `'esnext'` akan dipaksa turun menjadi `'es2021'`.
+- Dalam kasus lain, itu tidak akan melakukan transpilasi sama sekali.
 
-The transform is performed with esbuild and the value should be a valid [esbuild target option](https://esbuild.github.io/api/#target). Custom targets can either be an ES version (e.g. `es2015`), a browser with version (e.g. `chrome58`), or an array of multiple target strings.
+Transformasi dilakukan dengan esbuild dan nilai harus menjadi opsi target [esbuild yang valid](https://esbuild.github.io/api/#target). Target kustom dapat berupa versi ES (misalnya `es2015`), browser dengan versi (misalnya `chrome58`), atau sebuah array dari beberapa string target.
 
-Note the build will fail if the code contains features that cannot be safely transpiled by esbuild. See [esbuild docs](https://esbuild.github.io/content-types/#javascript) for more details.
+Perlu dicatat bahwa pembangunan akan gagal jika kode mengandung fitur yang tidak dapat diterjemahkan dengan aman oleh esbuild. Lihat [dokumentasi esbuild](https://esbuild.github.io/content-types/#javascript) untuk lebih detail.
 
 ## build.modulePreload
 
-- **Type:** `boolean | { polyfill?: boolean, resolveDependencies?: ResolveModulePreloadDependenciesFn }`
+- **Tipe:** `boolean | { polyfill?: boolean, resolveDependencies?: ResolveModulePreloadDependenciesFn }`
 - **Default:** `{ polyfill: true }`
 
-By default, a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) is automatically injected. The polyfill is auto injected into the proxy module of each `index.html` entry. If the build is configured to use a non-HTML custom entry via `build.rollupOptions.input`, then it is necessary to manually import the polyfill in your custom entry:
+Secara default, sebuah [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill) secara otomatis disuntikkan. Polyfill secara otomatis disuntikkan ke modul proxy dari setiap entri `index.html`. Jika pembangunan dikonfigurasi untuk menggunakan entri kustom non-HTML melalui `build.rollupOptions.input`, maka perlu untuk mengimpor secara manual polyfill di entri kustom Anda:
 
 ```js
 import 'vite/modulepreload-polyfill'
 ```
 
-Note: the polyfill does **not** apply to [Library Mode](/guide/build#library-mode). If you need to support browsers without native dynamic import, you should probably avoid using it in your library.
+Catatan: polyfill tidak **berlaku** untuk [Mode Perpustakaan](/guide/build#library-mode). Jika Anda perlu mendukung browser tanpa impor dinamis native, Anda sebaiknya menghindari menggunakannya dalam perpustakaan Anda.
 
-The polyfill can be disabled using `{ polyfill: false }`.
+Polyfill dapat dinonaktifkan menggunakan `{ polyfill: false }`.
 
-The list of chunks to preload for each dynamic import is computed by Vite. By default, an absolute path including the `base` will be used when loading these dependencies. If the `base` is relative (`''` or `'./'`), `import.meta.url` is used at runtime to avoid absolute paths that depend on the final deployed base.
+Daftar chuck yang akan dimuat sebelumnya untuk setiap impor dinamis dihitung oleh Vite. Secara default, sebuah path absolut termasuk `base` akan digunakan saat memuat dependensi ini. Jika `base` bersifat relatif (`''` atau `'./'`), `import.meta.url` digunakan saat runtime untuk menghindari path absolut yang tergantung pada base yang diterapkan akhir.
 
-There is experimental support for fine grained control over the dependencies list and their paths using the `resolveDependencies` function. [Give Feedback](https://github.com/vitejs/vite/discussions/13841). It expects a function of type `ResolveModulePreloadDependenciesFn`:
+Ada dukungan eksperimental untuk kontrol yang sangat halus terhadap daftar dependensi dan path mereka menggunakan fungsi `resolveDependencies`. [Beri Masukan](https://github.com/vitejs/vite/discussions/13841). Ini mengharapkan sebuah fungsi dengan tipe `ResolveModulePreloadDependenciesFn`:
 
 ```ts
 type ResolveModulePreloadDependenciesFn = (
@@ -46,7 +46,7 @@ type ResolveModulePreloadDependenciesFn = (
 ) => string[]
 ```
 
-The `resolveDependencies` function will be called for each dynamic import with a list of the chunks it depends on, and it will also be called for each chunk imported in entry HTML files. A new dependencies array can be returned with these filtered or more dependencies injected, and their paths modified. The `deps` paths are relative to the `build.outDir`. Returning a relative path to the `hostId` for `hostType === 'js'` is allowed, in which case `new URL(dep, import.meta.url)` is used to get an absolute path when injecting this module preload in the HTML head.
+Fungsi `resolveDependencies` akan dipanggil untuk setiap impor dinamis dengan daftar chuck yang dibutuhkan, dan juga akan dipanggil untuk setiap chunk yang diimpor dalam file HTML entri. Sebuah array dependensi baru dapat dikembalikan dengan dependensi ini difilter atau lebih banyak yang disuntikkan, dan path mereka dimodifikasi. Path `deps` relatif terhadap `build.outDir`. Mengembalikan path relatif ke `hostId` untuk `hostType === 'js'` diperbolehkan, dalam hal ini `new URL(dep, import.meta.url)` digunakan untuk mendapatkan path absolut saat menyuntikkan modul preload ini di kepala HTML.
 
 ```js
 modulePreload: {
@@ -56,150 +56,150 @@ modulePreload: {
 }
 ```
 
-The resolved dependency paths can be further modified using [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options).
+Path dependensi yang dipecahkan dapat dimodifikasi lebih lanjut menggunakan [`experimental.renderBuiltUrl`](../guide/build.md#advanced-base-options).
 
 ## build.polyfillModulePreload
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
-- **Deprecated** use `build.modulePreload.polyfill` instead
+- **Diperingatkan** gunakan `build.modulePreload.polyfill` sebagai gantinya
 
-Whether to automatically inject a [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill).
+Apakah akan secara otomatis menyuntikkan [module preload polyfill](https://guybedford.com/es-module-preloading-integrity#modulepreload-polyfill).
 
 ## build.outDir
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `dist`
 
-Specify the output directory (relative to [project root](/guide/#index-html-and-project-root)).
+Tentukan direktori output (relatif terhadap [root proyek](/guide/#index-html-and-project-root)).
 
 ## build.assetsDir
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `assets`
 
-Specify the directory to nest generated assets under (relative to `build.outDir`. This is not used in [Library Mode](/guide/build#library-mode)).
+Tentukan direktori untuk meletakkan aset yang dihasilkan di bawah (relatif terhadap `build.outDir`. Ini tidak digunakan dalam [Mode Perpustakaan](/guide/build#library-mode)).
 
 ## build.assetsInlineLimit
 
-- **Type:** `number` | `((filePath: string, content: Buffer) => boolean | undefined)`
+- **Tipe:** `number` | `((filePath: string, content: Buffer) => boolean | undefined)`
 - **Default:** `4096` (4 KiB)
 
-Imported or referenced assets that are smaller than this threshold will be inlined as base64 URLs to avoid extra http requests. Set to `0` to disable inlining altogether.
+Aset yang diimpor atau direferensikan yang lebih kecil dari ambang batas ini akan disisipkan sebagai URL base64 untuk menghindari permintaan http tambahan. Tetapkan ke `0` untuk menonaktifkan penyisipan secara keseluruhan.
 
-If a callback is passed, a boolean can be returned to opt-in or opt-out. If nothing is returned the default logic applies.
+Jika sebuah panggilan kembali dilewatkan, sebuah boolean dapat dikembalikan untuk mendaftar masuk atau keluar. Jika tidak ada yang dikembalikan, logika default diterapkan.
 
-Git LFS placeholders are automatically excluded from inlining because they do not contain the content of the file they represent.
+Placeholder Git LFS secara otomatis dikecualikan dari penyisipan karena mereka tidak berisi konten dari file yang mereka wakili.
 
-::: tip Note
-If you specify `build.lib`, `build.assetsInlineLimit` will be ignored and assets will always be inlined, regardless of file size or being a Git LFS placeholder.
+::: tip Catatan
+Jika Anda menentukan `build.lib`, `build.assetsInlineLimit` akan diabaikan dan aset akan selalu disisipkan, terlepas dari ukuran file atau merupakan placeholder Git LFS.
 :::
 
 ## build.cssCodeSplit
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-Enable/disable CSS code splitting. When enabled, CSS imported in async JS chunks will be preserved as chunks and fetched together when the chunk is fetched.
+Aktif/nonaktifkan pembelahan kode CSS. Ketika diaktifkan, CSS yang diimpor dalam chunk JS async akan dipertahankan sebagai chunk dan diambil bersama saat chunk diambil.
 
-If disabled, all CSS in the entire project will be extracted into a single CSS file.
+Jika dinonaktifkan, semua CSS dalam proyek keseluruhan akan diekstraksi menjadi satu file CSS.
 
-::: tip Note
-If you specify `build.lib`, `build.cssCodeSplit` will be `false` as default.
+::: tip Catatan
+Jika Anda menentukan `build.lib`, `build.cssCodeSplit` akan `false` secara default.
 :::
 
 ## build.cssTarget
 
-- **Type:** `string | string[]`
-- **Default:** the same as [`build.target`](#build-target)
+- **Tipe:** `string | string[]`
+- **Default:** sama dengan [`build.target`](#build-target)
 
-This option allows users to set a different browser target for CSS minification from the one used for JavaScript transpilation.
+Opsi ini memungkinkan pengguna untuk mengatur target browser yang berbeda untuk pemadatan CSS dari yang digunakan untuk transpilasi JavaScript.
 
-It should only be used when you are targeting a non-mainstream browser.
-One example is Android WeChat WebView, which supports most modern JavaScript features but not the [`#RGBA` hexadecimal color notation in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors).
-In this case, you need to set `build.cssTarget` to `chrome61` to prevent vite from transform `rgba()` colors into `#RGBA` hexadecimal notations.
+Ini seharusnya hanya digunakan saat Anda mengarahkan browser yang tidak umum.
+Salah satu contohnya adalah Android WeChat WebView, yang mendukung sebagian besar fitur JavaScript modern tetapi tidak mendukung [notasi warna heksadesimal `#RGBA` dalam CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb_colors).
+Dalam kasus ini, Anda perlu mengatur `build.cssTarget` ke `chrome61` untuk mencegah vite mentransformasi warna `rgba()` menjadi notasi heksadesimal `#RGBA`.
 
 ## build.cssMinify
 
-- **Type:** `boolean | 'esbuild' | 'lightningcss'`
-- **Default:** the same as [`build.minify`](#build-minify)
+- **Tipe:** `boolean | 'esbuild' | 'lightningcss'`
+- **Default:** sama dengan [`build.minify`](#build-minify)
 
-This option allows users to override CSS minification specifically instead of defaulting to `build.minify`, so you can configure minification for JS and CSS separately. Vite uses `esbuild`by default to minify CSS. Set the option to `'lightningcss'` to use [Lightning CSS](https://lightningcss.dev/minification.html) instead. If selected, it can be configured using [`css.lightningcss`](./shared-options.md#css-lightningcss).
+Opsi ini memungkinkan pengguna untuk mengesampingkan pemadatan CSS secara khusus daripada mengembalikan ke default `build.minify`, sehingga Anda dapat mengonfigurasi pemadatan untuk JS dan CSS secara terpisah. Vite menggunakan `esbuild` secara default untuk memadatkan CSS. Atur opsi ini menjadi `'lightningcss'` untuk menggunakan [Lightning CSS](https://lightningcss.dev/minification.html) sebagai gantinya. Jika dipilih, itu dapat dikonfigurasi menggunakan [`css.lightningcss`](./shared-options.md#css-lightningcss).
 
 ## build.sourcemap
 
-- **Type:** `boolean | 'inline' | 'hidden'`
+- **Tipe:** `boolean | 'inline' | 'hidden'`
 - **Default:** `false`
 
-Generate production source maps. If `true`, a separate sourcemap file will be created. If `'inline'`, the sourcemap will be appended to the resulting output file as a data URI. `'hidden'` works like `true` except that the corresponding sourcemap comments in the bundled files are suppressed.
+Menghasilkan sourcemap produksi. Jika `true`, file sourcemap terpisah akan dibuat. Jika `'inline'`, sourcemap akan ditambahkan ke file output hasil sebagai URI data. `'hidden'` bekerja seperti `true` kecuali bahwa komentar sourcemap yang sesuai dalam file bundel akan ditahan.
 
 ## build.rollupOptions
 
-- **Type:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
+- **Tipe:** [`RollupOptions`](https://rollupjs.org/configuration-options/)
 
-Directly customize the underlying Rollup bundle. This is the same as options that can be exported from a Rollup config file and will be merged with Vite's internal Rollup options. See [Rollup options docs](https://rollupjs.org/configuration-options/) for more details.
+Menyesuaikan bundel Rollup yang mendasarinya secara langsung. Ini sama dengan opsi yang dapat diekspor dari file konfigurasi Rollup dan akan digabungkan dengan opsi Rollup internal Vite. Lihat [dokumentasi opsi Rollup](https://rollupjs.org/configuration-options/) untuk detail lebih lanjut.
 
 ## build.commonjsOptions
 
-- **Type:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
+- **Tipe:** [`RollupCommonJSOptions`](https://github.com/rollup/plugins/tree/master/packages/commonjs#options)
 
-Options to pass on to [@rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs).
+Opsi untuk dilewatkan ke [@rollup/plugin-commonjs](https://github.com/rollup/plugins/tree/master/packages/commonjs).
 
 ## build.dynamicImportVarsOptions
 
-- **Type:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
-- **Related:** [Dynamic Import](/guide/features#dynamic-import)
+- **Tipe:** [`RollupDynamicImportVarsOptions`](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#options)
+- **Terhubung:** [Impor Dinamis](/guide/features#dynamic-import)
 
-Options to pass on to [@rollup/plugin-dynamic-import-vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars).
+Opsi untuk dilewatkan ke [@rollup/plugin-dynamic-import-vars](https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars).
 
 ## build.lib
 
-- **Type:** `{ entry: string | string[] | { [entryAlias: string]: string }, name?: string, formats?: ('es' | 'cjs' | 'umd' | 'iife')[], fileName?: string | ((format: ModuleFormat, entryName: string) => string) }`
-- **Related:** [Library Mode](/guide/build#library-mode)
+- **Tipe:** `{ entry: string | string[] | { [entryAlias: string]: string }, name?: string, formats?: ('es' | 'cjs' | 'umd' | 'iife')[], fileName?: string | ((format: ModuleFormat, entryName: string) => string) }`
+- **Terhubung:** [Mode Perpustakaan](/guide/build#library-mode)
 
-Build as a library. `entry` is required since the library cannot use HTML as entry. `name` is the exposed global variable and is required when `formats` includes `'umd'` or `'iife'`. Default `formats` are `['es', 'umd']`, or `['es', 'cjs']`, if multiple entries are used. `fileName` is the name of the package file output, default `fileName` is the name option of package.json, it can also be defined as function taking the `format` and `entryAlias` as arguments.
+Bangun sebagai perpustakaan. `entry` diperlukan karena perpustakaan tidak dapat menggunakan HTML sebagai entri. `name` adalah variabel global yang diekspos dan diperlukan ketika `formats` mencakup `'umd'` atau `'iife'`. Default `formats` adalah `['es', 'umd']`, atau `['es', 'cjs']`, jika beberapa entri digunakan. `fileName` adalah nama output file paket, default `fileName` adalah opsi nama dari package.json, itu juga dapat didefinisikan sebagai fungsi yang mengambil `format` dan `entryAlias` sebagai argumen.
 
 ## build.manifest
 
-- **Type:** `boolean | string`
+- **Tipe:** `boolean | string`
 - **Default:** `false`
-- **Related:** [Backend Integration](/guide/backend-integration)
+- **Terhubung:** [Integrasi Backend](/guide/backend-integration)
 
-When set to `true`, the build will also generate a `.vite/manifest.json` file that contains a mapping of non-hashed asset filenames to their hashed versions, which can then be used by a server framework to render the correct asset links. When the value is a string, it will be used as the manifest file name.
+Ketika diatur ke `true`, pembangunan juga akan menghasilkan file `.vite/manifest.json` yang berisi pemetaan nama file aset yang tidak terhash dengan versi yang dihash, yang kemudian dapat digunakan oleh kerangka kerja server untuk merender tautan aset yang benar. Ketika nilainya adalah string, itu akan digunakan sebagai nama file manifest.
 
 ## build.ssrManifest
 
-- **Type:** `boolean | string`
+- **Tipe:** `boolean | string`
 - **Default:** `false`
-- **Related:** [Server-Side Rendering](/guide/ssr)
+- **Terkait:** [Rendering di Sisi Server](/guide/ssr)
 
-When set to `true`, the build will also generate an SSR manifest for determining style links and asset preload directives in production. When the value is a string, it will be used as the manifest file name.
+Ketika diatur menjadi `true`, pembangunan juga akan menghasilkan manifes SSR untuk menentukan tautan gaya dan direktif pra-pemuatan aset dalam produksi. Ketika nilai tersebut berupa string, akan digunakan sebagai nama file manifes.
 
 ## build.ssr
 
-- **Type:** `boolean | string`
+- **Tipe:** `boolean | string`
 - **Default:** `false`
-- **Related:** [Server-Side Rendering](/guide/ssr)
+- **Terkait:** [Rendering di Sisi Server](/guide/ssr)
 
-Produce SSR-oriented build. The value can be a string to directly specify the SSR entry, or `true`, which requires specifying the SSR entry via `rollupOptions.input`.
+Menghasilkan pembangunan berorientasi SSR. Nilai dapat berupa string untuk secara langsung menentukan entri SSR, atau `true`, yang memerlukan penentuan entri SSR melalui `rollupOptions.input`.
 
 ## build.ssrEmitAssets
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `false`
 
-During the SSR build, static assets aren't emitted as it is assumed they would be emitted as part of the client build. This option allows frameworks to force emitting them in both the client and SSR build. It is responsibility of the framework to merge the assets with a post build step.
+Selama pembangunan SSR, aset statis tidak dihasilkan karena diasumsikan bahwa mereka akan dihasilkan sebagai bagian dari pembangunan klien. Opsi ini memungkinkan framework untuk memaksa menghasilkan mereka baik dalam pembangunan klien maupun SSR. Tanggung jawab framework untuk menggabungkan aset dengan langkah pembangunan pasca.
 
 ## build.minify
 
-- **Type:** `boolean | 'terser' | 'esbuild'`
-- **Default:** `'esbuild'` for client build, `false` for SSR build
+- **Tipe:** `boolean | 'terser' | 'esbuild'`
+- **Default:** `'esbuild'` untuk pembangunan klien, `false` untuk pembangunan SSR
 
-Set to `false` to disable minification, or specify the minifier to use. The default is [esbuild](https://github.com/evanw/esbuild) which is 20 ~ 40x faster than terser and only 1 ~ 2% worse compression. [Benchmarks](https://github.com/privatenumber/minification-benchmarks)
+Atur menjadi `false` untuk menonaktifkan pemampatan, atau tentukan pemampat yang akan digunakan. Defaultnya adalah [esbuild](https://github.com/evanw/esbuild) yang 20 ~ 40x lebih cepat daripada terser dan hanya 1 ~ 2% lebih buruk kompresinya. [Benchmarks](https://github.com/privatenumber/minification-benchmarks)
 
-Note the `build.minify` option does not minify whitespaces when using the `'es'` format in lib mode, as it removes pure annotations and breaks tree-shaking.
+Perhatikan bahwa opsi `build.minify` tidak memampatkan spasi putih ketika menggunakan format `'es'` dalam mode lib, karena menghapus anotasi murni dan menghancurkan tree-shaking.
 
-Terser must be installed when it is set to `'terser'`.
+Terser harus diinstal saat diatur menjadi `'terser'`.
 
 ```sh
 npm add -D terser
@@ -207,57 +207,57 @@ npm add -D terser
 
 ## build.terserOptions
 
-- **Type:** `TerserOptions`
+- **Tipe:** `TerserOptions`
 
-Additional [minify options](https://terser.org/docs/api-reference#minify-options) to pass on to Terser.
+Opsi pemampatan tambahan [minify options](https://terser.org/docs/api-reference#minify-options) untuk dilewatkan ke Terser.
 
-In addition, you can also pass a `maxWorkers: number` option to specify the max number of workers to spawn. Defaults to the number of CPUs minus 1.
+Selain itu, Anda juga dapat melewati opsi `maxWorkers: number` untuk menentukan jumlah maksimum pekerja yang akan dihasilkan. Defaultnya adalah jumlah CPU dikurangi 1.
 
 ## build.write
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-Set to `false` to disable writing the bundle to disk. This is mostly used in [programmatic `build()` calls](/guide/api-javascript#build) where further post processing of the bundle is needed before writing to disk.
+Atur menjadi `false` untuk menonaktifkan penulisan bundel ke disk. Ini sebagian besar digunakan dalam [panggilan `build()` programatik](/guide/api-javascript#build) di mana proses lanjutan bundel diperlukan sebelum penulisan ke disk.
 
 ## build.emptyOutDir
 
-- **Type:** `boolean`
-- **Default:** `true` if `outDir` is inside `root`
+- **Tipe:** `boolean`
+- **Default:** `true` jika `outDir` berada di dalam `root`
 
-By default, Vite will empty the `outDir` on build if it is inside project root. It will emit a warning if `outDir` is outside of root to avoid accidentally removing important files. You can explicitly set this option to suppress the warning. This is also available via command line as `--emptyOutDir`.
+Secara default, Vite akan mengosongkan `outDir` saat pembangunan jika berada di dalam root proyek. Ini akan mengeluarkan peringatan jika `outDir` berada di luar root untuk menghindari penghapusan file penting secara tidak sengaja. Anda dapat secara eksplisit mengatur opsi ini untuk menekan peringatan. Ini juga tersedia melalui baris perintah sebagai `--emptyOutDir`.
 
 ## build.copyPublicDir
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-By default, Vite will copy files from the `publicDir` into the `outDir` on build. Set to `false` to disable this.
+Secara default, Vite akan menyalin file dari `publicDir` ke dalam `outDir` saat pembangunan. Atur menjadi `false` untuk menonaktifkan ini.
 
 ## build.reportCompressedSize
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-Enable/disable gzip-compressed size reporting. Compressing large output files can be slow, so disabling this may increase build performance for large projects.
+Aktif/nonaktifkan pelaporan ukuran yang diperkecil dengan gzip. Mengompresi file output besar bisa lambat, jadi menonaktifkan ini dapat meningkatkan kinerja pembangunan untuk proyek-proyek besar.
 
 ## build.chunkSizeWarningLimit
 
-- **Type:** `number`
+- **Tipe:** `number`
 - **Default:** `500`
 
-Limit for chunk size warnings (in kB). It is compared against the uncompressed chunk size as the [JavaScript size itself is related to the execution time](https://v8.dev/blog/cost-of-javascript-2019).
+Batas untuk peringatan ukuran chunk (dalam kB). Ini dibandingkan dengan ukuran chunk yang tidak terkompresi karena [ukuran JavaScript sendiri terkait dengan waktu eksekusi](https://v8.dev/blog/cost-of-javascript-2019).
 
 ## build.watch
 
-- **Type:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch)`| null`
+- **Tipe:** [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch)`| null`
 - **Default:** `null`
 
-Set to `{}` to enable rollup watcher. This is mostly used in cases that involve build-only plugins or integrations processes.
+Atur ke `{}` untuk mengaktifkan pemantauan rollup. Ini sebagian besar digunakan dalam kasus-kasus yang melibatkan proses plugin atau integrasi hanya pembangunan.
 
-::: warning Using Vite on Windows Subsystem for Linux (WSL) 2
+::: Peringatan Menggunakan Vite pada Windows Subsystem for Linux (WSL) 2
 
-There are cases that file system watching does not work with WSL2.
-See [`server.watch`](./server-options.md#server-watch) for more details.
+Ada kasus-kasus di mana pemantauan sistem file tidak berfungsi dengan WSL2.
+Lihat [`server.watch`](./server-options.md#server-watch) untuk lebih detail.
 
 :::

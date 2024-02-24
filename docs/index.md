@@ -2,24 +2,24 @@
 layout: home
 
 title: Vite
-titleTemplate: Next Generation Frontend Tooling
+titleTemplate: Alat Pengembangan Frontend Generasi Berikutnya
 
 hero:
   name: Vite
-  text: Next Generation Frontend Tooling
-  tagline: Get ready for a development environment that can finally catch up with you.
+  text: Alat Pengembangan Frontend Generasi Berikutnya
+  tagline: Siapkan lingkungan pengembangan yang akhirnya dapat mengejar Anda.
   image:
     src: /logo-with-shadow.png
     alt: Vite
   actions:
     - theme: brand
-      text: Get Started
+      text: Mulai
       link: /guide/
     - theme: alt
-      text: Why Vite?
+      text: Mengapa Vite?
       link: /guide/why
     - theme: alt
-      text: View on GitHub
+      text: Lihat di GitHub
       link: https://github.com/vitejs/vite
     - theme: brand
       text: 🎉 ViteConf 23!
@@ -27,21 +27,21 @@ hero:
 
 features:
   - icon: 💡
-    title: Instant Server Start
-    details: On demand file serving over native ESM, no bundling required!
+    title: Mulai Server Secara Instan
+    details: Pelayanan file sesuai permintaan melalui ESM asli, tanpa bundling yang diperlukan!
   - icon: ⚡️
-    title: Lightning Fast HMR
-    details: Hot Module Replacement (HMR) that stays fast regardless of app size.
+    title: HMR Sangat Cepat
+    details: Hot Module Replacement (HMR) yang tetap cepat tanpa memandang ukuran aplikasi.
   - icon: 🛠️
-    title: Rich Features
-    details: Out-of-the-box support for TypeScript, JSX, CSS and more.
+    title: Fitur Kaya
+    details: Dukungan langsung untuk TypeScript, JSX, CSS, dan lainnya.
   - icon: 📦
-    title: Optimized Build
-    details: Pre-configured Rollup build with multi-page and library mode support.
+    title: Pembangunan yang Dioptimalkan
+    details: Pembangunan Rollup yang telah dikonfigurasi sebelumnya dengan dukungan mode multi-halaman dan mode perpustakaan.
   - icon: 🔩
-    title: Universal Plugins
-    details: Rollup-superset plugin interface shared between dev and build.
+    title: Plugin Universal
+    details: Antarmuka plugin Rollup-superset yang dibagikan antara pengembangan dan pembangunan.
   - icon: 🔑
-    title: Fully Typed APIs
-    details: Flexible programmatic APIs with full TypeScript typing.
+    title: API Sepenuhnya Diketik
+    details: API programatik yang fleksibel dengan pengetikan TypeScript lengkap.
 ---

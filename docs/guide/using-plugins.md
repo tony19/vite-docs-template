@@ -1,10 +1,10 @@
-# Using Plugins
+# Menggunakan Plugin
 
-Vite can be extended using plugins, which are based on Rollup's well-designed plugin interface with a few extra Vite-specific options. This means that Vite users can rely on the mature ecosystem of Rollup plugins, while also being able to extend the dev server and SSR functionality as needed.
+Vite dapat diperluas menggunakan plugin, yang didasarkan pada antarmuka plugin Rollup yang dirancang dengan baik dengan beberapa opsi khusus Vite tambahan. Hal ini berarti pengguna Vite dapat mengandalkan ekosistem matang plugin Rollup, sambil juga dapat memperluas fungsionalitas server pengembangan dan SSR sesuai kebutuhan.
 
-## Adding a Plugin
+## Menambahkan Sebuah Plugin
 
-To use a plugin, it needs to be added to the `devDependencies` of the project and included in the `plugins` array in the `vite.config.js` config file. For example, to provide support for legacy browsers, the official [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) can be used:
+Untuk menggunakan sebuah plugin, plugin tersebut perlu ditambahkan ke `devDependencies` dari proyek dan disertakan dalam array `plugins` dalam file konfigurasi `vite.config.js`. Sebagai contoh, untuk memberikan dukungan untuk browser legacy, plugin resmi [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy) dapat digunakan:
 
 ```
 $ npm add -D @vitejs/plugin-legacy
@@ -24,27 +24,27 @@ export default defineConfig({
 })
 ```
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` juga menerima preset termasuk beberapa plugin sebagai satu elemen tunggal. Ini berguna untuk fitur kompleks (seperti integrasi kerangka kerja) yang diimplementasikan menggunakan beberapa plugin. Array tersebut akan di-flatten secara internal.
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Plugin yang falsy akan diabaikan, yang dapat digunakan untuk dengan mudah mengaktifkan atau menonaktifkan plugin.
 
-## Finding Plugins
+## Menemukan Plugin
 
-:::tip NOTE
-Vite aims to provide out-of-the-box support for common web development patterns. Before searching for a Vite or compatible Rollup plugin, check out the [Features Guide](../guide/features.md). A lot of the cases where a plugin would be needed in a Rollup project are already covered in Vite.
+:::tip CATATAN
+Vite bertujuan untuk menyediakan dukungan out-of-the-box untuk pola pengembangan web umum. Sebelum mencari plugin Vite atau plugin Rollup yang kompatibel, periksa [Panduan Fitur](../guide/features.md). Banyak kasus di mana sebuah plugin akan dibutuhkan dalam proyek Rollup sudah tercakup dalam Vite.
 :::
 
-Check out the [Plugins section](../plugins/) for information about official plugins. Community plugins are listed in [awesome-vite](https://github.com/vitejs/awesome-vite#plugins).
+Periksa bagian [Plugins](../plugins/) untuk informasi tentang plugin resmi. Plugin komunitas terdaftar di [awesome-vite](https://github.com/vitejs/awesome-vite#plugins). Untuk plugin Rollup yang kompatibel, periksa [Vite Rollup Plugins](https://vite-rollup-plugins.patak.dev) untuk daftar plugin resmi Rollup yang kompatibel dengan instruksi penggunaan atau [Bagian Kompatibilitas Plugin Rollup](../guide/api-plugin#rollup-plugin-compatibility) jika tidak terdaftar di sana.
 
-You can also find plugins that follow the [recommended conventions](./api-plugin.md#conventions) using a [npm search for vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) for Vite plugins or a [npm search for rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) for Rollup plugins.
+Anda juga dapat menemukan plugin yang mengikuti [konvensi yang direkomendasikan](./api-plugin.md#conventions) menggunakan [pencarian npm untuk vite-plugin](https://www.npmjs.com/search?q=vite-plugin&ranking=popularity) untuk plugin Vite atau [pencarian npm untuk rollup-plugin](https://www.npmjs.com/search?q=rollup-plugin&ranking=popularity) untuk plugin Rollup.
 
-## Enforcing Plugin Ordering
+## Memaksa Urutan Plugin
 
-For compatibility with some Rollup plugins, it may be needed to enforce the order of the plugin or only apply at build time. This should be an implementation detail for Vite plugins. You can enforce the position of a plugin with the `enforce` modifier:
+Untuk kompatibilitas dengan beberapa plugin Rollup, mungkin diperlukan untuk memaksa urutan plugin atau hanya menerapkan pada waktu pembangunan. Hal ini seharusnya menjadi detail implementasi untuk plugin Vite. Anda dapat memaksa posisi sebuah plugin dengan modifikasi `enforce`:
 
-- `pre`: invoke plugin before Vite core plugins
-- default: invoke plugin after Vite core plugins
-- `post`: invoke plugin after Vite build plugins
+- `pre`: memanggil plugin sebelum plugin inti Vite
+- default: memanggil plugin setelah plugin inti Vite
+- `post`: memanggil plugin setelah plugin pembangunan Vite
 
 ```js
 // vite.config.js
@@ -61,11 +61,11 @@ export default defineConfig({
 })
 ```
 
-Check out [Plugins API Guide](./api-plugin.md#plugin-ordering) for detailed information.
+Periksa [Panduan API Plugin](./api-plugin.md#plugin-ordering) untuk informasi detail, dan perhatikan label `enforce` dan instruksi penggunaan untuk plugin populer dalam daftar kompatibilitas [Vite Rollup Plugins](https://vite-rollup-plugins.patak.dev).
 
-## Conditional Application
+## Aplikasi Kondisional
 
-By default, plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+Secara default, plugin dipanggil baik untuk serve maupun build. Dalam kasus di mana sebuah plugin perlu diterapkan secara kondisional hanya selama serve atau build, gunakan properti `apply` untuk hanya memanggil mereka selama `'build'` atau `'serve'`:
 
 ```js
 // vite.config.js
@@ -82,6 +82,6 @@ export default defineConfig({
 })
 ```
 
-## Building Plugins
+## Membangun Plugin
 
-Check out the [Plugins API Guide](./api-plugin.md) for documentation about creating plugins.
+Periksa [Panduan API Plugin](./api-plugin.md) untuk dokumentasi tentang membuat plugin.

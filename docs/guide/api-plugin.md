@@ -1,46 +1,46 @@
-# Plugin API
+# API Plugin
 
-Vite plugins extends Rollup's well-designed plugin interface with a few extra Vite-specific options. As a result, you can write a Vite plugin once and have it work for both dev and build.
+Plugin Vite memperluas antarmuka plugin Rollup yang dirancang dengan baik dengan beberapa opsi khusus Vite tambahan. Sebagai hasilnya, Anda dapat menulis plugin Vite sekali dan membuatnya berfungsi untuk pengembangan dan pembangunan.
 
-**It is recommended to go through [Rollup's plugin documentation](https://rollupjs.org/plugin-development/) first before reading the sections below.**
+**Disarankan untuk membaca terlebih dahulu [dokumentasi plugin Rollup](https://rollupjs.org/plugin-development/) sebelum membaca bagian di bawah ini.**
 
-## Authoring a Plugin
+## Menulis Sebuah Plugin
 
-Vite strives to offer established patterns out of the box, so before creating a new plugin make sure that you check the [Features guide](https://vitejs.dev/guide/features) to see if your need is covered. Also review available community plugins, both in the form of a [compatible Rollup plugin](https://github.com/rollup/awesome) and [Vite Specific plugins](https://github.com/vitejs/awesome-vite#plugins)
+Vite berusaha untuk menawarkan pola yang sudah mapan secara otomatis, jadi sebelum membuat plugin baru pastikan Anda memeriksa [panduan Fitur](https://vitejs.dev/guide/features) untuk melihat apakah kebutuhan Anda sudah tercakup. Juga tinjau plugin komunitas yang tersedia, baik dalam bentuk [plugin Rollup yang kompatibel](https://github.com/rollup/awesome) maupun [Plugin Khusus Vite](https://github.com/vitejs/awesome-vite#plugins).
 
-When creating a plugin, you can inline it in your `vite.config.js`. There is no need to create a new package for it. Once you see that a plugin was useful in your projects, consider sharing it to help others [in the ecosystem](https://chat.vitejs.dev).
+Ketika membuat sebuah plugin, Anda dapat menempatkannya secara langsung di dalam `vite.config.js`. Tidak perlu membuat paket baru untuk itu. Setelah Anda melihat bahwa sebuah plugin berguna dalam proyek Anda, pertimbangkan untuk membagikannya untuk membantu orang lain [di ekosistem](https://chat.vitejs.dev).
 
 ::: tip
-When learning, debugging, or authoring plugins, we suggest including [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) in your project. It allows you to inspect the intermediate state of Vite plugins. After installing, you can visit `localhost:5173/__inspect/` to inspect the modules and transformation stack of your project. Check out install instructions in the [vite-plugin-inspect docs](https://github.com/antfu/vite-plugin-inspect).
+Ketika belajar, debugging, atau menulis plugin, disarankan untuk menyertakan [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect) dalam proyek Anda. Ini memungkinkan Anda untuk memeriksa status perantara plugin Vite. Setelah menginstal, Anda dapat mengunjungi `localhost:5173/__inspect/` untuk memeriksa modul dan tumpukan transformasi proyek Anda. Periksa instruksi instalasi di [dokumentasi vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect).
 ![vite-plugin-inspect](/images/vite-plugin-inspect.png)
 :::
 
-## Conventions
+## Konvensi
 
-If the plugin doesn't use Vite specific hooks and can be implemented as a [Compatible Rollup Plugin](#rollup-plugin-compatibility), then it is recommended to use the [Rollup Plugin naming conventions](https://rollupjs.org/plugin-development/#conventions).
+Jika plugin tidak menggunakan kait khusus Vite dan dapat diimplementasikan sebagai [Plugin Rollup Kompatibel](#rollup-plugin-compatibility), maka disarankan untuk menggunakan [Konvensi Penamaan Plugin Rollup](https://rollupjs.org/plugin-development/#conventions).
 
-- Rollup Plugins should have a clear name with `rollup-plugin-` prefix.
-- Include `rollup-plugin` and `vite-plugin` keywords in package.json.
+- Plugin Rollup harus memiliki nama yang jelas dengan awalan `rollup-plugin-`.
+- Sertakan kata kunci `rollup-plugin` dan `vite-plugin` di dalam package.json.
 
-This exposes the plugin to be also used in pure Rollup or WMR based projects
+Ini mengekspos plugin agar juga dapat digunakan dalam proyek Rollup murni atau berbasis WMR.
 
-For Vite only plugins
+Untuk plugin hanya untuk Vite
 
-- Vite Plugins should have a clear name with `vite-plugin-` prefix.
-- Include `vite-plugin` keyword in package.json.
-- Include a section in the plugin docs detailing why it is a Vite only plugin (for example, it uses Vite specific plugin hooks).
+- Plugin Vite harus memiliki nama yang jelas dengan awalan `vite-plugin-`.
+- Sertakan kata kunci `vite-plugin` di dalam package.json.
+- Sertakan bagian dalam dokumen plugin yang menjelaskan mengapa itu adalah plugin khusus Vite (misalnya, menggunakan kait plugin khusus Vite).
 
-If your plugin is only going to work for a particular framework, its name should be included as part of the prefix
+Jika plugin Anda hanya akan berfungsi untuk kerangka kerja tertentu, namanya harus disertakan sebagai bagian dari awalan
 
-- `vite-plugin-vue-` prefix for Vue Plugins
-- `vite-plugin-react-` prefix for React Plugins
-- `vite-plugin-svelte-` prefix for Svelte Plugins
+- Awalan `vite-plugin-vue-` untuk Plugin Vue
+- Awalan `vite-plugin-react-` untuk Plugin React
+- Awalan `vite-plugin-svelte-` untuk Plugin Svelte
 
-See also [Virtual Modules Convention](#virtual-modules-convention).
+Lihat juga [Konvensi Modul Virtual](#virtual-modules-convention).
 
-## Plugins config
+## Konfigurasi Plugin
 
-Users will add plugins to the project `devDependencies` and configure them using the `plugins` array option.
+Pengguna akan menambahkan plugin ke `devDependencies` proyek dan mengonfigurasikannya menggunakan opsi array `plugins`.
 
 ```js
 // vite.config.js
@@ -52,9 +52,9 @@ export default defineConfig({
 })
 ```
 
-Falsy plugins will be ignored, which can be used to easily activate or deactivate plugins.
+Plugin yang bernilai falsy akan diabaikan, yang dapat digunakan untuk dengan mudah mengaktifkan atau menonaktifkan plugin.
 
-`plugins` also accepts presets including several plugins as a single element. This is useful for complex features (like framework integration) that are implemented using several plugins. The array will be flattened internally.
+`plugins` juga menerima preset termasuk beberapa plugin sebagai elemen tunggal. Ini berguna untuk fitur yang kompleks (seperti integrasi kerangka kerja) yang diimplementasikan menggunakan beberapa plugin. Array akan diratakan secara internal.
 
 ```js
 // framework-plugin
@@ -76,13 +76,13 @@ export default defineConfig({
 })
 ```
 
-## Simple Examples
+## Contoh Sederhana
 
 :::tip
-It is common convention to author a Vite/Rollup plugin as a factory function that returns the actual plugin object. The function can accept options which allows users to customize the behavior of the plugin.
+Sudah menjadi konvensi umum untuk menulis plugin Vite/Rollup sebagai fungsi pabrik yang mengembalikan objek plugin aktual. Fungsi tersebut dapat menerima opsi yang memungkinkan pengguna menyesuaikan perilaku plugin.
 :::
 
-### Transforming Custom File Types
+### Mengubah Jenis File Kustom
 
 ```js
 const fileRegex = /\.(my-file-ext)$/
@@ -95,7 +95,7 @@ export default function myPlugin() {
       if (fileRegex.test(id)) {
         return {
           code: compileFileToJS(src),
-          map: null, // provide source map if available
+          map: null, // berikan peta sumber jika tersedia
         }
       }
     },
@@ -103,13 +103,13 @@ export default function myPlugin() {
 }
 ```
 
-### Importing a Virtual File
+### Mengimpor Modul Virtual
 
-See the example in the [next section](#virtual-modules-convention).
+Lihat contoh di [bagian selanjutnya](#virtual-modules-convention).
 
-## Virtual Modules Convention
+## Konvensi Modul Virtual
 
-Virtual modules are a useful scheme that allows you to pass build time information to the source files using normal ESM import syntax.
+Modul virtual adalah skema yang berguna yang memungkinkan Anda untuk meneruskan informasi waktu pembangunan ke file sumber menggunakan sintaks impor ESM normal.
 
 ```js
 export default function myPlugin() {
@@ -117,7 +117,7 @@ export default function myPlugin() {
   const resolvedVirtualModuleId = '\0' + virtualModuleId
 
   return {
-    name: 'my-plugin', // required, will show up in warnings and errors
+    name: 'my-plugin', // diperlukan, akan muncul dalam peringatan dan kesalahan
     resolveId(id) {
       if (id === virtualModuleId) {
         return resolvedVirtualModuleId
@@ -132,7 +132,7 @@ export default function myPlugin() {
 }
 ```
 
-Which allows importing the module in JavaScript:
+Yang memungkinkan mengimpor modul dalam JavaScript:
 
 ```js
 import { msg } from 'virtual:my-module'
@@ -140,53 +140,53 @@ import { msg } from 'virtual:my-module'
 console.log(msg)
 ```
 
-Virtual modules in Vite (and Rollup) are prefixed with `virtual:` for the user-facing path by convention. If possible the plugin name should be used as a namespace to avoid collisions with other plugins in the ecosystem. For example, a `vite-plugin-posts` could ask users to import a `virtual:posts` or `virtual:posts/helpers` virtual modules to get build time information. Internally, plugins that use virtual modules should prefix the module ID with `\0` while resolving the id, a convention from the rollup ecosystem. This prevents other plugins from trying to process the id (like node resolution), and core features like sourcemaps can use this info to differentiate between virtual modules and regular files. `\0` is not a permitted char in import URLs so we have to replace them during import analysis. A `\0{id}` virtual id ends up encoded as `/@id/__x00__{id}` during dev in the browser. The id will be decoded back before entering the plugins pipeline, so this is not seen by plugins hooks code.
+Modul virtual dalam Vite (dan Rollup) diawali dengan `virtual:` untuk jalur yang terlihat oleh pengguna menurut konvensi. Jika memungkinkan, nama plugin harus digunakan sebagai namespace untuk menghindari tabrakan dengan plugin lain dalam ekosistem. Sebagai contoh, sebuah `vite-plugin-posts` bisa meminta pengguna untuk mengimpor modul virtual `virtual:posts` atau `virtual:posts/helpers` untuk mendapatkan informasi waktu pembangunan. Secara internal, plugin yang menggunakan modul virtual harus menambahkan awalan `\0` pada ID modul, sebuah konvensi dari ekosistem rollup. Hal ini mencegah plugin lain mencoba memproses ID (seperti resolusi node), dan fitur inti seperti sourcemaps dapat menggunakan informasi ini untuk membedakan antara modul virtual dan file reguler. `\0` bukan karakter yang diperbolehkan dalam URL impor sehingga kita harus menggantinya selama analisis impor. Sebuah id virtual `\0{id}` akan dienkripsi sebagai `/@id/__x00__{id}` selama pengembangan di browser. Id akan didekode kembali sebelum memasuki pipeline plugin, sehingga ini tidak terlihat oleh kode hook plugin.
 
-Note that modules directly derived from a real file, as in the case of a script module in a Single File Component (like a .vue or .svelte SFC) don't need to follow this convention. SFCs generally generate a set of submodules when processed but the code in these can be mapped back to the filesystem. Using `\0` for these submodules would prevent sourcemaps from working correctly.
+Perlu diingat bahwa modul yang langsung berasal dari file nyata, seperti dalam kasus modul skrip dalam Komponen File Tunggal (seperti .vue atau .svelte SFC) tidak perlu mengikuti konvensi ini. SFC pada umumnya menghasilkan serangkaian submodul saat diproses tetapi kode di dalamnya dapat dipetakan kembali ke sistem file. Menggunakan `\0` untuk submodul ini akan mencegah sourcemaps berfungsi dengan benar.
 
-## Universal Hooks
+## Hook Universal
 
-During dev, the Vite dev server creates a plugin container that invokes [Rollup Build Hooks](https://rollupjs.org/plugin-development/#build-hooks) the same way Rollup does it.
+Selama pengembangan, server pengembangan Vite membuat kontainer plugin yang memanggil [Rollup Build Hooks](https://rollupjs.org/plugin-development/#build-hooks) dengan cara yang sama seperti yang dilakukan oleh Rollup.
 
-The following hooks are called once on server start:
+Hook-hook berikut dipanggil sekali saat server dimulai:
 
 - [`options`](https://rollupjs.org/plugin-development/#options)
 - [`buildStart`](https://rollupjs.org/plugin-development/#buildstart)
 
-The following hooks are called on each incoming module request:
+Hook-hook berikut dipanggil pada setiap permintaan modul yang masuk:
 
 - [`resolveId`](https://rollupjs.org/plugin-development/#resolveid)
 - [`load`](https://rollupjs.org/plugin-development/#load)
 - [`transform`](https://rollupjs.org/plugin-development/#transform)
 
-These hooks also have an extended `options` parameter with additional Vite-specific properties. You can read more in the [SSR documentation](/guide/ssr#ssr-specific-plugin-logic).
+Hook-hook ini juga memiliki parameter `options` yang diperpanjang dengan properti khusus Vite tambahan. Anda dapat membaca lebih lanjut di [dokumentasi SSR](/guide/ssr#ssr-specific-plugin-logic).
 
-Some `resolveId` calls' `importer` value may be an absolute path for a generic `index.html` at root as it's not always possible to derive the actual importer due to Vite's unbundled dev server pattern. For imports handled within Vite's resolve pipeline, the importer can be tracked during the import analysis phase, providing the correct `importer` value.
+Beberapa panggilan `resolveId` mungkin memiliki nilai `importer` berupa path absolut untuk `index.html` generik di root karena tidak selalu memungkinkan untuk mendapatkan `importer` aktual karena pola server pengembangan yang tidak terikat Vite. Untuk impor yang ditangani dalam pipeline resolusi Vite, `importer` dapat dilacak selama fase analisis impor, memberikan nilai `importer` yang benar.
 
-The following hooks are called when the server is closed:
+Hook-hook berikut dipanggil saat server ditutup:
 
 - [`buildEnd`](https://rollupjs.org/plugin-development/#buildend)
 - [`closeBundle`](https://rollupjs.org/plugin-development/#closebundle)
 
-Note that the [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) hook is **not** called during dev, because Vite avoids full AST parses for better performance.
+Perlu dicatat bahwa hook [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) **tidak** dipanggil selama pengembangan, karena Vite menghindari penguraian AST penuh untuk kinerja yang lebih baik.
 
-[Output Generation Hooks](https://rollupjs.org/plugin-development/#output-generation-hooks) (except `closeBundle`) are **not** called during dev. You can think of Vite's dev server as only calling `rollup.rollup()` without calling `bundle.generate()`.
+[Hook-hook Generasi Output](https://rollupjs.org/plugin-development/#output-generation-hooks) (kecuali `closeBundle`) **tidak** dipanggil selama pengembangan. Anda dapat menganggap server pengembangan Vite hanya memanggil `rollup.rollup()` tanpa memanggil `bundle.generate()`.
 
-## Vite Specific Hooks
+## Hook Khusus Vite
 
-Vite plugins can also provide hooks that serve Vite-specific purposes. These hooks are ignored by Rollup.
+Plugin Vite juga dapat menyediakan hook yang melayani tujuan khusus Vite. Hook-hook ini diabaikan oleh Rollup.
 
 ### `config`
 
-- **Type:** `(config: UserConfig, env: { mode: string, command: string }) => UserConfig | null | void`
-- **Kind:** `async`, `sequential`
+- **Tipe:** `(config: UserConfig, env: { mode: string, command: string }) => UserConfig | null | void`
+- **Jenis:** `async`, `sequential`
 
-  Modify Vite config before it's resolved. The hook receives the raw user config (CLI options merged with config file) and the current config env which exposes the `mode` and `command` being used. It can return a partial config object that will be deeply merged into existing config, or directly mutate the config (if the default merging cannot achieve the desired result).
+  Modifikasi konfigurasi Vite sebelum diresolusi. Hook ini menerima konfigurasi pengguna mentah (opsi CLI digabungkan dengan file konfigurasi) dan lingkungan konfigurasi saat ini yang mengekspos `mode` dan `command` yang digunakan. Ini dapat mengembalikan objek konfigurasi parsial yang akan digabungkan secara mendalam ke dalam konfigurasi yang ada, atau langsung memutasi konfigurasi (jika penggabungan default tidak dapat mencapai hasil yang diinginkan).
 
-  **Example:**
+  **Contoh:**
 
   ```js
-  // return partial config (recommended)
+  // kembalikan konfigurasi parsial (direkomendasikan)
   const partialConfigPlugin = () => ({
     name: 'return-partial',
     config: () => ({
@@ -198,7 +198,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     }),
   })
 
-  // mutate the config directly (use only when merging doesn't work)
+  // ubah konfigurasi langsung (gunakan hanya jika penggabungan tidak berhasil)
   const mutateConfigPlugin = () => ({
     name: 'mutate-config',
     config(config, { command }) {
@@ -209,18 +209,18 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   })
   ```
 
-  ::: warning Note
-  User plugins are resolved before running this hook so injecting other plugins inside the `config` hook will have no effect.
+  ::: warning Catatan
+  Plugin pengguna diresolusi sebelum menjalankan hook ini sehingga menyuntikkan plugin lain di dalam hook `config` tidak akan memiliki efek apa pun.
   :::
 
 ### `configResolved`
 
-- **Type:** `(config: ResolvedConfig) => void | Promise<void>`
-- **Kind:** `async`, `parallel`
+- **Tipe:** `(config: ResolvedConfig) => void | Promise<void>`
+- **Jenis:** `async`, `parallel`
 
-  Called after the Vite config is resolved. Use this hook to read and store the final resolved config. It is also useful when the plugin needs to do something different based on the command being run.
+  Dipanggil setelah konfigurasi Vite diresolusi. Gunakan hook ini untuk membaca dan menyimpan konfigurasi akhir yang sudah diresolusi. Ini juga berguna ketika plugin perlu melakukan sesuatu yang berbeda berdasarkan perintah yang dijalankan.
 
-  **Example:**
+  **Contoh:**
 
   ```js
   const examplePlugin = () => {
@@ -230,65 +230,64 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
       name: 'read-config',
 
       configResolved(resolvedConfig) {
-        // store the resolved config
+        // menyimpan konfigurasi yang sudah diresolusi
         config = resolvedConfig
       },
 
-      // use stored config in other hooks
+      // menggunakan konfigurasi yang disimpan di hook lainnya
       transform(code, id) {
         if (config.command === 'serve') {
-          // dev: plugin invoked by dev server
+          // dev: plugin dipanggil oleh server dev
         } else {
-          // build: plugin invoked by Rollup
+          // build: plugin dipanggil oleh Rollup
         }
       },
     }
   }
   ```
 
-  Note that the `command` value is `serve` in dev (in the cli `vite`, `vite dev`, and `vite serve` are aliases).
+  Perhatikan bahwa nilai `command` adalah `serve` dalam mode pengembangan (di CLI, `vite`, `vite dev`, dan `vite serve` adalah alias).
 
 ### `configureServer`
 
-- **Type:** `(server: ViteDevServer) => (() => void) | void | Promise<(() => void) | void>`
-- **Kind:** `async`, `sequential`
-- **See also:** [ViteDevServer](./api-javascript#vitedevserver)
+- **Tipe:** `(server: ViteDevServer) => (() => void) | void | Promise<(() => void) | void>`
+- **Jenis:** `async`, `sequential`
+- **Lihat juga:** [ViteDevServer](./api-javascript#vitedevserver)
 
-  Hook for configuring the dev server. The most common use case is adding custom middlewares to the internal [connect](https://github.com/senchalabs/connect) app:
+  Hook untuk mengkonfigurasi server pengembangan. Kasus penggunaan paling umum adalah menambahkan middleware kustom ke aplikasi internal [connect](https://github.com/senchalabs/connect):
 
   ```js
   const myPlugin = () => ({
     name: 'configure-server',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        // custom handle request...
+        // penanganan permintaan kustom...
       })
     },
   })
   ```
 
-  **Injecting Post Middleware**
+  **Menyisipkan Middleware Post**
 
-  The `configureServer` hook is called before internal middlewares are installed, so the custom middlewares will run before internal middlewares by default. If you want to inject a middleware **after** internal middlewares, you can return a function from `configureServer`, which will be called after internal middlewares are installed:
+  Hook `configureServer` dipanggil sebelum middleware internal diinstal, sehingga middleware kustom akan berjalan sebelum middleware internal secara default. Jika Anda ingin menyisipkan middleware **setelah** middleware internal, Anda dapat mengembalikan sebuah fungsi dari `configureServer`, yang akan dipanggil setelah middleware internal diinstal:
 
   ```js
   const myPlugin = () => ({
     name: 'configure-server',
     configureServer(server) {
-      // return a post hook that is called after internal middlewares are
-      // installed
+      // kembalikan hook pasca yang dipanggil setelah middleware internal diinstal
       return () => {
         server.middlewares.use((req, res, next) => {
-          // custom handle request...
+          // penanganan permintaan kustom...
         })
       }
     },
   })
   ```
 
-  **Storing Server Access**
+  **Menyimpan Akses Server**
 
-  In some cases, other plugin hooks may need access to the dev server instance (e.g. accessing the web socket server, the file system watcher, or the module graph). This hook can also be used to store the server instance for access in other hooks:
+  Dalam beberapa kasus, hook plugin lain mungkin memerlukan akses ke instance server pengembangan (misalnya, mengakses server web socket, penjaga sistem file, atau grafik modul). Hook ini juga dapat digunakan untuk menyimpan instance server untuk diakses di hook lain:
 
   ```js
   const myPlugin = () => {
@@ -300,14 +299,14 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
       },
       transform(code, id) {
         if (server) {
-          // use server...
+          // menggunakan server...
         }
       },
     }
   }
   ```
 
-  Note `configureServer` is not called when running the production build so your other hooks need to guard against its absence.
+  Perhatikan bahwa `configureServer` tidak dipanggil saat menjalankan pembangunan produksi sehingga hook lain Anda perlu mengantisipasi ketidakhadirannya.
 
 ### `configurePreviewServer`
 
@@ -315,17 +314,16 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
 - **Kind:** `async`, `sequential`
 - **See also:** [PreviewServer](./api-javascript#previewserver)
 
-  Same as [`configureServer`](/guide/api-plugin.html#configureserver) but for the preview server. Similarly to `configureServer`, the `configurePreviewServer` hook is called before other middlewares are installed. If you want to inject a middleware **after** other middlewares, you can return a function from `configurePreviewServer`, which will be called after internal middlewares are installed:
+  Sama seperti [`configureServer`](/guide/api-plugin.html#configureserver) namun untuk server pratinjau. Serupa dengan `configureServer`, hook `configurePreviewServer` dipanggil sebelum middlewares lain diinstal. Jika Anda ingin menyisipkan sebuah middleware **setelah** middlewares lain, Anda dapat mengembalikan sebuah fungsi dari `configurePreviewServer`, yang akan dipanggil setelah middlewares internal diinstal:
 
   ```js
   const myPlugin = () => ({
     name: 'configure-preview-server',
     configurePreviewServer(server) {
-      // return a post hook that is called after other middlewares are
-      // installed
+      // kembalikan hook pasca yang dipanggil setelah middlewares lain diinstal
       return () => {
         server.middlewares.use((req, res, next) => {
-          // custom handle request...
+          // penanganan permintaan kustom...
         })
       }
     },
@@ -334,20 +332,20 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
 
 ### `transformIndexHtml`
 
-- **Type:** `IndexHtmlTransformHook | { order?: 'pre' | 'post', handler: IndexHtmlTransformHook }`
-- **Kind:** `async`, `sequential`
+- **Tipe:** `IndexHtmlTransformHook | { order?: 'pre' | 'post', handler: IndexHtmlTransformHook }`
+- **Jenis:** `async`, `sequential`
 
-  Dedicated hook for transforming HTML entry point files such as `index.html`. The hook receives the current HTML string and a transform context. The context exposes the [`ViteDevServer`](./api-javascript#vitedevserver) instance during dev, and exposes the Rollup output bundle during build.
+  Hook khusus untuk mengubah berkas titik masuk HTML seperti `index.html`. Hook ini menerima string HTML saat ini dan konteks transformasi. Konteks ini mengekspos instance [`ViteDevServer`](./api-javascript#vitedevserver) selama pengembangan, dan mengekspos bundel keluaran Rollup selama pembangunan.
 
-  The hook can be async and can return one of the following:
+  Hook dapat bersifat async dan dapat mengembalikan salah satu dari berikut ini:
 
-  - Transformed HTML string
-  - An array of tag descriptor objects (`{ tag, attrs, children }`) to inject to the existing HTML. Each tag can also specify where it should be injected to (default is prepending to `<head>`)
-  - An object containing both as `{ html, tags }`
+  - String HTML yang telah diubah
+  - Sebuah array objek deskriptor tag (`{ tag, attrs, children }`) untuk disisipkan ke HTML yang ada. Setiap tag juga dapat menentukan di mana harus disisipkan (defaultnya adalah di awal `<head>`)
+  - Sebuah objek yang berisi keduanya sebagai `{ html, tags }`
 
-  By default `order` is `undefined`, with this hook applied after the HTML has been transformed. In order to inject a script that should go through the Vite plugins pipeline, `order: 'pre'` will apply the hook before processing the HTML. `order: 'post'` applies the hook after all hooks with `order` undefined are applied.
+  Secara default `order` adalah `undefined`, dengan hook ini diterapkan setelah HTML telah diubah. Untuk menyisipkan sebuah skrip yang harus melewati pipeline plugin Vite, `order: 'pre'` akan menerapkan hook sebelum memproses HTML. `order: 'post'` menerapkan hook setelah semua hook dengan `order` yang tidak ditentukan diterapkan.
 
-  **Basic Example:**
+  **Contoh Dasar:**
 
   ```js
   const htmlPlugin = () => {
@@ -363,7 +361,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   }
   ```
 
-  **Full Hook Signature:**
+  **Tanda Tangan Hook Lengkap:**
 
   ```ts
   type IndexHtmlTransformHook = (
@@ -403,7 +401,7 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
 
 - **Type:** `(ctx: HmrContext) => Array<ModuleNode> | void | Promise<Array<ModuleNode> | void>`
 
-  Perform custom HMR update handling. The hook receives a context object with the following signature:
+  Melakukan penanganan pembaruan HMR kustom. Hook menerima objek konteks dengan tanda tangan berikut:
 
   ```ts
   interface HmrContext {
@@ -415,15 +413,15 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
   }
   ```
 
-  - `modules` is an array of modules that are affected by the changed file. It's an array because a single file may map to multiple served modules (e.g. Vue SFCs).
+  - `modules` adalah array modul yang terpengaruh oleh perubahan berkas. Ini adalah array karena satu berkas dapat dipetakan ke beberapa modul yang disajikan (misalnya SFC Vue).
 
-  - `read` is an async read function that returns the content of the file. This is provided because on some systems, the file change callback may fire too fast before the editor finishes updating the file and direct `fs.readFile` will return empty content. The read function passed in normalizes this behavior.
+  - `read` adalah fungsi baca async yang mengembalikan konten berkas. Ini disediakan karena pada beberapa sistem, pemanggilan kembali perubahan berkas mungkin terlalu cepat sebelum editor selesai memperbarui berkas dan `fs.readFile` langsung akan mengembalikan konten kosong. Fungsi baca yang dilewatkan dalam normalisasi perilaku ini.
 
-  The hook can choose to:
+  Hook dapat memilih untuk:
 
-  - Filter and narrow down the affected module list so that the HMR is more accurate.
+  - Memfilter dan mempersempit daftar modul yang terpengaruh sehingga HMR lebih akurat.
 
-  - Return an empty array and perform complete custom HMR handling by sending custom events to the client (example uses `server.hot` which was introduced in Vite 5.1, it is recommended to also use `server.ws` if you support lower versions):
+  - Mengembalikan array kosong dan melakukan penanganan HMR kustom lengkap dengan mengirimkan acara kustom ke klien (contoh menggunakan `server.hot` yang diperkenalkan di Vite 5.1, disarankan juga menggunakan `server.ws` jika Anda mendukung versi yang lebih rendah):
 
     ```js
     handleHotUpdate({ server }) {
@@ -436,62 +434,62 @@ Vite plugins can also provide hooks that serve Vite-specific purposes. These hoo
     }
     ```
 
-    Client code should register corresponding handler using the [HMR API](./api-hmr) (this could be injected by the same plugin's `transform` hook):
+    Kode klien harus mendaftarkan penangan yang sesuai menggunakan [API HMR](./api-hmr) (ini bisa disisipkan oleh hook `transform` plugin yang sama):
 
     ```js
     if (import.meta.hot) {
       import.meta.hot.on('special-update', (data) => {
-        // perform custom update
+        // melakukan pembaruan kustom
       })
     }
     ```
 
-## Plugin Ordering
+## Urutan Plugin
 
-A Vite plugin can additionally specify an `enforce` property (similar to webpack loaders) to adjust its application order. The value of `enforce` can be either `"pre"` or `"post"`. The resolved plugins will be in the following order:
+Sebuah plugin Vite dapat secara tambahan menentukan properti `enforce` (serupa dengan loader webpack) untuk menyesuaikan urutan aplikasinya. Nilai dari `enforce` bisa berupa `"pre"` atau `"post"`. Plugin yang diselesaikan akan berada dalam urutan berikut:
 
 - Alias
-- User plugins with `enforce: 'pre'`
-- Vite core plugins
-- User plugins without enforce value
-- Vite build plugins
-- User plugins with `enforce: 'post'`
-- Vite post build plugins (minify, manifest, reporting)
+- Plugin pengguna dengan `enforce: 'pre'`
+- Plugin inti Vite
+- Plugin pengguna tanpa nilai enforce
+- Plugin pembangunan Vite
+- Plugin pengguna dengan `enforce: 'post'`
+- Plugin pembangunan Vite setelah build (minify, manifest, pelaporan)
 
-## Conditional Application
+## Aplikasi Bersyarat
 
-By default plugins are invoked for both serve and build. In cases where a plugin needs to be conditionally applied only during serve or build, use the `apply` property to only invoke them during `'build'` or `'serve'`:
+Secara default, plugin dipanggil baik untuk serve maupun build. Dalam kasus di mana sebuah plugin perlu diterapkan secara bersyarat hanya selama serve atau build, gunakan properti `apply` untuk hanya memanggilnya selama `'build'` atau `'serve'`:
 
 ```js
 function myPlugin() {
   return {
     name: 'build-only',
-    apply: 'build', // or 'serve'
+    apply: 'build', // atau 'serve'
   }
 }
 ```
 
-A function can also be used for more precise control:
+Sebuah fungsi juga dapat digunakan untuk kontrol yang lebih tepat:
 
 ```js
 apply(config, { command }) {
-  // apply only on build but not for SSR
+  // diterapkan hanya pada build tetapi tidak untuk SSR
   return command === 'build' && !config.build.ssr
 }
 ```
 
-## Rollup Plugin Compatibility
+## Kompatibilitas Plugin Rollup
 
-A fair number of Rollup plugins will work directly as a Vite plugin (e.g. `@rollup/plugin-alias` or `@rollup/plugin-json`), but not all of them, since some plugin hooks do not make sense in an unbundled dev server context.
+Sejumlah besar plugin Rollup akan berfungsi langsung sebagai plugin Vite (misalnya `@rollup/plugin-alias` atau `@rollup/plugin-json`), tetapi tidak semuanya, karena beberapa hook plugin tidak masuk akal dalam konteks server pengembangan yang tidak dibundel.
 
-In general, as long as a Rollup plugin fits the following criteria then it should just work as a Vite plugin:
+Secara umum, selama sebuah plugin Rollup memenuhi kriteria berikut maka seharusnya akan berfungsi sebagai plugin Vite:
 
-- It doesn't use the [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed) hook.
-- It doesn't have strong coupling between bundle-phase hooks and output-phase hooks.
+- Tidak menggunakan hook [`moduleParsed`](https://rollupjs.org/plugin-development/#moduleparsed).
+- Tidak memiliki keterikatan yang kuat antara hook fase bundel dan hook fase output.
 
-If a Rollup plugin only makes sense for the build phase, then it can be specified under `build.rollupOptions.plugins` instead. It will work the same as a Vite plugin with `enforce: 'post'` and `apply: 'build'`.
+Jika sebuah plugin Rollup hanya masuk akal untuk fase build, maka dapat diatur di bawah `build.rollupOptions.plugins` sebagai gantinya. Ini akan berfungsi sama dengan plugin Vite dengan `enforce: 'post'` dan `apply: 'build'`.
 
-You can also augment an existing Rollup plugin with Vite-only properties:
+Anda juga dapat menambahkan properti khusus Vite pada plugin Rollup yang ada:
 
 ```js
 // vite.config.js
@@ -509,11 +507,13 @@ export default defineConfig({
 })
 ```
 
-## Path Normalization
+Periksa [Vite Rollup Plugins](https://vite-rollup-plugins.patak.dev) untuk daftar plugin Rollup resmi yang kompatibel dengan instruksi penggunaan.
 
-Vite normalizes paths while resolving ids to use POSIX separators ( / ) while preserving the volume in Windows. On the other hand, Rollup keeps resolved paths untouched by default, so resolved ids have win32 separators ( \\ ) in Windows. However, Rollup plugins use a [`normalizePath` utility function](https://github.com/rollup/plugins/tree/master/packages/pluginutils#normalizepath) from `@rollup/pluginutils` internally, which converts separators to POSIX before performing comparisons. This means that when these plugins are used in Vite, the `include` and `exclude` config pattern and other similar paths against resolved ids comparisons work correctly.
+## Normalisasi Path
 
-So, for Vite plugins, when comparing paths against resolved ids it is important to first normalize the paths to use POSIX separators. An equivalent `normalizePath` utility function is exported from the `vite` module.
+Vite melakukan normalisasi path saat menyelesaikan id untuk menggunakan separator POSIX ( / ) sambil tetap mempertahankan volume di Windows. Di sisi lain, Rollup menjaga path yang diselesaikan tidak tersentuh secara default, sehingga id yang diselesaikan memiliki separator win32 ( \\ ) di Windows. Namun, plugin Rollup menggunakan fungsi utilitas [`normalizePath`](https://github.com/rollup/plugins/tree/master/packages/pluginutils#normalizepath) dari `@rollup/pluginutils` secara internal, yang mengonversi separator menjadi POSIX sebelum melakukan perbandingan. Ini berarti bahwa ketika plugin ini digunakan dalam Vite, pola konfigurasi `include` dan `exclude` dan perbandingan path lainnya terhadap id yang diselesaikan berfungsi dengan benar.
+
+Jadi, untuk plugin Vite, saat membandingkan path terhadap id yang diselesaikan penting untuk pertama-tama melakukan normalisasi path untuk menggunakan separator POSIX. Fungsi utilitas `normalizePath` yang setara diekspor dari modul `vite`.
 
 ```js
 import { normalizePath } from 'vite'
@@ -522,17 +522,17 @@ normalizePath('foo\\bar') // 'foo/bar'
 normalizePath('foo/bar') // 'foo/bar'
 ```
 
-## Filtering, include/exclude pattern
+## Penyaringan, pola include/exclude
 
-Vite exposes [`@rollup/pluginutils`'s `createFilter`](https://github.com/rollup/plugins/tree/master/packages/pluginutils#createfilter) function to encourage Vite specific plugins and integrations to use the standard include/exclude filtering pattern, which is also used in Vite core itself.
+Vite mengekspos fungsi [`createFilter` dari `@rollup/pluginutils`](https://github.com/rollup/plugins/tree/master/packages/pluginutils#createfilter) untuk mendorong plugin dan integrasi Vite spesifik untuk menggunakan pola penyaringan include/exclude standar, yang juga digunakan di dalam inti Vite sendiri.
 
-## Client-server Communication
+## Komunikasi Client-Server
 
-Since Vite 2.9, we provide some utilities for plugins to help handle the communication with clients.
+Sejak Vite 2.9, kami menyediakan beberapa utilitas untuk plugin untuk membantu menangani komunikasi dengan klien.
 
-### Server to Client
+### Server ke Client
 
-On the plugin side, we could use `server.hot.send` (since Vite 5.1) or `server.ws.send` to broadcast events to all the clients:
+Di sisi plugin, kita bisa menggunakan `server.hot.send` (sejak Vite 5.1) atau `server.ws.send` untuk menyebarkan acara ke semua klien:
 
 ```js
 // vite.config.js
@@ -541,7 +541,7 @@ export default defineConfig({
     {
       // ...
       configureServer(server) {
-        // Example: wait for a client to connect before sending a message
+        // Contoh: tunggu klien terhubung sebelum mengirim pesan
         server.hot.on('connection', () => {
           server.hot.send('my:greetings', { msg: 'hello' })
         })
@@ -551,14 +551,14 @@ export default defineConfig({
 })
 ```
 
-::: tip NOTE
-We recommend **always prefixing** your event names to avoid collisions with other plugins.
+::: tip CATATAN
+Kami sarankan **selalu memberi awalan** nama acara Anda untuk menghindari tabrakan dengan plugin lain.
 :::
 
-On the client side, use [`hot.on`](/guide/api-hmr.html#hot-on-event-cb) to listen to the events:
+Di sisi klien, gunakan [`hot.on`](/guide/api-hmr.html#hot-on-event-cb) untuk mendengarkan acara:
 
 ```ts
-// client side
+// sisi klien
 if (import.meta.hot) {
   import.meta.hot.on('my:greetings', (data) => {
     console.log(data.msg) // hello
@@ -566,18 +566,18 @@ if (import.meta.hot) {
 }
 ```
 
-### Client to Server
+### Client ke Server
 
-To send events from the client to the server, we can use [`hot.send`](/guide/api-hmr.html#hot-send-event-payload):
+Untuk mengirim acara dari klien ke server, kita bisa menggunakan [`hot.send`](/guide/api-hmr.html#hot-send-event-payload):
 
 ```ts
-// client side
+// sisi klien
 if (import.meta.hot) {
   import.meta.hot.send('my:from-client', { msg: 'Hey!' })
 }
 ```
 
-Then use `server.hot.on` (since Vite 5.1) or `server.ws.on` and listen to the events on the server side:
+Kemudian gunakan `server.hot.on` (sejak Vite 5.1) atau `server.ws.on` dan dengarkan acara di sisi server:
 
 ```js
 // vite.config.js
@@ -588,7 +588,7 @@ export default defineConfig({
       configureServer(server) {
         server.hot.on('my:from-client', (data, client) => {
           console.log('Message from client:', data.msg) // Hey!
-          // reply only to the client (if needed)
+          // balas hanya ke klien (jika diperlukan)
           client.send('my:ack', { msg: 'Hi! I got your message!' })
         })
       },
@@ -597,9 +597,9 @@ export default defineConfig({
 })
 ```
 
-### TypeScript for Custom Events
+### TypeScript untuk Acara Kustom
 
-It is possible to type custom events by extending the `CustomEventMap` interface:
+Anda dapat mengetikkan acara kustom dengan memperluas antarmuka `CustomEventMap`:
 
 ```ts
 // events.d.ts
@@ -608,7 +608,7 @@ import 'vite/types/customEvent'
 declare module 'vite/types/customEvent' {
   interface CustomEventMap {
     'custom:foo': { msg: string }
-    // 'event-key': payload
+    // 'kunci-acara': payload
   }
 }
 ```

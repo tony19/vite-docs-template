@@ -1,46 +1,46 @@
-# Shared Options
+# Opsi Bersama
 
 ## root
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `process.cwd()`
 
-Project root directory (where `index.html` is located). Can be an absolute path, or a path relative to the current working directory.
+Direktori root proyek (di mana `index.html` berada). Dapat berupa path absolut atau path relatif terhadap direktori kerja saat ini.
 
-See [Project Root](/guide/#index-html-and-project-root) for more details.
+Lihat [Root Proyek](/guide/#index-html-and-project-root) untuk lebih detail.
 
 ## base
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `/`
-- **Related:** [`server.origin`](/config/server-options.md#server-origin)
+- **Terkait:** [`server.origin`](/config/server-options.md#server-origin)
 
-Base public path when served in development or production. Valid values include:
+Path publik dasar saat disajikan dalam pengembangan atau produksi. Nilai valid meliputi:
 
-- Absolute URL pathname, e.g. `/foo/`
-- Full URL, e.g. `https://foo.com/` (The origin part won't be used in development)
-- Empty string or `./` (for embedded deployment)
+- Path absolut URL, misalnya `/foo/`
+- URL lengkap, misalnya `https://foo.com/` (Bagian origin tidak akan digunakan dalam pengembangan)
+- String kosong atau `./` (untuk penyebaran tersemat)
 
-See [Public Base Path](/guide/build#public-base-path) for more details.
+Lihat [Path Dasar Publik](/guide/build#public-base-path) untuk lebih detail.
 
 ## mode
 
-- **Type:** `string`
-- **Default:** `'development'` for serve, `'production'` for build
+- **Tipe:** `string`
+- **Default:** `'development'` untuk serve, `'production'` untuk build
 
-Specifying this in config will override the default mode for **both serve and build**. This value can also be overridden via the command line `--mode` option.
+Menentukan ini dalam konfigurasi akan menggantikan mode default untuk **baik serve maupun build**. Nilai ini juga dapat digantikan melalui opsi baris perintah `--mode`.
 
-See [Env Variables and Modes](/guide/env-and-mode) for more details.
+Lihat [Variabel Lingkungan dan Mode](/guide/env-and-mode) untuk lebih detail.
 
 ## define
 
-- **Type:** `Record<string, string>`
+- **Tipe:** `Record<string, string>`
 
-Define global constant replacements. Entries will be defined as globals during dev and statically replaced during build.
+Tentukan penggantian konstan global. Entri akan ditentukan sebagai global selama pengembangan dan diganti secara statis selama build.
 
-Vite uses [esbuild defines](https://esbuild.github.io/api/#define) to perform replacements, so value expressions must be a string that contains a JSON-serializable value (null, boolean, number, string, array, or object) or a single identifier. For non-string values, Vite will automatically convert it to a string with `JSON.stringify`.
+Vite menggunakan [esbuild defines](https://esbuild.github.io/api/#define) untuk melakukan penggantian, jadi ekspresi nilai harus berupa string yang berisi nilai yang dapat di-JSON-serialisasi (null, boolean, number, string, array, atau object) atau sebuah identifikasi tunggal. Untuk nilai non-string, Vite akan secara otomatis mengonversinya menjadi string dengan `JSON.stringify`.
 
-**Example:**
+**Contoh:**
 
 ```js
 export default defineConfig({
@@ -51,10 +51,10 @@ export default defineConfig({
 })
 ```
 
-::: tip NOTE
-For TypeScript users, make sure to add the type declarations in the `env.d.ts` or `vite-env.d.ts` file to get type checks and Intellisense.
+::: tip CATATAN
+Untuk pengguna TypeScript, pastikan untuk menambahkan deklarasi tipe dalam file `env.d.ts` atau `vite-env.d.ts` untuk mendapatkan pengecekan tipe dan Intellisense.
 
-Example:
+Contoh:
 
 ```ts
 // vite-env.d.ts
@@ -65,60 +65,60 @@ declare const __APP_VERSION__: string
 
 ## plugins
 
-- **Type:** `(Plugin | Plugin[] | Promise<Plugin | Plugin[]>)[]`
+- **Tipe:** `(Plugin | Plugin[] | Promise<Plugin | Plugin[]>)[]`
 
-Array of plugins to use. Falsy plugins are ignored and arrays of plugins are flattened. If a promise is returned, it would be resolved before running. See [Plugin API](/guide/api-plugin) for more details on Vite plugins.
+Array plugin yang digunakan. Plugin yang falsy diabaikan dan array plugin diluruskannya. Jika sebuah promise dikembalikan, itu akan diselesaikan sebelum berjalan. Lihat [API Plugin](/guide/api-plugin) untuk detail lebih lanjut tentang plugin Vite.
 
 ## publicDir
 
-- **Type:** `string | false`
+- **Tipe:** `string | false`
 - **Default:** `"public"`
 
-Directory to serve as plain static assets. Files in this directory are served at `/` during dev and copied to the root of `outDir` during build, and are always served or copied as-is without transform. The value can be either an absolute file system path or a path relative to project root.
+Direktori yang digunakan sebagai aset statis biasa. File dalam direktori ini disajikan di `/` selama pengembangan dan disalin ke root `outDir` selama build, dan selalu disajikan atau disalin apa adanya tanpa transformasi. Nilainya bisa berupa path sistem file absolut atau path relatif terhadap root proyek.
 
-Defining `publicDir` as `false` disables this feature.
+Menentukan `publicDir` sebagai `false` menonaktifkan fitur ini.
 
-See [The `public` Directory](/guide/assets#the-public-directory) for more details.
+Lihat [Direktori `public`](/guide/assets#the-public-directory) untuk detail lebih lanjut.
 
 ## cacheDir
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `"node_modules/.vite"`
 
-Directory to save cache files. Files in this directory are pre-bundled deps or some other cache files generated by vite, which can improve the performance. You can use `--force` flag or manually delete the directory to regenerate the cache files. The value can be either an absolute file system path or a path relative to project root. Default to `.vite` when no package.json is detected.
+Direktori untuk menyimpan file cache. File dalam direktori ini adalah dependensi yang telah di-bundle sebelumnya atau beberapa file cache lain yang dihasilkan oleh vite, yang dapat meningkatkan kinerja. Anda dapat menggunakan flag `--force` atau menghapus direktori secara manual untuk memperbarui ulang file cache. Nilainya bisa berupa path sistem file absolut atau path relatif terhadap root proyek. Default ke `.vite` ketika tidak ada package.json yang terdeteksi.
 
 ## resolve.alias
 
-- **Type:**
+- **Tipe:**
   `Record<string, string> | Array<{ find: string | RegExp, replacement: string, customResolver?: ResolverFunction | ResolverObject }>`
 
-Will be passed to `@rollup/plugin-alias` as its [entries option](https://github.com/rollup/plugins/tree/master/packages/alias#entries). Can either be an object, or an array of `{ find, replacement, customResolver }` pairs.
+Akan diteruskan ke `@rollup/plugin-alias` sebagai [opsi entri](https://github.com/rollup/plugins/tree/master/packages/alias#entries)-nya. Bisa berupa objek, atau array pasangan `{ find, replacement, customResolver }`.
 
-When aliasing to file system paths, always use absolute paths. Relative alias values will be used as-is and will not be resolved into file system paths.
+Ketika menetapkan alias ke path sistem file, selalu gunakan path absolut. Nilai alias relatif akan digunakan apa adanya dan tidak akan diubah menjadi path sistem file.
 
-More advanced custom resolution can be achieved through [plugins](/guide/api-plugin).
+Resolusi kustom yang lebih canggih dapat dicapai melalui [plugin](/guide/api-plugin).
 
-::: warning Using with SSR
-If you have configured aliases for [SSR externalized dependencies](/guide/ssr.md#ssr-externals), you may want to alias the actual `node_modules` packages. Both [Yarn](https://classic.yarnpkg.com/en/docs/cli/add/#toc-yarn-add-alias) and [pnpm](https://pnpm.io/aliases/) support aliasing via the `npm:` prefix.
+::: warning Penggunaan dengan SSR
+Jika Anda telah mengonfigurasi alias untuk [dependensi eksternal SSR](/guide/ssr.md#ssr-externals), Anda mungkin ingin mengalias paket `node_modules` yang sebenarnya. Baik [Yarn](https://classic.yarnpkg.com/en/docs/cli/add/#toc-yarn-add-alias) maupun [pnpm](https://pnpm.io/aliases/) mendukung pengaliasan melalui awalan `npm:`.
 :::
 
 ## resolve.dedupe
 
-- **Type:** `string[]`
+- **Tipe:** `string[]`
 
-If you have duplicated copies of the same dependency in your app (likely due to hoisting or linked packages in monorepos), use this option to force Vite to always resolve listed dependencies to the same copy (from project root).
+Jika Anda memiliki salinan duplikat dari dependensi yang sama di aplikasi Anda (mungkin karena hoisting atau paket yang terhubung di repositori monorepo), gunakan opsi ini untuk memaksa Vite selalu meresolusi dependensi yang terdaftar ke salinan yang sama (dari root proyek).
 
 :::warning SSR + ESM
-For SSR builds, deduplication does not work for ESM build outputs configured from `build.rollupOptions.output`. A workaround is to use CJS build outputs until ESM has better plugin support for module loading.
+Untuk build SSR, deduplikasi tidak berfungsi untuk output build ESM yang dikonfigurasi dari `build.rollupOptions.output`. Solusi sementara adalah menggunakan output build CJS hingga ESM memiliki dukungan plugin yang lebih baik untuk pemuatan modul.
 :::
 
 ## resolve.conditions
 
-- **Type:** `string[]`
+- **Tipe:** `string[]`
 
-Additional allowed conditions when resolving [Conditional Exports](https://nodejs.org/api/packages.html#packages_conditional_exports) from a package.
+Kondisi tambahan yang diizinkan saat meresolusi [Ekspor Kondisional](https://nodejs.org/api/packages.html#packages_conditional_exports) dari sebuah paket.
 
-A package with conditional exports may have the following `exports` field in its `package.json`:
+Sebuah paket dengan ekspor kondisional dapat memiliki bidang `exports` berikut dalam `package.json`-nya:
 
 ```json
 {
@@ -131,41 +131,40 @@ A package with conditional exports may have the following `exports` field in its
 }
 ```
 
-Here, `import` and `require` are "conditions". Conditions can be nested and should be specified from most specific to least specific.
+Di sini, `import` dan `require` adalah "kondisi". Kondisi dapat bersarang dan harus ditentukan dari yang paling spesifik hingga yang paling umum.
 
-Vite has a list of "allowed conditions" and will match the first condition that is in the allowed list. The default allowed conditions are: `import`, `module`, `browser`, `default`, and `production/development` based on current mode. The `resolve.conditions` config option allows specifying additional allowed conditions.
+Vite memiliki daftar "kondisi yang diizinkan" dan akan mencocokkan kondisi pertama yang ada dalam daftar yang diizinkan. Opsi konfigurasi `resolve.conditions` memungkinkan untuk menentukan kondisi tambahan yang diizinkan.
 
-:::warning Resolving subpath exports
-Export keys ending with "/" is deprecated by Node and may not work well. Please contact the package author to use [`*` subpath patterns](https://nodejs.org/api/packages.html#package-entry-points) instead.
+:::warning Resolusi ekspor subpath
+Kunci ekspor yang berakhir dengan "/" sudah tidak direkomendasikan oleh Node dan mungkin tidak berfungsi dengan baik. Silakan hubungi pengarang paket untuk menggunakan [pola subpath `*`](https://nodejs.org/api/packages.html#package-entry-points) sebagai gantinya.
 :::
 
 ## resolve.mainFields
 
-- **Type:** `string[]`
+- **Tipe:** `string[]`
 - **Default:** `['browser', 'module', 'jsnext:main', 'jsnext']`
 
-List of fields in `package.json` to try when resolving a package's entry point. Note this takes lower precedence than conditional exports resolved from the `exports` field: if an entry point is successfully resolved from `exports`, the main field will be ignored.
+Daftar bidang dalam `package.json` yang dicoba saat meresolusi titik masuk paket. Perhatikan ini mengambil prioritas lebih rendah daripada ekspor kondisional yang diresolusi dari bidang `exports`: jika sebuah titik masuk berhasil diresolusi dari `exports`, bidang utama akan diabaikan.
 
 ## resolve.extensions
 
-- **Type:** `string[]`
+- **Tipe:** `string[]`
 - **Default:** `['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json']`
 
-List of file extensions to try for imports that omit extensions. Note it is **NOT** recommended to omit extensions for custom import types (e.g. `.vue`) since it can interfere with IDE and type support.
+Daftar ekstensi file yang dicoba untuk impor yang tidak menyertakan ekstensi. Perhatikan bahwa **TIDAK** disarankan untuk menghilangkan ekstensi untuk jenis impor kustom (mis. `.vue`) karena dapat mengganggu dukungan IDE dan tipe.
 
 ## resolve.preserveSymlinks
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `false`
 
-Enabling this setting causes vite to determine file identity by the original file path (i.e. the path without following symlinks) instead of the real file path (i.e. the path after following symlinks).
+Mengaktifkan pengaturan ini menyebabkan vite menentukan identitas file berdasarkan path file asli (yaitu path tanpa mengikuti symlink) alih-alih path file yang sebenarnya (yaitu path setelah mengikuti symlink).
 
-- **Related:** [esbuild#preserve-symlinks](https://esbuild.github.io/api/#preserve-symlinks), [webpack#resolve.symlinks
-  ](https://webpack.js.org/configuration/resolve/#resolvesymlinks)
+- **Terkait:** [esbuild#preserve-symlinks](https://esbuild.github.io/api/#preserve-symlinks), [webpack#resolve.symlinks](https://webpack.js.org/configuration/resolve/#resolvesymlinks)
 
 ## css.modules
 
-- **Type:**
+- **Tipe:**
   ```ts
   interface CSSModulesOptions {
     getJSON?: (
@@ -196,35 +195,35 @@ Enabling this setting causes vite to determine file identity by the original fil
   }
   ```
 
-Configure CSS modules behavior. The options are passed on to [postcss-modules](https://github.com/css-modules/postcss-modules).
+Konfigurasi perilaku CSS modules. Opsi tersebut diteruskan ke [postcss-modules](https://github.com/css-modules/postcss-modules).
 
-This option doesn't have any effect when using [Lightning CSS](../guide/features.md#lightning-css). If enabled, [`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html) should be used instead.
+Opsi ini tidak memiliki efek apa pun saat menggunakan [Lightning CSS](../guide/features.md#lightning-css). Jika diaktifkan, [`css.lightningcss.cssModules`](https://lightningcss.dev/css-modules.html) harus digunakan.
 
 ## css.postcss
 
-- **Type:** `string | (postcss.ProcessOptions & { plugins?: postcss.AcceptedPlugin[] })`
+- **Tipe:** `string | (postcss.ProcessOptions & { plugins?: postcss.AcceptedPlugin[] })`
 
-Inline PostCSS config or a custom directory to search PostCSS config from (default is project root).
+Konfigurasi PostCSS dalam kode atau direktori khusus untuk mencari konfigurasi PostCSS (default adalah root proyek).
 
-For inline PostCSS config, it expects the same format as `postcss.config.js`. But for `plugins` property, only [array format](https://github.com/postcss/postcss-load-config/blob/main/README.md#array) can be used.
+Untuk konfigurasi PostCSS dalam kode, formatnya sama seperti `postcss.config.js`. Namun untuk properti `plugins`, hanya [format array](https://github.com/postcss/postcss-load-config/blob/main/README.md#array) yang dapat digunakan.
 
-The search is done using [postcss-load-config](https://github.com/postcss/postcss-load-config) and only the supported config file names are loaded.
+Pencarian dilakukan menggunakan [postcss-load-config](https://github.com/postcss/postcss-load-config) dan hanya nama file konfigurasi yang didukung yang dimuat.
 
-Note if an inline config is provided, Vite will not search for other PostCSS config sources.
+Catatan: jika konfigurasi dalam kode disediakan, Vite tidak akan mencari sumber konfigurasi PostCSS lainnya.
 
 ## css.preprocessorOptions
 
-- **Type:** `Record<string, object>`
+- **Tipe:** `Record<string, object>`
 
-Specify options to pass to CSS pre-processors. The file extensions are used as keys for the options. The supported options for each preprocessors can be found in their respective documentation:
+Menentukan opsi yang akan diteruskan ke pra-pemroses CSS. Ekstensi file digunakan sebagai kunci untuk opsi. Opsi yang didukung untuk masing-masing pra-pemroses dapat ditemukan dalam dokumentasi mereka masing-masing:
 
-- `sass`/`scss` - [Options](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions).
-- `less` - [Options](https://lesscss.org/usage/#less-options).
-- `styl`/`stylus` - Only [`define`](https://stylus-lang.com/docs/js.html#define-name-node) is supported, which can be passed as an object.
+- `sass`/`scss` - [Opsi](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions).
+- `less` - [Opsi](https://lesscss.org/usage/#less-options).
+- `styl`/`stylus` - Hanya [`define`](https://stylus-lang.com/docs/js.html#define-name-node) yang didukung, yang dapat diteruskan sebagai objek.
 
-All preprocessor options also support the `additionalData` option, which can be used to inject extra code for each style content.
+Semua opsi pra-pemroses juga mendukung opsi `additionalData`, yang dapat digunakan untuk menyisipkan kode ekstra untuk setiap konten gaya.
 
-**Example:**
+**Contoh:**
 
 ```js
 export default defineConfig({
@@ -245,11 +244,11 @@ export default defineConfig({
 
 ### css.preprocessorOptions[extension].additionalData
 
-- **Type:** `string | ((source: string, filename: string) => (string | { content: string; map?: SourceMap }))`
+- **Tipe:** `string | ((source: string, filename: string) => (string | { content: string; map?: SourceMap }))`
 
-This option can be used to inject extra code for each style content. Note that if you include actual styles and not just variables, those styles will be duplicated in the final bundle.
+Opsi ini dapat digunakan untuk menyisipkan kode ekstra untuk setiap konten gaya. Perhatikan bahwa jika Anda menyertakan gaya sebenarnya dan bukan hanya variabel, gaya tersebut akan diduplikasi dalam bundel akhir.
 
-**Example:**
+**Contoh:**
 
 ```js
 export default defineConfig({
@@ -265,32 +264,32 @@ export default defineConfig({
 
 ## css.preprocessorMaxWorkers
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/15835)
-- **Type:** `number | true`
-- **Default:** `0` (does not create any workers and run in the main thread)
+- **Eksperimental:** [Berikan Masukan](TODO: update)
+- **Tipe:** `number | true`
+- **Default:** `0` (tidak membuat pekerja dan berjalan di utas utama)
 
-If this option is set, CSS preprocessors will run in workers when possible. `true` means the number of CPUs minus 1.
+Jika opsi ini diatur, pra-pemroses CSS akan berjalan di pekerja ketika memungkinkan. `true` berarti jumlah CPU dikurangi 1.
 
 ## css.devSourcemap
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13845)
-- **Type:** `boolean`
+- **Eksperimental:** [Berikan Masukan](https://github.com/vitejs/vite/discussions/13845)
+- **Tipe:** `boolean`
 - **Default:** `false`
 
-Whether to enable sourcemaps during dev.
+Apakah akan mengaktifkan sourcemaps selama pengembangan.
 
 ## css.transformer
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13835)
-- **Type:** `'postcss' | 'lightningcss'`
+- **Eksperimental:** [Berikan Masukan](https://github.com/vitejs/vite/discussions/13835)
+- **Tipe:** `'postcss' | 'lightningcss'`
 - **Default:** `'postcss'`
 
-Selects the engine used for CSS processing. Check out [Lightning CSS](../guide/features.md#lightning-css) for more information.
+Memilih mesin yang digunakan untuk pemrosesan CSS. Lihat [Lightning CSS](../guide/features.md#lightning-css) untuk informasi lebih lanjut.
 
 ## css.lightningcss
 
-- **Experimental:** [Give Feedback](https://github.com/vitejs/vite/discussions/13835)
-- **Type:**
+- **Eksperimental:** [Berikan Masukan](https://github.com/vitejs/vite/discussions/13835)
+- **Tipe:**
 
 ```js
 import type {
@@ -317,29 +316,29 @@ import type {
 }
 ```
 
-Configures Lightning CSS. Full transform options can be found in [the Lightning CSS repo](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts).
+Mengkonfigurasi Lightning CSS. Opsi transformasi lengkap dapat ditemukan di [repo Lightning CSS](https://github.com/parcel-bundler/lightningcss/blob/master/node/index.d.ts).
 
 ## json.namedExports
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-Whether to support named imports from `.json` files.
+Menentukan apakah akan mendukung impor bernama dari file `.json`.
 
 ## json.stringify
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `false`
 
-If set to `true`, imported JSON will be transformed into `export default JSON.parse("...")` which is significantly more performant than Object literals, especially when the JSON file is large.
+Jika diatur menjadi `true`, JSON yang diimpor akan diubah menjadi `export default JSON.parse("...")` yang jauh lebih performant daripada literal Objek, terutama ketika file JSON tersebut besar.
 
-Enabling this disables named imports.
+Mengaktifkan ini akan menonaktifkan impor bernama.
 
 ## esbuild
 
-- **Type:** `ESBuildOptions | false`
+- **Tipe:** `ESBuildOptions | false`
 
-`ESBuildOptions` extends [esbuild's own transform options](https://esbuild.github.io/api/#transform). The most common use case is customizing JSX:
+`ESBuildOptions` memperluas [opsi transformasi esbuild sendiri](https://esbuild.github.io/api/#transform). Kasus penggunaan yang paling umum adalah menyesuaikan JSX:
 
 ```js
 export default defineConfig({
@@ -350,9 +349,9 @@ export default defineConfig({
 })
 ```
 
-By default, esbuild is applied to `ts`, `jsx` and `tsx` files. You can customize this with `esbuild.include` and `esbuild.exclude`, which can be a regex, a [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or an array of either.
+Secara default, esbuild diterapkan pada file `ts`, `jsx` dan `tsx`. Anda dapat menyesuaikan ini dengan `esbuild.include` dan `esbuild.exclude`, yang dapat berupa regex, pola [picomatch](https://github.com/micromatch/picomatch#globbing-features), atau sebuah array dari keduanya.
 
-In addition, you can also use `esbuild.jsxInject` to automatically inject JSX helper imports for every file transformed by esbuild:
+Selain itu, Anda juga dapat menggunakan `esbuild.jsxInject` untuk secara otomatis menyisipkan impor helper JSX untuk setiap file yang diubah oleh esbuild:
 
 ```js
 export default defineConfig({
@@ -362,24 +361,24 @@ export default defineConfig({
 })
 ```
 
-When [`build.minify`](./build-options.md#build-minify) is `true`, all minify optimizations are applied by default. To disable [certain aspects](https://esbuild.github.io/api/#minify) of it, set any of `esbuild.minifyIdentifiers`, `esbuild.minifySyntax`, or `esbuild.minifyWhitespace` options to `false`. Note the `esbuild.minify` option can't be used to override `build.minify`.
+Ketika [`build.minify`](./build-options.md#build-minify) adalah `true`, semua optimisasi minify diterapkan secara default. Untuk menonaktifkan [aspek tertentu](https://esbuild.github.io/api/#minify) dari itu, set salah satu opsi `esbuild.minifyIdentifiers`, `esbuild.minifySyntax`, atau `esbuild.minifyWhitespace` menjadi `false`. Perhatikan bahwa opsi `esbuild.minify` tidak dapat digunakan untuk mengganti `build.minify`.
 
-Set to `false` to disable esbuild transforms.
+Setel menjadi `false` untuk menonaktifkan transformasi esbuild.
 
 ## assetsInclude
 
-- **Type:** `string | RegExp | (string | RegExp)[]`
-- **Related:** [Static Asset Handling](/guide/assets)
+- **Tipe:** `string | RegExp | (string | RegExp)[]`
+- **Terkait:** [Penanganan Aset Statis](/guide/assets)
 
-Specify additional [picomatch patterns](https://github.com/micromatch/picomatch#globbing-features) to be treated as static assets so that:
+Tentukan pola [picomatch tambahan](https://github.com/micromatch/picomatch#globbing-features) untuk dianggap sebagai aset statis sehingga:
 
-- They will be excluded from the plugin transform pipeline when referenced from HTML or directly requested over `fetch` or XHR.
+- Mereka akan dikecualikan dari pipa transformasi plugin saat direferensikan dari HTML atau secara langsung diminta melalui `fetch` atau XHR.
 
-- Importing them from JS will return their resolved URL string (this can be overwritten if you have a `enforce: 'pre'` plugin to handle the asset type differently).
+- Mengimpor mereka dari JS akan mengembalikan string URL yang diresolusikan mereka (ini dapat ditimpa jika Anda memiliki plugin `enforce: 'pre'` untuk menangani jenis aset secara berbeda).
 
-The built-in asset type list can be found [here](https://github.com/vitejs/vite/blob/main/packages/vite/src/node/constants.ts).
+Daftar jenis aset bawaan dapat ditemukan [di sini](https://github.com/vitejs/vite/blob/main/packages/vite/src/node/constants.ts).
 
-**Example:**
+**Contoh:**
 
 ```js
 export default defineConfig({
@@ -389,13 +388,13 @@ export default defineConfig({
 
 ## logLevel
 
-- **Type:** `'info' | 'warn' | 'error' | 'silent'`
+- **Tipe:** `'info' | 'warn' | 'error' | 'silent'`
 
-Adjust console output verbosity. Default is `'info'`.
+Atur tingkat kecerewetan output konsol. Default adalah `'info'`.
 
 ## customLogger
 
-- **Type:**
+- **Tipe:**
   ```ts
   interface Logger {
     info(msg: string, options?: LogOptions): void
@@ -408,7 +407,7 @@ Adjust console output verbosity. Default is `'info'`.
   }
   ```
 
-Use a custom logger to log messages. You can use Vite's `createLogger` API to get the default logger and customize it to, for example, change the message or filter out certain warnings.
+Gunakan logger kustom untuk mencatat pesan. Anda dapat menggunakan API `createLogger` dari Vite untuk mendapatkan logger default dan menyesuaikannya, misalnya, mengubah pesan atau menyaring peringatan tertentu.
 
 ```js
 import { createLogger, defineConfig } from 'vite'
@@ -417,7 +416,7 @@ const logger = createLogger()
 const loggerWarn = logger.warn
 
 logger.warn = (msg, options) => {
-  // Ignore empty CSS files warning
+  // Mengabaikan peringatan file CSS kosong
   if (msg.includes('vite:css') && msg.includes(' is empty')) return
   loggerWarn(msg, options)
 }
@@ -429,31 +428,31 @@ export default defineConfig({
 
 ## clearScreen
 
-- **Type:** `boolean`
+- **Tipe:** `boolean`
 - **Default:** `true`
 
-Set to `false` to prevent Vite from clearing the terminal screen when logging certain messages. Via command line, use `--clearScreen false`.
+Setel menjadi `false` untuk mencegah Vite membersihkan layar terminal saat mencatat beberapa pesan tertentu. Melalui baris perintah, gunakan `--clearScreen false`.
 
 ## envDir
 
-- **Type:** `string`
+- **Tipe:** `string`
 - **Default:** `root`
 
-The directory from which `.env` files are loaded. Can be an absolute path, or a path relative to the project root.
+Direktori dari mana file `.env` dimuat. Dapat berupa path absolut, atau path relatif terhadap root proyek.
 
-See [here](/guide/env-and-mode#env-files) for more about environment files.
+Lihat [di sini](/guide/env-and-mode#env-files) untuk informasi lebih lanjut tentang file lingkungan.
 
 ## envPrefix
 
-- **Type:** `string | string[]`
+- **Tipe:** `string | string[]`
 - **Default:** `VITE_`
 
-Env variables starting with `envPrefix` will be exposed to your client source code via import.meta.env.
+Variabel env yang dimulai dengan `envPrefix` akan dipaparkan ke kode sumber klien Anda melalui import.meta.env.
 
-:::warning SECURITY NOTES
-`envPrefix` should not be set as `''`, which will expose all your env variables and cause unexpected leaking of sensitive information. Vite will throw an error when detecting `''`.
+:::peringatan CATATAN KEAMANAN
+`envPrefix` sebaiknya tidak diatur sebagai `''`, yang akan mengekspos semua variabel env Anda dan menyebabkan kebocoran informasi sensitif yang tidak terduga. Vite akan melemparkan error ketika mendeteksi `''`.
 
-If you would like to expose an unprefixed variable, you can use [define](#define) to expose it:
+Jika Anda ingin mengekspos variabel tanpa awalan, Anda dapat menggunakan [define](#define) untuk mengeksposnya:
 
 ```js
 define: {
@@ -465,13 +464,13 @@ define: {
 
 ## appType
 
-- **Type:** `'spa' | 'mpa' | 'custom'`
+- **Tipe:** `'spa' | 'mpa' | 'custom'`
 - **Default:** `'spa'`
 
-Whether your application is a Single Page Application (SPA), a [Multi Page Application (MPA)](../guide/build#multi-page-app), or Custom Application (SSR and frameworks with custom HTML handling):
+Apakah aplikasi Anda adalah Single Page Application (SPA), [Multi Page Application (MPA)](../guide/build#multi-page-app), atau Custom Application (SSR dan kerangka kerja dengan penanganan HTML kustom):
 
-- `'spa'`: include HTML middlewares and use SPA fallback. Configure [sirv](https://github.com/lukeed/sirv) with `single: true` in preview
-- `'mpa'`: include HTML middlewares
-- `'custom'`: don't include HTML middlewares
+- `'spa'`: sertakan middlewares HTML dan gunakan fallback SPA. Konfigurasikan [sirv](https://github.com/lukeed/sirv) dengan `single: true` dalam pratinjau
+- `'mpa'`: sertakan middlewares HTML
+- `'custom'`: jangan sertakan middlewares HTML
 
-Learn more in Vite's [SSR guide](/guide/ssr#vite-cli). Related: [`server.middlewareMode`](./server-options#server-middlewaremode).
+Pelajari lebih lanjut di [panduan SSR](/guide/ssr#vite-cli) Vite. Terkait: [`server.middlewareMode`](./server-options#server-middlewaremode).

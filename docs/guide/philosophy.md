@@ -1,27 +1,27 @@
-# Project Philosophy
+# Filsafat Proyek
 
-## Lean Extendable Core
+## Inti yang Ringkas dan Dapat Diperluas
 
-Vite doesn't intend to cover every use case for every user. Vite aims to support the most common patterns to build Web apps out-of-the-box, but [Vite core](https://github.com/vitejs/vite) must remain lean with a small API surface to keep the project maintainable long-term. This goal is possible thanks to [Vite's rollup-based plugin system](./api-plugin.md). Features that can be implemented as external plugins will generally not be added to Vite core. [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) is a great example of what can be achieved out of Vite core, and there are a lot of [well maintained plugins](https://github.com/vitejs/awesome-vite#plugins) to cover your needs. Vite works closely with the Rollup project to ensure that plugins can be used in both plain-rollup and Vite projects as much as possible, trying to push needed extensions to the Plugin API upstream when possible.
+Vite tidak bermaksud untuk mencakup setiap kasus pengguna. Vite bertujuan untuk mendukung pola-pola umum dalam membangun aplikasi Web secara langsung, tetapi [inti Vite](https://github.com/vitejs/vite) harus tetap ringkas dengan permukaan API yang kecil untuk menjaga proyek tetap dapat dipelihara dalam jangka panjang. Tujuan ini dapat tercapai berkat [sistem plugin berbasis rollup pada Vite](./api-plugin.md). Fitur-fitur yang dapat diimplementasikan sebagai plugin eksternal umumnya tidak akan ditambahkan ke inti Vite. [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) adalah contoh bagus dari apa yang dapat dicapai di luar inti Vite, dan ada banyak [plugin yang terpelihara dengan baik](https://github.com/vitejs/awesome-vite#plugins) untuk mencakup kebutuhan Anda. Vite bekerja erat dengan proyek Rollup untuk memastikan bahwa plugin dapat digunakan baik dalam proyek biasa-rollup maupun proyek Vite sebanyak mungkin, berusaha untuk mendorong perluasan yang diperlukan ke API Plugin secara hulu jika memungkinkan.
 
-## Pushing the Modern Web
+## Mendorong Web Modern
 
-Vite provides opinionated features that pushes writing modern code. For example:
+Vite menyediakan fitur-fitur yang bersifat opiniatif yang mendorong penulisan kode modern. Misalnya:
 
-- The source code can only be written in ESM, where non-ESM dependencies needs to be [pre-bundled as ESM](./dep-pre-bundling) in order to work.
-- Web workers are encouraged to be written with the [`new Worker` syntax](./features#web-workers) to follow modern standards.
-- Node.js modules cannot be used in the browser.
+- Kode sumber hanya dapat ditulis dalam ESM, di mana dependensi non-ESM perlu [dipre-bundel sebagai ESM](./dep-pre-bundling) agar dapat berfungsi.
+- Pekerja web didorong untuk ditulis dengan sintaks [`new Worker`](./features#web-workers) untuk mengikuti standar modern.
+- Modul Node.js tidak dapat digunakan di browser.
 
-When adding new features, these patterns are followed to create a future-proof API, which may not always be compatible with other build tools.
+Saat menambahkan fitur baru, pola-pola ini diikuti untuk membuat API yang tahan terhadap masa depan, yang mungkin tidak selalu kompatibel dengan alat-alat pembangunan lainnya.
 
-## A Pragmatic Approach to Performance
+## Pendekatan Pragmatis terhadap Kinerja
 
-Vite has been focused on performance since its [origins](./why.md). Its dev server architecture allows HMR that stays fast as projects scale. Vite uses native tools like [esbuild](https://esbuild.github.io/) and [SWC](https://github.com/vitejs/vite-plugin-react-swc) to implement intensive tasks but keeps the rest of the code in JS to balance speed with flexibility. When needed, framework plugins will tap into [Babel](https://babeljs.io/) to compile user code. And during build time Vite currently uses [Rollup](https://rollupjs.org/) where bundling size and having access to a wide ecosystem of plugins are more important than raw speed. Vite will continue to evolve internally, using new libraries as they appear to improve DX while keeping its API stable.
+Vite telah fokus pada kinerja sejak [awalnya](./why.md). Arsitektur server pengembangan Vite memungkinkan HMR yang tetap cepat saat proyek berkembang. Vite menggunakan alat-alat bawaan seperti [esbuild](https://esbuild.github.io/) dan [SWC](https://github.com/vitejs/vite-plugin-react-swc) untuk menerapkan tugas-tugas intensif tetapi tetap menjaga sebagian besar kode dalam JS untuk menyeimbangkan kecepatan dengan fleksibilitas. Ketika diperlukan, plugin-framework akan masuk ke dalam [Babel](https://babeljs.io/) untuk mengkompilasi kode pengguna. Dan selama waktu pembangunan, Vite saat ini menggunakan [Rollup](https://rollupjs.org/) di mana ukuran bundel dan memiliki akses ke berbagai plugin ekosistem lebih penting daripada kecepatan mentah. Vite akan terus berkembang secara internal, menggunakan pustaka baru saat muncul untuk meningkatkan DX sambil tetap API-nya stabil.
 
-## Building Frameworks on top of Vite
+## Membangun Kerangka Kerja di Atas Vite
 
-Although Vite can be used by users directly, it shines as a tool to create frameworks. Vite core is framework agnostic, but there are polished plugins for each UI frameworks. Its [JS API](./api-javascript.md) allows App Framework authors to use Vite features to create tailored experiences for their users. Vite includes support for [SSR primitives](./ssr.md), usually present in higher-level tools but fundamental to building modern web frameworks. And Vite plugins complete the picture by offering a way to share between frameworks. Vite is also a great fit when paired with [Backend frameworks](./backend-integration.md) like [Ruby](https://vite-ruby.netlify.app/) and [Laravel](https://laravel.com/docs/10.x/vite).
+Meskipun Vite dapat digunakan langsung oleh pengguna, ia bersinar sebagai alat untuk membuat kerangka kerja. Inti Vite tidak terikat dengan kerangka kerja tertentu, tetapi ada plugin-plugin yang disempurnakan untuk setiap kerangka antarmuka pengguna. [API JS](./api-javascript.md) nya memungkinkan pengarang Kerangka Aplikasi untuk menggunakan fitur-fitur Vite untuk membuat pengalaman yang disesuaikan untuk penggunanya. Vite termasuk dukungan untuk [primitif SSR](./ssr.md), biasanya hadir dalam alat-alat tingkat tinggi tetapi mendasar untuk membangun kerangka kerja web modern. Dan plugin Vite melengkapi gambaran dengan menawarkan cara untuk berbagi antara kerangka kerja. Vite juga sangat cocok saat dipasangkan dengan [Kerangka Kerja Backend](./backend-integration.md) seperti [Ruby](https://vite-ruby.netlify.app/) dan [Laravel](https://laravel.com/docs/10.x/vite).
 
-## An Active Ecosystem
+## Ekosistem yang Aktif
 
-Vite evolution is a cooperation between framework and plugin maintainers, users, and the Vite team. We encourage active participation in Vite's Core development once a project adopts Vite. We work closely with the main projects in the ecosystem to minimize regressions on each release, aided by tools like [vite-ecosystem-ci](https://github.com/vitejs/vite-ecosystem-ci). It allows us to run the CI of major projects using Vite on selected PRs and gives us a clear status of how the Ecosystem would react to a release. We strive to fix regressions before they hit users and allow projects to update to the next versions as soon as they are released. If you are working with Vite, we invite you to join [Vite's Discord](https://chat.vitejs.dev) and get involved in the project too.
+Evolusi Vite adalah kerja sama antara pengelola kerangka kerja dan plugin, pengguna, dan tim Vite. Kami mendorong partisipasi aktif dalam pengembangan Inti Vite begitu sebuah proyek mengadopsi Vite. Kami bekerja sama dengan proyek-proyek utama dalam ekosistem untuk meminimalkan regresi pada setiap rilis, dibantu oleh alat seperti [vite-ecosystem-ci](https://github.com/vitejs/vite-ecosystem-ci). Ini memungkinkan kami menjalankan CI dari proyek-proyek besar menggunakan Vite pada PR terpilih dan memberikan status yang jelas tentang bagaimana Ekosistem akan bereaksi terhadap sebuah rilis. Kami berusaha untuk memperbaiki regresi sebelum mempengaruhi pengguna dan memungkinkan proyek untuk memperbarui ke versi berikutnya segera setelah dirilis. Jika Anda bekerja dengan Vite, kami mengundang Anda untuk bergabung dengan [Discord Vite](https://chat.vitejs.dev) dan terlibat dalam proyek juga.

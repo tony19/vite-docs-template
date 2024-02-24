@@ -1,12 +1,12 @@
-# HMR API
+# API HMR
 
-:::tip Note
-This is the client HMR API. For handling HMR update in plugins, see [handleHotUpdate](./api-plugin#handlehotupdate).
+:::tip Catatan
+Ini adalah API HMR klien. Untuk menangani pembaruan HMR di plugin, lihat [handleHotUpdate](./api-plugin#handlehotupdate).
 
-The manual HMR API is primarily intended for framework and tooling authors. As an end user, HMR is likely already handled for you in the framework specific starter templates.
+API HMR manual ini terutama ditujukan untuk penulis kerangka kerja dan alat. Sebagai pengguna akhir, HMR kemungkinan sudah ditangani untuk Anda dalam template awal yang spesifik untuk kerangka kerja.
 :::
 
-Vite exposes its manual HMR API via the special `import.meta.hot` object:
+Vite mengekspos API HMR manualnya melalui objek khusus `import.meta.hot`:
 
 ```ts
 interface ImportMeta {
@@ -45,19 +45,19 @@ interface ViteHotContext {
 }
 ```
 
-## Required Conditional Guard
+## Pengamanan Kondisional yang Diperlukan
 
-First of all, make sure to guard all HMR API usage with a conditional block so that the code can be tree-shaken in production:
+Pertama-tama, pastikan untuk melindungi semua penggunaan API HMR dengan blok kondisional sehingga kode dapat dihilangkan dari pohon dalam produksi:
 
 ```js
 if (import.meta.hot) {
-  // HMR code
+  // Kode HMR
 }
 ```
 
-## IntelliSense for TypeScript
+## IntelliSense untuk TypeScript
 
-Vite provides type definitions for `import.meta.hot` in [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts). You can create an `env.d.ts` in the `src` directory so TypeScript picks up the type definitions:
+Vite menyediakan definisi tipe untuk `import.meta.hot` di [`vite/client.d.ts`](https://github.com/vitejs/vite/blob/main/packages/vite/client.d.ts). Anda dapat membuat `env.d.ts` di direktori `src` agar TypeScript mengambil definisi tipe:
 
 ```ts
 /// <reference types="vite/client" />
@@ -65,7 +65,7 @@ Vite provides type definitions for `import.meta.hot` in [`vite/client.d.ts`](htt
 
 ## `hot.accept(cb)`
 
-For a module to self-accept, use `import.meta.hot.accept` with a callback which receives the updated module:
+Untuk modul menerima diri sendiri, gunakan `import.meta.hot.accept` dengan callback yang menerima modul yang diperbarui:
 
 ```js
 export const count = 1
@@ -73,22 +73,22 @@ export const count = 1
 if (import.meta.hot) {
   import.meta.hot.accept((newModule) => {
     if (newModule) {
-      // newModule is undefined when SyntaxError happened
-      console.log('updated: count is now ', newModule.count)
+      // newModule adalah undefined ketika SyntaxError terjadi
+      console.log('updated: count sekarang ', newModule.count)
     }
   })
 }
 ```
 
-A module that "accepts" hot updates is considered an **HMR boundary**.
+Sebuah modul yang "menerima" pembaruan panas dianggap sebagai **batas HMR**.
 
-Vite's HMR does not actually swap the originally imported module: if an HMR boundary module re-exports imports from a dep, then it is responsible for updating those re-exports (and these exports must be using `let`). In addition, importers up the chain from the boundary module will not be notified of the change. This simplified HMR implementation is sufficient for most dev use cases, while allowing us to skip the expensive work of generating proxy modules.
+HMR Vite sebenarnya tidak menukar modul yang diimpor secara asli: jika suatu modul batas HMR mengekspor ulang impor dari dep, maka itu bertanggung jawab untuk memperbarui impor ulang itu (dan ekspor ini harus menggunakan `let`). Selain itu, pengimpor ke atas dari modul batas tidak akan diberi tahu tentang perubahan. Implementasi HMR yang disederhanakan ini cukup untuk sebagian besar kasus pengembangan, sambil memungkinkan kita untuk melewati pekerjaan mahal dalam menghasilkan modul proxy.
 
-Vite requires that the call to this function appears as `import.meta.hot.accept(` (whitespace-sensitive) in the source code in order for the module to accept update. This is a requirement of the static analysis that Vite does to enable HMR support for a module.
+Vite mengharuskan panggilan ke fungsi ini muncul sebagai `import.meta.hot.accept(` (peka terhadap spasi) dalam kode sumber agar modul menerima pembaruan. Ini adalah persyaratan analisis statis yang dilakukan Vite untuk mengaktifkan dukungan HMR untuk suatu modul.
 
 ## `hot.accept(deps, cb)`
 
-A module can also accept updates from direct dependencies without reloading itself:
+Sebuah modul juga dapat menerima pembaruan dari dependensi langsung tanpa memuat ulang dirinya sendiri:
 
 ```js
 import { foo } from './foo.js'
@@ -97,17 +97,17 @@ foo()
 
 if (import.meta.hot) {
   import.meta.hot.accept('./foo.js', (newFoo) => {
-    // the callback receives the updated './foo.js' module
+    // callback menerima modul './foo.js' yang diperbarui
     newFoo?.foo()
   })
 
-  // Can also accept an array of dep modules:
+  // Juga dapat menerima array modul dep:
   import.meta.hot.accept(
     ['./foo.js', './bar.js'],
     ([newFooModule, newBarModule]) => {
-      // The callback receives an array where only the updated module is
-      // non null. If the update was not successful (syntax error for ex.),
-      // the array is empty
+      // Callback menerima array di mana hanya modul yang diperbarui
+      // non-null. Jika pembaruan tidak berhasil (misalnya, kesalahan sintaksis),
+      // array kosong
     },
   )
 }
@@ -115,7 +115,7 @@ if (import.meta.hot) {
 
 ## `hot.dispose(cb)`
 
-A self-accepting module or a module that expects to be accepted by others can use `hot.dispose` to clean-up any persistent side effects created by its updated copy:
+Sebuah modul yang menerima dirinya sendiri atau modul yang diharapkan untuk diterima oleh modul lain dapat menggunakan `hot.dispose` untuk membersihkan efek samping yang persisten yang dibuat oleh salinan terbarunya:
 
 ```js
 function setupSideEffect() {}
@@ -124,14 +124,14 @@ setupSideEffect()
 
 if (import.meta.hot) {
   import.meta.hot.dispose((data) => {
-    // cleanup side effect
+    // membersihkan efek samping
   })
 }
 ```
 
 ## `hot.prune(cb)`
 
-Register a callback that will call when the module is no longer imported on the page. Compared to `hot.dispose`, this can be used if the source code cleans up side-effects by itself on updates and you only need to clean-up when it's removed from the page. Vite currently uses this for `.css` imports.
+Daftarkan sebuah callback yang akan dipanggil ketika modul tersebut tidak lagi diimpor di halaman. Dibandingkan dengan `hot.dispose`, ini dapat digunakan jika kode sumber membersihkan efek samping sendiri pada pembaruan dan Anda hanya perlu membersihkan ketika modul tersebut dihapus dari halaman. Saat ini, Vite menggunakan ini untuk impor `.css`.
 
 ```js
 function setupOrReuseSideEffect() {}
@@ -140,39 +140,39 @@ setupOrReuseSideEffect()
 
 if (import.meta.hot) {
   import.meta.hot.prune((data) => {
-    // cleanup side effect
+    // membersihkan efek samping
   })
 }
 ```
 
 ## `hot.data`
 
-The `import.meta.hot.data` object is persisted across different instances of the same updated module. It can be used to pass on information from a previous version of the module to the next one.
+Objek `import.meta.hot.data` persisten di berbagai instansi modul yang sama yang diperbarui. Ini dapat digunakan untuk meneruskan informasi dari versi sebelumnya modul ke versi berikutnya.
 
-Note that re-assignment of `data` itself is not supported. Instead, you should mutate properties of the `data` object so information added from other handlers are preserved.
+Perhatikan bahwa penugasan ulang `data` sendiri tidak didukung. Sebaliknya, Anda harus mengubah properti dari objek `data` sehingga informasi yang ditambahkan dari penangan lainnya dipertahankan.
 
 ```js
 // ok
 import.meta.hot.data.someValue = 'hello'
 
-// not supported
+// tidak didukung
 import.meta.hot.data = { someValue: 'hello' }
 ```
 
 ## `hot.decline()`
 
-This is currently a noop and is there for backward compatibility. This could change in the future if there is a new usage for it. To indicate that the module is not hot-updatable, use `hot.invalidate()`.
+Saat ini, ini tidak berfungsi dan ada untuk kompatibilitas mundur. Ini bisa berubah di masa depan jika ada penggunaan baru. Untuk menunjukkan bahwa modul tidak dapat diperbarui secara otomatis, gunakan `hot.invalidate()`.
 
 ## `hot.invalidate(message?: string)`
 
-A self-accepting module may realize during runtime that it can't handle a HMR update, and so the update needs to be forcefully propagated to importers. By calling `import.meta.hot.invalidate()`, the HMR server will invalidate the importers of the caller, as if the caller wasn't self-accepting. This will log a message both in the browser console and in the terminal. You can pass a message to give some context on why the invalidation happened.
+Sebuah modul yang menerima dirinya sendiri mungkin menyadari selama runtime bahwa ia tidak dapat menangani pembaruan HMR, sehingga pembaruan perlu dipropagasi secara paksa ke importir. Dengan memanggil `import.meta.hot.invalidate()`, server HMR akan menghapuskan importir dari pemanggil, seolah-olah pemanggil tidak menerima dirinya sendiri. Ini akan mencatat pesan baik di konsol browser maupun di terminal. Anda dapat melewatkan pesan untuk memberikan beberapa konteks tentang mengapa invalidasi terjadi.
 
-Note that you should always call `import.meta.hot.accept` even if you plan to call `invalidate` immediately afterwards, or else the HMR client won't listen for future changes to the self-accepting module. To communicate your intent clearly, we recommend calling `invalidate` within the `accept` callback like so:
+Perhatikan bahwa Anda harus selalu memanggil `import.meta.hot.accept` bahkan jika Anda berencana untuk segera memanggil `invalidate`, jika tidak klien HMR tidak akan mendengarkan perubahan di modul yang menerima dirinya sendiri. Untuk mengkomunikasikan niat Anda dengan jelas, kami merekomendasikan memanggil `invalidate` dalam callback `accept` seperti ini:
 
 ```js
 import.meta.hot.accept((module) => {
-  // You may use the new module instance to decide whether to invalidate.
-  if (cannotHandleUpdate(module)) {
+  // Anda dapat menggunakan instan modul baru untuk memutuskan apakah akan menginvalidasi.
+  if (tidakDapatMenanganiPembaruan(module)) {
     import.meta.hot.invalidate()
   }
 })
@@ -180,29 +180,29 @@ import.meta.hot.accept((module) => {
 
 ## `hot.on(event, cb)`
 
-Listen to an HMR event.
+Dengarkan sebuah event HMR.
 
-The following HMR events are dispatched by Vite automatically:
+Event HMR berikut secara otomatis dipancarkan oleh Vite:
 
-- `'vite:beforeUpdate'` when an update is about to be applied (e.g. a module will be replaced)
-- `'vite:afterUpdate'` when an update has just been applied (e.g. a module has been replaced)
-- `'vite:beforeFullReload'` when a full reload is about to occur
-- `'vite:beforePrune'` when modules that are no longer needed are about to be pruned
-- `'vite:invalidate'` when a module is invalidated with `import.meta.hot.invalidate()`
-- `'vite:error'` when an error occurs (e.g. syntax error)
-- `'vite:ws:disconnect'` when the WebSocket connection is lost
-- `'vite:ws:connect'` when the WebSocket connection is (re-)established
+- `'vite:beforeUpdate'` ketika pembaruan akan diterapkan (mis., sebuah modul akan diganti)
+- `'vite:afterUpdate'` ketika pembaruan baru saja diterapkan (mis., sebuah modul telah diganti)
+- `'vite:beforeFullReload'` ketika muat ulang penuh akan terjadi
+- `'vite:beforePrune'` ketika modul yang tidak lagi dibutuhkan akan dipangkas
+- `'vite:invalidate'` ketika sebuah modul dihapuskan dengan `import.meta.hot.invalidate()`
+- `'vite:error'` ketika terjadi kesalahan (mis., kesalahan sintaks)
+- `'vite:ws:disconnect'` ketika koneksi WebSocket terputus
+- `'vite:ws:connect'` ketika koneksi WebSocket terhubung kembali
 
-Custom HMR events can also be sent from plugins. See [handleHotUpdate](./api-plugin#handlehotupdate) for more details.
+Event HMR kustom juga dapat dikirimkan dari plugin. Lihat [handleHotUpdate](./api-plugin#handlehotupdate) untuk lebih detail.
 
 ## `hot.off(event, cb)`
 
-Remove callback from the event listeners
+Hapus callback dari pendengar event
 
 ## `hot.send(event, data)`
 
-Send custom events back to Vite's dev server.
+Kirim event kustom kembali ke server pengembangan Vite.
 
-If called before connected, the data will be buffered and sent once the connection is established.
+Jika dipanggil sebelum terhubung, data akan di-buffer dan dikirim sekali koneksi terhubung.
 
-See [Client-server Communication](/guide/api-plugin.html#client-server-communication) for more details.
+Lihat [Komunikasi Klien-Server](/guide/api-plugin.html#client-server-communication) untuk lebih detail.

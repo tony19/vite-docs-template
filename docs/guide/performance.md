@@ -1,63 +1,61 @@
-# Performance
+# Kinerja
 
-While Vite is fast by default, performance issues can creep in as the project's requirements grow. This guide aims to help you identify and fix common performance issues, such as:
+Meskipun Vite secara default cepat, masalah kinerja bisa muncul seiring dengan bertumbuhnya kebutuhan proyek. Panduan ini bertujuan untuk membantu Anda mengidentifikasi dan memperbaiki masalah kinerja umum, seperti:
 
-- Slow server starts
-- Slow page loads
-- Slow builds
+- Memulai server yang lambat
+- Memuat halaman yang lambat
+- Membangun yang lambat
 
-## Review your Browser Setup
+## Hindari Ekstensi Browser
 
-Some browser extensions may interfere with requests and slow down startup and reload times for large apps, especially when using browser dev tools. We recommend creating a dev-only profile without extensions, or switch to incognito mode, while using Vite's dev server in these cases. Incognito mode should also be faster than a regular profile without extensions.
+Beberapa ekstensi browser mungkin mengganggu permintaan dan memperlambat waktu mulai dan muat ulang untuk aplikasi besar, terutama saat menggunakan alat pengembangan browser. Kami merekomendasikan membuat profil khusus untuk pengembangan tanpa ekstensi, atau beralih ke mode incognito, saat menggunakan server pengembangan Vite dalam kasus-kasus ini. Mode incognito juga seharusnya lebih cepat daripada profil reguler tanpa ekstensi.
 
-The Vite dev server does hard caching of pre-bundled dependencies and implements fast 304 responses for source code. Disabling the cache while the Browser Dev Tools are open can have a big impact in startup and full-page reload times. Please check that "Disable Cache" isn't enabled while you work with the Vite server.
+## Audit Plugin Vite yang Dikonfigurasi
 
-## Audit Configured Vite Plugins
+Plugin internal dan resmi Vite dioptimalkan untuk melakukan sedikit pekerjaan mungkin sambil menyediakan kompatibilitas dengan ekosistem yang lebih luas. Misalnya, transformasi kode menggunakan regex di pengembangan, tetapi melakukan parse lengkap di build untuk memastikan kebenaran.
 
-Vite's internal and official plugins are optimized to do the least amount of work possible while providing compatibility with the broader ecosystem. For example, code transformations use regex in dev, but do a complete parse in build to ensure correctness.
+Namun, kinerja plugin komunitas berada di luar kendali Vite, yang dapat memengaruhi pengalaman pengembang. Berikut adalah beberapa hal yang perlu Anda perhatikan saat menggunakan plugin Vite tambahan:
 
-However, the performance of community plugins is out of Vite's control, which may affect the developer experience. Here are a few things you can look out for when using additional Vite plugins:
+1. Ketergantungan besar yang hanya digunakan dalam beberapa kasus seharusnya diimpor secara dinamis untuk mengurangi waktu mulai Node.js. Contoh refaktorisasi: [vite-plugin-react#212](https://github.com/vitejs/vite-plugin-react/pull/212) dan [vite-plugin-pwa#224](https://github.com/vite-pwa/vite-plugin-pwa/pull/244).
 
-1. Large dependencies that are only used in certain cases should be dynamically imported to reduce the Node.js startup time. Example refactors: [vite-plugin-react#212](https://github.com/vitejs/vite-plugin-react/pull/212) and [vite-plugin-pwa#224](https://github.com/vite-pwa/vite-plugin-pwa/pull/244).
+2. Hook `buildStart`, `config`, dan `configResolved` seharusnya tidak menjalankan operasi yang panjang dan ekstensif. Hook ini menunggu selama startup server pengembangan, yang menunda kapan Anda dapat mengakses situs di browser.
 
-2. The `buildStart`, `config`, and `configResolved` hooks should not run long and extensive operations. These hooks are awaited during dev server startup, which delays when you can access the site in the browser.
+3. Hook `resolveId`, `load`, dan `transform` dapat menyebabkan beberapa file memuat lebih lambat dari yang lain. Meskipun terkadang tidak dapat dihindari, masih layak untuk memeriksa area yang mungkin dapat dioptimalkan. Misalnya, memeriksa apakah `code` berisi kata kunci tertentu, atau apakah `id` cocok dengan ekstensi tertentu, sebelum melakukan transformasi lengkap.
 
-3. The `resolveId`, `load`, and `transform` hooks may cause some files to load slower than others. While sometimes unavoidable, it's still worth checking for possible areas to optimize. For example, checking if the `code` contains a specific keyword, or the `id` matches a specific extension, before doing the full transformation.
+   Semakin lama proses transformasi file berlangsung, semakin signifikan waterfall permintaan yang akan terjadi saat memuat situs di browser.
 
-   The longer it takes to transform a file, the more significant the request waterfall will be when loading the site in the browser.
+   Anda dapat memeriksa durasi yang diperlukan untuk mentransformasi sebuah file menggunakan `DEBUG="vite:plugin-transform" vite` atau [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect). Perhatikan bahwa karena operasi asinkron cenderung memberikan estimasi waktu yang tidak akurat, Anda harus memperlakukan angka tersebut sebagai perkiraan kasar, tetapi masih dapat mengungkapkan operasi yang lebih mahal.
 
-   You can inspect the duration it takes to transform a file using `DEBUG="vite:plugin-transform" vite` or [vite-plugin-inspect](https://github.com/antfu/vite-plugin-inspect). Note that as asynchronous operations tend to provide inaccurate timings, you should treat the numbers as a rough estimate, but it should still reveal the more expensive operations.
-
-::: tip Profiling
-You can run `vite --profile`, visit the site, and press `p + enter` in your terminal to record a `.cpuprofile`. A tool like [speedscope](https://www.speedscope.app) can then be used to inspect the profile and identify the bottlenecks. You can also [share the profiles](https://chat.vitejs.dev) with the Vite team to help us identify performance issues.
+::: tip Profil
+Anda dapat menjalankan `vite --profile`, mengunjungi situs, dan menekan `p + enter` di terminal Anda untuk merekam `.cpuprofile`. Alat seperti [speedscope](https://www.speedscope.app) kemudian dapat digunakan untuk memeriksa profil dan mengidentifikasi bottleneck. Anda juga dapat [membagikan profil](https://chat.vitejs.dev) dengan tim Vite untuk membantu kami mengidentifikasi masalah kinerja.
 :::
 
-## Reduce Resolve Operations
+## Kurangi Operasi Resolve
 
-Resolving import paths can be an expensive operation when hitting its worst case often. For example, Vite supports "guessing" import paths with the [`resolve.extensions`](/config/shared-options.md#resolve-extensions) option, which defaults to `['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json']`.
+Resolusi jalur impor dapat menjadi operasi yang mahal ketika sering mengalami kasus terburuk. Sebagai contoh, Vite mendukung "menebak" jalur impor dengan opsi [`resolve.extensions`](/config/shared-options.md#resolve-extensions), yang defaultnya adalah `['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json']`.
 
-When you try to import `./Component.jsx` with `import './Component'`, Vite will run these steps to resolve it:
+Ketika Anda mencoba mengimpor `./Component.jsx` dengan `import './Component'`, Vite akan menjalankan langkah-langkah berikut untuk meresolusinya:
 
-1. Check if `./Component` exists, no.
-2. Check if `./Component.mjs` exists, no.
-3. Check if `./Component.js` exists, no.
-4. Check if `./Component.mts` exists, no.
-5. Check if `./Component.ts` exists, no.
-6. Check if `./Component.jsx` exists, yes!
+1. Periksa apakah `./Component` ada, tidak.
+2. Periksa apakah `./Component.mjs` ada, tidak.
+3. Periksa apakah `./Component.js` ada, tidak.
+4. Periksa apakah `./Component.mts` ada, tidak.
+5. Periksa apakah `./Component.ts` ada, tidak.
+6. Periksa apakah `./Component.jsx` ada, iya!
 
-As shown, a total of 6 filesystem checks is required to resolve an import path. The more implicit imports you have, the more time it adds up to resolve the paths.
+Seperti yang ditunjukkan, total 6 pemeriksaan sistem file diperlukan untuk meresolusi jalur impor. Semakin banyak impor implisit yang Anda miliki, semakin banyak waktu yang dibutuhkan untuk meresolusi jalur-jalur tersebut.
 
-Hence, it's usually better to be explicit with your import paths, e.g. `import './Component.jsx'`. You can also narrow down the list for `resolve.extensions` to reduce the general filesystem checks, but you have to make sure it works for files in `node_modules` too.
+Oleh karena itu, biasanya lebih baik untuk eksplisit dalam jalur impor Anda, misalnya `import './Component.jsx'`. Anda juga dapat menyempitkan daftar untuk `resolve.extensions` untuk mengurangi pemeriksaan sistem file secara umum, tetapi Anda harus memastikan bahwa ini berfungsi untuk file-file di `node_modules` juga.
 
-If you're a plugin author, make sure to only call [`this.resolve`](https://rollupjs.org/plugin-development/#this-resolve) when needed to reduce the number of checks above.
+Jika Anda adalah penulis plugin, pastikan hanya memanggil [`this.resolve`](https://rollupjs.org/plugin-development/#this-resolve) saat diperlukan untuk mengurangi jumlah pemeriksaan di atas.
 
 ::: tip TypeScript
-If you are using TypeScript, enable `"moduleResolution": "bundler"` and `"allowImportingTsExtensions": true` in your `tsconfig.json`'s `compilerOptions` to use `.ts` and `.tsx` extensions directly in your code.
+Jika Anda menggunakan TypeScript, aktifkan `"moduleResolution": "bundler"` dan `"allowImportingTsExtensions": true` dalam `compilerOptions` `tsconfig.json` Anda untuk menggunakan ekstensi `.ts` dan `.tsx` langsung dalam kode Anda.
 :::
 
-## Avoid Barrel Files
+## Hindari Berkas Barrel
 
-Barrel files are files that re-export the APIs of other files in the same directory. For example:
+Berkas barrel adalah berkas yang mengekspor kembali API dari berkas lain dalam direktori yang sama. Sebagai contoh:
 
 ```js
 // src/utils/index.js
@@ -66,25 +64,25 @@ export * from './dom.js'
 export * from './slash.js'
 ```
 
-When you only import an individual API, e.g. `import { slash } from './utils'`, all the files in that barrel file need to be fetched and transformed as they may contain the `slash` API and may also contain side-effects that run on initialization. This means you're loading more files than required on the initial page load, resulting in a slower page load.
+Ketika Anda hanya mengimpor satu API individu, misalnya `import { slash } from './utils'`, semua berkas dalam berkas barrel itu perlu diambil dan diubah karena mereka mungkin berisi API `slash` dan juga mungkin berisi efek samping yang dijalankan saat inisialisasi. Ini berarti Anda memuat lebih banyak berkas daripada yang diperlukan pada muatan halaman awal, yang mengakibatkan muatan halaman yang lebih lambat.
 
-If possible, you should avoid barrel files and import the individual APIs directly, e.g. `import { slash } from './utils/slash.js'`. You can read [issue #8237](https://github.com/vitejs/vite/issues/8237) for more information.
+Jika memungkinkan, sebaiknya hindari berkas barrel dan impor API individunya secara langsung, misalnya `import { slash } from './utils/slash.js'`. Anda dapat membaca [issue #8237](https://github.com/vitejs/vite/issues/8237) untuk informasi lebih lanjut.
 
-## Warm Up Frequently Used Files
+## Hangatkan Berkas yang Sering Digunakan
 
-The Vite dev server only transforms files as requested by the browser, which allows it to start up quickly and only apply transformations for used files. It can also pre-transform files if it anticipates certain files will be requested shortly. However, request waterfalls may still happen if some files take longer to transform than others. For example:
+Server pengembangan Vite hanya mentransformasi berkas sesuai permintaan dari browser, yang memungkinkannya untuk memulai dengan cepat dan hanya menerapkan transformasi untuk berkas yang digunakan. Server juga dapat melakukan pre-transformasi berkas jika mengantisipasi bahwa beberapa berkas akan diminta segera. Namun, request waterfalls masih bisa terjadi jika beberapa berkas memakan waktu lebih lama untuk ditransformasi daripada yang lain. Sebagai contoh:
 
-Given an import graph where the left file imports the right file:
+Diberikan grafik impor di mana berkas kiri mengimpor berkas kanan:
 
 ```
 main.js -> BigComponent.vue -> big-utils.js -> large-data.json
 ```
 
-The import relationship can only be known after the file is transformed. If `BigComponent.vue` takes some time to transform, `big-utils.js` has to wait for its turn, and so on. This causes an internal waterfall even with pre-transformation built-in.
+Hubungan impor hanya dapat diketahui setelah berkas ditransformasi. Jika `BigComponent.vue` membutuhkan waktu untuk ditransformasi, `big-utils.js` harus menunggu giliran, dan seterusnya. Ini menyebabkan adanya waterfall internal bahkan dengan pre-transformasi yang sudah dibangun.
 
-Vite allows you to warm up files that you know are frequently used, e.g. `big-utils.js`, using the [`server.warmup`](/config/server-options.md#server-warmup) option. This way `big-utils.js` will be ready and cached to be served immediately when requested.
+Vite memungkinkan Anda untuk "menghangatkan" (warm up) berkas yang Anda tahu sering digunakan, misalnya `big-utils.js`, menggunakan opsi [`server.warmup`](/config/server-options.md#server-warmup). Dengan cara ini, `big-utils.js` akan siap dan di-cache untuk disajikan segera saat diminta.
 
-You can find files that are frequently used by running `DEBUG="vite:transform" vite` and inspect the logs:
+Anda dapat menemukan berkas yang sering digunakan dengan menjalankan `DEBUG="vite:transform" vite` dan memeriksa log:
 
 ```bash
 vite:transform 28.72ms /@vite/client +1ms
@@ -105,23 +103,23 @@ export default defineConfig({
 })
 ```
 
-Note that you should only warm up files that are frequently used to not overload the Vite dev server on startup. Check the [`server.warmup`](/config/server-options.md#server-warmup) option for more information.
+Perhatikan bahwa Anda hanya seharusnya "menghangatkan" (warm up) berkas yang sering digunakan untuk tidak memberatkan server pengembangan Vite saat startup. Periksa opsi [`server.warmup`](/config/server-options.md#server-warmup) untuk informasi lebih lanjut.
 
-Using [`--open` or `server.open`](/config/server-options.html#server-open) also provides a performance boost, as Vite will automatically warm up the entry point of your app or the provided URL to open.
+Menggunakan [`--open` atau `server.open`](/config/server-options.html#server-open) juga memberikan peningkatan kinerja, karena Vite akan secara otomatis "menghangatkan" (warm up) titik masuk aplikasi Anda atau URL yang diberikan untuk dibuka.
 
-## Use Lesser or Native Tooling
+## Gunakan Alat yang Lebih Sederhana atau Native
 
-Keeping Vite fast with a growing codebase is about reducing the amount of work for the source files (JS/TS/CSS).
+Menjaga Vite tetap cepat dengan kode basis yang berkembang adalah tentang mengurangi jumlah pekerjaan untuk berkas sumber (JS/TS/CSS).
 
-Examples of doing less work:
+Contoh melakukan pekerjaan yang lebih sedikit:
 
-- Use CSS instead of Sass/Less/Stylus when possible (nesting can be handled by PostCSS)
-- Don't transform SVGs into UI framework components (React, Vue, etc). Import them as strings or URLs instead.
-- When using `@vitejs/plugin-react`, avoid configuring the Babel options, so it skips the transformation during build (only esbuild will be used).
+- Gunakan CSS daripada Sass/Less/Stylus jika memungkinkan (penyusunan dapat ditangani oleh PostCSS)
+- Jangan mengubah SVG menjadi komponen kerangka UI (React, Vue, dll). Impor mereka sebagai string atau URL saja.
+- Ketika menggunakan `@vitejs/plugin-react`, hindari konfigurasi opsi Babel, sehingga proses transformasi dilewati selama pembangunan (hanya esbuild yang akan digunakan).
 
-Examples of using native tooling:
+Contoh menggunakan alat bawaan:
 
-Using native tooling often brings larger installation size and as so is not the default when starting a new Vite project. But it may be worth the cost for larger applications.
+Menggunakan alat bawaan sering kali membawa ukuran instalasi yang lebih besar dan karena itu tidak menjadi default saat memulai proyek Vite baru. Tetapi mungkin sepadan dengan biaya untuk aplikasi yang lebih besar.
 
-- Try out the experimental support for [LightningCSS](https://github.com/vitejs/vite/discussions/13835)
-- Use [`@vitejs/plugin-react-swc`](https://github.com/vitejs/vite-plugin-react-swc) in place of `@vitejs/plugin-react`.
+- Coba dukungan eksperimental untuk [LightningCSS](https://github.com/vitejs/vite/discussions/13835)
+- Gunakan [`@vitejs/plugin-react-swc`](https://github.com/vitejs/vite-plugin-react-swc) sebagai pengganti `@vitejs/plugin-react`.

@@ -1,37 +1,37 @@
-# Building for Production
+# Membangun untuk Produksi
 
-When it is time to deploy your app for production, simply run the `vite build` command. By default, it uses `<root>/index.html` as the build entry point, and produces an application bundle that is suitable to be served over a static hosting service. Check out the [Deploying a Static Site](./static-deploy) for guides about popular services.
+Saatnya untuk mendeploy aplikasi Anda untuk produksi, cukup jalankan perintah `vite build`. Secara default, ini menggunakan `<root>/index.html` sebagai titik masuk pembangunan, dan menghasilkan paket aplikasi yang sesuai untuk disajikan melalui layanan hosting statis. Lihat [Mendeploy Situs Statis](./static-deploy) untuk panduan tentang layanan populer.
 
-## Browser Compatibility
+## Kompatibilitas Browser
 
-The production bundle assumes support for modern JavaScript. By default, Vite targets browsers which support the [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import), and [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta):
+Paket produksi mengasumsikan dukungan untuk JavaScript modern. Secara default, Vite mengincar browser yang mendukung [Modul ES asli](https://caniuse.com/es6-module), [impor dinamis ESM asli](https://caniuse.com/es6-module-dynamic-import), dan [`import.meta`](https://caniuse.com/mdn-javascript_operators_import_meta):
 
 - Chrome >=87
 - Firefox >=78
 - Safari >=14
 - Edge >=88
 
-You can specify custom targets via the [`build.target` config option](/config/build-options.md#build-target), where the lowest target is `es2015`.
+Anda dapat menentukan target kustom melalui opsi konfigurasi [`build.target`](/config/build-options.md#build-target), di mana target terendahnya adalah `es2015`.
 
-Note that by default, Vite only handles syntax transforms and **does not cover polyfills**. You can check out [Polyfill.io](https://polyfill.io/) which is a service that automatically generates polyfill bundles based on the user's browser UserAgent string.
+Perhatikan bahwa secara default, Vite hanya menangani transformasi sintaks dan **tidak mencakup polifil**. Anda dapat melihat [Polyfill.io](https://polyfill.io/) yang merupakan layanan yang secara otomatis menghasilkan bundel polifil berdasarkan string UserAgent browser pengguna.
 
-Legacy browsers can be supported via [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy), which will automatically generate legacy chunks and corresponding ES language feature polyfills. The legacy chunks are conditionally loaded only in browsers that do not have native ESM support.
+Browser kuno dapat didukung melalui [@vitejs/plugin-legacy](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy), yang akan secara otomatis menghasilkan potongan legacy dan polifil fitur bahasa ES yang sesuai. Potongan legacy hanya dimuat secara kondisional di browser yang tidak memiliki dukungan ESM asli.
 
-## Public Base Path
+## Jalur Dasar Publik
 
-- Related: [Asset Handling](./assets)
+- Terkait: [Penanganan Aset](./assets)
 
-If you are deploying your project under a nested public path, simply specify the [`base` config option](/config/shared-options.md#base) and all asset paths will be rewritten accordingly. This option can also be specified as a command line flag, e.g. `vite build --base=/my/public/path/`.
+Jika Anda mendeploy proyek Anda di bawah jalur publik bertingkat, cukup tentukan opsi konfigurasi [`base`](/config/shared-options.md#base) dan semua jalur aset akan ditulis ulang sesuai. Opsi ini juga dapat ditentukan sebagai flag baris perintah, misalnya `vite build --base=/my/public/path/`.
 
-JS-imported asset URLs, CSS `url()` references, and asset references in your `.html` files are all automatically adjusted to respect this option during build.
+URL aset yang diimpor dalam JS, referensi `url()` CSS, dan referensi aset dalam file `.html` Anda secara otomatis disesuaikan untuk menghormati opsi ini selama pembangunan.
 
-The exception is when you need to dynamically concatenate URLs on the fly. In this case, you can use the globally injected `import.meta.env.BASE_URL` variable which will be the public base path. Note this variable is statically replaced during build so it must appear exactly as-is (i.e. `import.meta.env['BASE_URL']` won't work).
+Pengecualian terjadi ketika Anda perlu menggabungkan URL secara dinamis saat berjalan. Dalam kasus ini, Anda dapat menggunakan variabel yang disuntikkan secara global `import.meta.env.BASE_URL` yang akan menjadi jalur dasar publik. Perhatikan variabel ini digantikan secara statis selama pembangunan sehingga harus muncul persis seperti yang ada (misalnya, `import.meta.env['BASE_URL']` tidak akan berfungsi).
 
-For advanced base path control, check out [Advanced Base Options](#advanced-base-options).
+Untuk kontrol jalur dasar yang lebih canggih, lihat [Opsi Jalur Dasar Lanjutan](#advanced-base-options).
 
-## Customizing the Build
+## Menyesuaikan Pembangunan
 
-The build can be customized via various [build config options](/config/build-options.md). Specifically, you can directly adjust the underlying [Rollup options](https://rollupjs.org/configuration-options/) via `build.rollupOptions`:
+Pembangunan dapat disesuaikan melalui berbagai [opsi konfigurasi pembangunan](/config/build-options.md). Secara khusus, Anda dapat langsung menyesuaikan opsi Rollup yang mendasarinya (https://rollupjs.org/configuration-options/) melalui `build.rollupOptions`:
 
 ```js
 // vite.config.js
@@ -44,11 +44,11 @@ export default defineConfig({
 })
 ```
 
-For example, you can specify multiple Rollup outputs with plugins that are only applied during build.
+Sebagai contoh, Anda dapat menentukan output Rollup multipel dengan plugin yang hanya diterapkan selama pembangunan.
 
-## Chunking Strategy
+## Strategi Pemecahan Chunk
 
-You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)). Until Vite 2.8, the default chunking strategy divided the chunks into `index` and `vendor`. It is a good strategy for some SPAs, but it is hard to provide a general solution for every Vite target use case. From Vite 2.9, `manualChunks` is no longer modified by default. You can continue to use the Split Vendor Chunk strategy by adding the `splitVendorChunkPlugin` in your config file:
+Anda dapat mengonfigurasi cara chunk dipisahkan menggunakan `build.rollupOptions.output.manualChunks` (lihat [dokumentasi Rollup](https://rollupjs.org/configuration-options/#output-manualchunks)). Sampai Vite 2.8, strategi default pemecahan chunk membagi chunk menjadi `index` dan `vendor`. Ini adalah strategi yang baik untuk beberapa SPA, tetapi sulit untuk memberikan solusi umum untuk setiap kasus penggunaan target Vite. Mulai dari Vite 2.9, `manualChunks` tidak lagi dimodifikasi secara default. Anda dapat terus menggunakan strategi Pemecahan Chunk Vendor dengan menambahkan `splitVendorChunkPlugin` dalam file konfigurasi Anda:
 
 ```js
 // vite.config.js
@@ -58,27 +58,27 @@ export default defineConfig({
 })
 ```
 
-This strategy is also provided as a `splitVendorChunk({ cache: SplitVendorChunkCache })` factory, in case composition with custom logic is needed. `cache.reset()` needs to be called at `buildStart` for build watch mode to work correctly in this case.
+Strategi ini juga disediakan sebagai `splitVendorChunk({ cache: SplitVendorChunkCache })` factory, jika komposisi dengan logika kustom diperlukan. `cache.reset()` harus dipanggil pada `buildStart` untuk mode tontonan pembangunan agar berfungsi dengan benar dalam kasus ini.
 
-::: warning
-You should use `build.rollupOptions.output.manualChunks` function form when using this plugin. If the object form is used, the plugin won't have any effect.
+::: peringatan
+Anda harus menggunakan formulir fungsi `build.rollupOptions.output.manualChunks` saat menggunakan plugin ini. Jika formulir objek digunakan, plugin tidak akan memiliki efek apa pun.
 :::
 
-## Load Error Handling
+## Penanganan Kesalahan Muat
 
-Vite emits `vite:preloadError` event when it fails to load dynamic imports. `event.payload` contains the original import error. If you call `event.preventDefault()`, the error will not be thrown.
+Vite mengeluarkan acara `vite:preloadError` ketika gagal memuat impor dinamis. `event.payload` berisi kesalahan impor asli. Jika Anda memanggil `event.preventDefault()`, kesalahan tidak akan dilemparkan.
 
 ```js
 window.addEventListener('vite:preloadError', (event) => {
-  window.reload() // for example, refresh the page
+  window.reload() // misalnya, segarkan halaman
 })
 ```
 
-When a new deployment occurs, the hosting service may delete the assets from previous deployments. As a result, a user who visited your site before the new deployment might encounter an import error. This error happens because the assets running on that user's device are outdated and it tries to import the corresponding old chunk, which is deleted. This event is useful for addressing this situation.
+Ketika penerapan baru terjadi, layanan hosting dapat menghapus aset dari penerapan sebelumnya. Sebagai hasilnya, pengguna yang mengunjungi situs Anda sebelum penerapan baru mungkin mengalami kesalahan impor. Kesalahan ini terjadi karena aset yang berjalan di perangkat pengguna tersebut sudah ketinggalan zaman dan mencoba mengimpor potongan lama yang sesuai, yang dihapus. Acara ini berguna untuk mengatasi situasi ini.
 
-## Rebuild on files changes
+## Rebuild saat berubahnya file
 
-You can enable rollup watcher with `vite build --watch`. Or, you can directly adjust the underlying [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) via `build.watch`:
+Anda dapat mengaktifkan penonton rollup dengan `vite build --watch`. Atau, Anda dapat langsung menyesuaikan [`WatcherOptions`](https://rollupjs.org/configuration-options/#watch) yang mendasarinya melalui `build.watch`:
 
 ```js
 // vite.config.js
@@ -91,11 +91,11 @@ export default defineConfig({
 })
 ```
 
-With the `--watch` flag enabled, changes to the `vite.config.js`, as well as any files to be bundled, will trigger a rebuild.
+Dengan flag `--watch` diaktifkan, perubahan pada `vite.config.js`, serta file apa pun yang akan dibundel, akan memicu pembangunan ulang.
 
-## Multi-Page App
+## Aplikasi Multi-Halaman
 
-Suppose you have the following source code structure:
+Misalkan Anda memiliki struktur kode sumber berikut:
 
 ```
 ├── package.json
@@ -107,9 +107,9 @@ Suppose you have the following source code structure:
     └── nested.js
 ```
 
-During dev, simply navigate or link to `/nested/` - it works as expected, just like for a normal static file server.
+Selama pengembangan, cukup navigasi atau tautkan ke `/nested/` - ini akan berfungsi seperti yang diharapkan, seperti halnya untuk server file statis normal.
 
-During build, all you need to do is to specify multiple `.html` files as entry points:
+Selama pembangunan, yang perlu Anda lakukan hanyalah menentukan beberapa file `.html` sebagai titik masuk:
 
 ```js
 // vite.config.js
@@ -128,15 +128,15 @@ export default defineConfig({
 })
 ```
 
-If you specify a different root, remember that `__dirname` will still be the folder of your vite.config.js file when resolving the input paths. Therefore, you will need to add your `root` entry to the arguments for `resolve`.
+Jika Anda menentukan root yang berbeda, ingatlah bahwa `__dirname` masih akan menjadi folder file vite.config.js Anda saat menyelesaikan jalur input. Oleh karena itu, Anda perlu menambahkan entri `root` Anda ke argumen untuk `resolve`.
 
-Note that for HTML files, Vite ignores the name given to the entry in the `rollupOptions.input` object and instead respects the resolved id of the file when generating the HTML asset in the dist folder. This ensures a consistent structure with the way the dev server works.
+Perhatikan bahwa untuk file HTML, Vite mengabaikan nama yang diberikan pada entri dalam objek `rollupOptions.input` dan sebagai gantinya menghormati id yang diselesaikan dari file saat menghasilkan aset HTML di folder dist. Ini memastikan struktur yang konsisten dengan cara server pengembangan berfungsi.
 
-## Library Mode
+## Mode Perpustakaan
 
-When you are developing a browser-oriented library, you are likely spending most of the time on a test/demo page that imports your actual library. With Vite, you can use your `index.html` for that purpose to get the smooth development experience.
+Ketika Anda mengembangkan perpustakaan yang ditujukan untuk browser, Anda kemungkinan besar menghabiskan sebagian besar waktu pada halaman uji/demo yang mengimpor perpustakaan aktual Anda. Dengan Vite, Anda dapat menggunakan `index.html` Anda untuk tujuan tersebut untuk mendapatkan pengalaman pengembangan yang lancar.
 
-When it is time to bundle your library for distribution, use the [`build.lib` config option](/config/build-options.md#build-lib). Make sure to also externalize any dependencies that you do not want to bundle into your library, e.g. `vue` or `react`:
+Ketika waktunya untuk bundel perpustakaan Anda untuk distribusi, gunakan opsi konfigurasi [`build.lib`](/config/build-options.md#build-lib). Pastikan juga untuk memperluas ketergantungan apa pun yang tidak ingin Anda bundel ke dalam perpustakaan Anda, misalnya `vue` atau `react`:
 
 ```js
 // vite.config.js
@@ -146,19 +146,19 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     lib: {
-      // Could also be a dictionary or array of multiple entry points
+      // Bisa juga berupa kamus atau array dari beberapa titik masuk
       entry: resolve(__dirname, 'lib/main.js'),
       name: 'MyLib',
-      // the proper extensions will be added
+      // ekstensi yang tepat akan ditambahkan
       fileName: 'my-lib',
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+      // pastikan untuk memperluas dep yang tidak boleh dibundel
+      // ke dalam perpustakaan Anda
       external: ['vue'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
+        // Memberikan variabel global untuk digunakan dalam pembangunan UMD
+        // untuk dep yang diperluas
         globals: {
           vue: 'Vue',
         },
@@ -168,25 +168,7 @@ export default defineConfig({
 })
 ```
 
-The entry file would contain exports that can be imported by users of your package:
-
-```js
-// lib/main.js
-import Foo from './Foo.vue'
-import Bar from './Bar.vue'
-export { Foo, Bar }
-```
-
-Running `vite build` with this config uses a Rollup preset that is oriented towards shipping libraries and produces two bundle formats: `es` and `umd` (configurable via `build.lib`):
-
-```
-$ vite build
-building for production...
-dist/my-lib.js      0.08 kB / gzip: 0.07 kB
-dist/my-lib.umd.cjs 0.30 kB / gzip: 0.16 kB
-```
-
-Recommended `package.json` for your lib:
+Berkas entri akan berisi ekspor yang dapat diimpor oleh pengguna paket Anda:
 
 ```json
 {
@@ -204,7 +186,7 @@ Recommended `package.json` for your lib:
 }
 ```
 
-Or, if exposing multiple entry points:
+Atau, jika mengekspos beberapa titik masuk:
 
 ```json
 {
@@ -226,32 +208,32 @@ Or, if exposing multiple entry points:
 }
 ```
 
-::: tip File Extensions
-If the `package.json` does not contain `"type": "module"`, Vite will generate different file extensions for Node.js compatibility. `.js` will become `.mjs` and `.cjs` will become `.js`.
+::: tip Ekstensi Berkas
+Jika `package.json` tidak mengandung `"type": "module"`, Vite akan menghasilkan ekstensi berkas yang berbeda untuk kompatibilitas Node.js. `.js` akan menjadi `.mjs` dan `.cjs` akan menjadi `.js`.
 :::
 
-::: tip Environment Variables
-In library mode, all [`import.meta.env.*`](./env-and-mode.md) usage are statically replaced when building for production. However, `process.env.*` usage are not, so that consumers of your library can dynamically change it. If this is undesirable, you can use `define: { 'process.env.NODE_ENV': '"production"' }` for example to statically replace them, or use [`esm-env`](https://github.com/benmccann/esm-env) for better compatibility with bundlers and runtimes.
+::: tip Variabel Lingkungan
+Dalam mode perpustakaan, semua penggunaan [`import.meta.env.*`](./env-and-mode.md) diganti secara statis saat membangun untuk produksi. Namun, penggunaan `process.env.*` tidak, sehingga konsumen perpustakaan Anda dapat mengubahnya secara dinamis. Jika ini tidak diinginkan, Anda dapat menggunakan `define: { 'process.env.NODE_ENV': '"production"' }` misalnya untuk menggantikan secara statis, atau gunakan [`esm-env`](https://github.com/benmccann/esm-env) untuk kompatibilitas yang lebih baik dengan bundler dan runtime.
 :::
 
-::: warning Advanced Usage
-Library mode includes a simple and opinionated configuration for browser-oriented and JS framework libraries. If you are building non-browser libraries, or require advanced build flows, you can use [Rollup](https://rollupjs.org) or [esbuild](https://esbuild.github.io) directly.
+::: warning Penggunaan Lanjutan
+Mode perpustakaan mencakup konfigurasi yang sederhana dan berdasarkan opini untuk perpustakaan berorientasi browser dan kerangka kerja JS. Jika Anda membangun perpustakaan non-browser, atau memerlukan alur kerja pembangunan lanjutan, Anda dapat menggunakan [Rollup](https://rollupjs.org) atau [esbuild](https://esbuild.github.io) secara langsung.
 :::
 
-## Advanced Base Options
+## Opsi Dasar Lanjutan
 
 ::: warning
-This feature is experimental. [Give Feedback](https://github.com/vitejs/vite/discussions/13834).
+Fitur ini bersifat eksperimental. [Beri Masukan](https://github.com/vitejs/vite/discussions/13834).
 :::
 
-For advanced use cases, the deployed assets and public files may be in different paths, for example to use different cache strategies.
-A user may choose to deploy in three different paths:
+Untuk kasus penggunaan lanjutan, aset yang didistribusikan dan file publik mungkin berada di jalur yang berbeda, misalnya untuk menggunakan strategi cache yang berbeda.
+Seorang pengguna dapat memilih untuk mendistribusikan dalam tiga jalur yang berbeda:
 
-- The generated entry HTML files (which may be processed during SSR)
-- The generated hashed assets (JS, CSS, and other file types like images)
-- The copied [public files](assets.md#the-public-directory)
+- File HTML entri yang dihasilkan (yang mungkin diproses selama SSR)
+- Aset yang dihasilkan dengan hash (JS, CSS, dan jenis file lain seperti gambar)
+- File [publik yang disalin](assets.md#the-public-directory)
 
-A single static [base](#public-base-path) isn't enough in these scenarios. Vite provides experimental support for advanced base options during build, using `experimental.renderBuiltUrl`.
+Satu base statis [base](#public-base-path) tidak cukup dalam skenario ini. Vite menyediakan dukungan eksperimental untuk opsi dasar lanjutan selama pembangunan, menggunakan `experimental.renderBuiltUrl`.
 
 ```ts
 experimental: {
@@ -265,7 +247,7 @@ experimental: {
 }
 ```
 
-If the hashed assets and public files aren't deployed together, options for each group can be defined independently using asset `type` included in the second `context` param given to the function.
+Jika aset yang dihashkan dan file publik tidak didistribusikan bersama, opsi untuk setiap grup dapat didefinisikan secara independen menggunakan jenis aset `type` yang disertakan dalam param kedua `context` yang diberikan ke fungsi.
 
 ```ts
 experimental: {
@@ -282,3 +264,4 @@ experimental: {
   }
 }
 ```
+

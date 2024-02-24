@@ -1,49 +1,49 @@
-# Releases
+# Rilis
 
-Vite releases follow [Semantic Versioning](https://semver.org/). You can see the latest stable version of Vite in the [Vite npm package page](https://www.npmjs.com/package/vite).
+Rilis Vite mengikuti [Semantic Versioning](https://semver.org/). Anda dapat melihat versi stabil terbaru dari Vite di [halaman paket npm Vite](https://www.npmjs.com/package/vite).
 
-A full changelog of past releases is [available on GitHub](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md).
+Changelog lengkap dari rilis-rilis sebelumnya tersedia [di GitHub](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md).
 
-## Release Cycle
+## Siklus Rilis
 
-Vite does not have a fixed release cycle.
+Vite tidak memiliki siklus rilis yang tetap.
 
-- **Patch** releases are released as needed.
-- **Minor** releases always contain new features and are also released as needed. Minor releases always go through a beta pre-release phase.
-- **Major** releases generally align with [Node.js EOL schedule](https://endoflife.date/nodejs), and will be announced ahead of time. These releases will go through an early discussion phase, and both alpha and beta pre-release phases.
+- Rilis **Patch** dirilis sesuai kebutuhan.
+- Rilis **Minor** selalu mengandung fitur-fitur baru dan juga dirilis sesuai kebutuhan. Rilis Minor selalu melalui fase pra-rilis beta.
+- Rilis **Major** umumnya sejalan dengan [jadwal EOL Node.js](https://endoflife.date/nodejs), dan akan diumumkan sebelumnya. Rilis ini akan melalui fase diskusi awal, serta fase pra-rilis alpha dan beta.
 
-The previous Vite Major will keep receiving important fixes and security patches. After that, it would only get updates if there are security concerns. We recommend updating Vite regularly. Check out the [Migration Guides](https://vitejs.dev/guide/migration.html) when you update to each Major.
+Vite Major sebelumnya akan terus menerima perbaikan penting dan patch keamanan. Setelah itu, rilis hanya akan mendapatkan pembaruan jika ada kekhawatiran keamanan. Kami merekomendasikan untuk secara rutin memperbarui Vite. Periksa [Panduan Migrasi](https://vitejs.dev/guide/migration.html) saat Anda memperbarui ke setiap Major.
 
-The Vite team partners with the main projects in the ecosystem to test new Vite versions before they are released through the [vite-ecosystem-ci project](https://github.com/vitejs/vite-ecosystem-ci). Most projects using Vite should be able to quickly offer support or migrate to new versions as soon as they are released.
+Tim Vite bermitra dengan proyek-proyek utama dalam ekosistem untuk menguji versi Vite baru sebelum mereka dirilis melalui [proyek vite-ecosystem-ci](https://github.com/vitejs/vite-ecosystem-ci). Sebagian besar proyek yang menggunakan Vite seharusnya dapat dengan cepat menawarkan dukungan atau bermigrasi ke versi baru segera setelah mereka dirilis.
 
-## Semantic Versioning Edge Cases
+## Kasus Khusus Semantic Versioning
 
-### TypeScript Definitions
+### Definisi TypeScript
 
-We may ship incompatible changes to TypeScript definitions between minor versions. This is because:
+Kami dapat mengirimkan perubahan yang tidak kompatibel dengan definisi TypeScript antara versi minor. Hal ini disebabkan oleh:
 
-- Sometimes TypeScript itself ships incompatible changes between minor versions, and we may have to adjust types to support newer versions of TypeScript.
-- Occasionally we may need to adopt features that are only available in a newer version of TypeScript, raising the minimum required version of TypeScript.
-- If you are using TypeScript, you can use a semver range that locks the current minor and manually upgrade when a new minor version of Vite is released.
+- Kadang-kadang TypeScript sendiri mengirimkan perubahan yang tidak kompatibel antara versi minor, dan kami mungkin harus menyesuaikan jenis untuk mendukung versi TypeScript yang lebih baru.
+- Kadang-kadang kami mungkin perlu mengadopsi fitur-fitur yang hanya tersedia di versi TypeScript yang lebih baru, meningkatkan versi minimum yang diperlukan dari TypeScript.
+- Jika Anda menggunakan TypeScript, Anda dapat menggunakan rentang semver yang mengunci versi minor saat ini dan memperbarui secara manual ketika versi minor Vite yang baru dirilis.
 
 ### esbuild
 
-[esbuild](https://esbuild.github.io/) is pre-1.0.0 and sometimes it has a breaking change we may need to include to have access to newer features and performance improvements. We may bump the esbuild's version in a Vite Minor.
+[esbuild](https://esbuild.github.io/) masih sebelum versi 1.0.0 dan kadang-kadang memiliki perubahan yang merusak yang mungkin perlu kami sertakan untuk mendapatkan akses ke fitur-fitur terbaru dan peningkatan kinerja. Kami mungkin meningkatkan versi esbuild dalam suatu Minor Vite.
 
-### Node.js non-LTS versions
+### Versi Node.js non-LTS
 
-Non-LTS Node.js versions (odd-numbered) are not tested as part of Vite's CI, but they should still work before their [EOL](https://endoflife.date/nodejs).
+Versi Node.js non-LTS (bilangan ganjil) tidak diuji sebagai bagian dari CI Vite, tetapi seharusnya masih berfungsi sebelum [EOL](https://endoflife.date/nodejs) mereka.
 
-## Pre Releases
+## Prarilis​
 
-Minor releases typically go through a non-fixed number of beta releases. Major releases will go through an alpha phase and a beta phase.
+Rilis Minor umumnya melalui sejumlah beta releases yang tidak tetap. Rilis Major akan melalui fase alpha dan fase beta.
 
-Pre-releases allow early adopters and maintainers from the Ecosystem to do integration and stability testing, and provide feedback. Do not use pre-releases in production. All pre-releases are considered unstable and may ship breaking changes in between. Always pin to exact versions when using pre-releases.
+Prarilis memungkinkan pengguna awal dan pemelihara dari Ekosistem untuk melakukan integrasi dan pengujian stabilitas, dan memberikan umpan balik. Jangan menggunakan prarilis dalam produksi. Semua prarilis dianggap tidak stabil dan mungkin mengirimkan perubahan yang merusak di antara mereka. Selalu kunci ke versi yang tepat saat menggunakan prarilis.
 
-## Deprecations
+## Penghapusan​
 
-We periodically deprecate features that have been superseded by better alternatives in Minor releases. Deprecated features will continue to work with a type or logged warning. They will be removed in the next major release after entering deprecated status. The [Migration Guide](https://vitejs.dev/guide/migration.html) for each major will list these removals and document an upgrade path for them.
+Secara berkala kami menghapus fitur-fitur yang telah digantikan oleh alternatif yang lebih baik dalam Rilis Minor. Fitur yang sudah usang akan terus berfungsi dengan jenis atau pesan peringatan yang dicatat. Mereka akan dihapus dalam rilis mayor berikutnya setelah memasuki status usang. [Panduan Migrasi](https://vitejs.dev/guide/migration.html) untuk setiap mayor akan mencantumkan penghapusan ini dan mendokumentasikan jalur peningkatannya.
 
-## Experimental Features
+## Fitur Eksperimental​
 
-Some features are marked as experimental when released in a stable version of Vite. Experimental features allows us to gather real-world experience to influence their final design. The goal is to let users provide feedback by testing them in production. Experimental features themselves are considered unstable, and should only be used in a controlled manner. These features may change between Minors, so users must pin their Vite version when they rely on them. We will create [a GitHub discussion](https://github.com/vitejs/vite/discussions/categories/feedback?discussions_q=is%3Aopen+label%3Aexperimental+category%3AFeedback) for each experimental feature.
+Beberapa fitur ditandai sebagai eksperimental saat dirilis dalam versi stabil Vite. Fitur eksperimental memungkinkan kami untuk mengumpulkan pengalaman dunia nyata untuk mempengaruhi desain akhir mereka. Tujuannya adalah membiarkan pengguna memberikan umpan balik dengan mengujinya di produksi. Fitur eksperimental itu sendiri dianggap tidak stabil, dan harus digunakan dengan cara yang terkendali. Fitur-fitur ini dapat berubah antara Minor, sehingga pengguna harus mengunci versi Vite mereka ketika mereka bergantung pada mereka.

@@ -1,10 +1,10 @@
-# Deploying a Static Site
+# Mendeploy Situs Statis
 
-The following guides are based on some shared assumptions:
+Panduan-panduan berikut didasarkan pada beberapa asumsi bersama:
 
-- You are using the default build output location (`dist`). This location [can be changed using `build.outDir`](/config/build-options.md#build-outdir), and you can extrapolate instructions from these guides in that case.
-- You are using npm. You can use equivalent commands to run the scripts if you are using Yarn or other package managers.
-- Vite is installed as a local dev dependency in your project, and you have setup the following npm scripts:
+- Anda menggunakan lokasi output build default (`dist`). Lokasi ini [dapat diubah menggunakan `build.outDir`](/config/build-options.md#build-outdir), dan Anda dapat mengekstrapolasi instruksi dari panduan-panduan ini dalam kasus tersebut.
+- Anda menggunakan npm. Anda dapat menggunakan perintah setara untuk menjalankan skrip jika Anda menggunakan Yarn atau manajer paket lainnya.
+- Vite diinstal sebagai dependensi pengembangan lokal di proyek Anda, dan Anda telah menyiapkan skrip npm berikut:
 
 ```json
 {
@@ -15,34 +15,34 @@ The following guides are based on some shared assumptions:
 }
 ```
 
-It is important to note that `vite preview` is intended for previewing the build locally and not meant as a production server.
+Penting untuk dicatat bahwa `vite preview` dimaksudkan untuk memperlihatkan build secara lokal dan tidak dimaksudkan sebagai server produksi.
 
-::: tip NOTE
-These guides provide instructions for performing a static deployment of your Vite site. Vite also supports Server Side Rendering. SSR refers to front-end frameworks that support running the same application in Node.js, pre-rendering it to HTML, and finally hydrating it on the client. Check out the [SSR Guide](./ssr) to learn about this feature. On the other hand, if you are looking for integration with traditional server-side frameworks, check out the [Backend Integration guide](./backend-integration) instead.
+::: tip CATATAN
+Panduan-panduan ini menyediakan instruksi untuk melakukan deployment statis situs Vite Anda. Vite juga mendukung Server Side Rendering. SSR merujuk pada kerangka kerja front-end yang mendukung menjalankan aplikasi yang sama di Node.js, merender pra ke HTML, dan akhirnya meresapkan di klien. Lihat [Panduan SSR](./ssr) untuk mempelajari fitur ini. Di sisi lain, jika Anda mencari integrasi dengan kerangka kerja server-side tradisional, lihat [panduan integrasi Backend](./backend-integration) sebagai gantinya.
 :::
 
-## Building the App
+## Membangun Aplikasi
 
-You may run `npm run build` command to build the app.
+Anda dapat menjalankan perintah `npm run build` untuk membangun aplikasi.
 
 ```bash
 $ npm run build
 ```
 
-By default, the build output will be placed at `dist`. You may deploy this `dist` folder to any of your preferred platforms.
+Secara default, output build akan ditempatkan di `dist`. Anda dapat mendeploy folder `dist` ini ke salah satu platform yang Anda sukai.
 
-### Testing the App Locally
+### Menguji Aplikasi Secara Lokal
 
-Once you've built the app, you may test it locally by running `npm run preview` command.
+Setelah Anda membangun aplikasi, Anda dapat mengujinya secara lokal dengan menjalankan perintah `npm run preview`.
 
 ```bash
 $ npm run build
 $ npm run preview
 ```
 
-The `vite preview` command will boot up a local static web server that serves the files from `dist` at `http://localhost:4173`. It's an easy way to check if the production build looks OK in your local environment.
+Perintah `vite preview` akan mem-boot server web statis lokal yang melayani berkas-berkas dari `dist` di `http://localhost:4173`. Ini adalah cara mudah untuk memeriksa apakah build produksi terlihat baik di lingkungan lokal Anda.
 
-You may configure the port of the server by passing the `--port` flag as an argument.
+Anda dapat mengonfigurasi port server dengan melewatkan flag `--port` sebagai argumen.
 
 ```json
 {
@@ -52,43 +52,43 @@ You may configure the port of the server by passing the `--port` flag as an argu
 }
 ```
 
-Now the `preview` command will launch the server at `http://localhost:8080`.
+Sekarang perintah `preview` akan meluncurkan server di `http://localhost:8080`.
 
-## GitHub Pages
+## Halaman GitHub
 
-1. Set the correct `base` in `vite.config.js`.
+1. Atur `base` yang benar di `vite.config.js`.
 
-   If you are deploying to `https://<USERNAME>.github.io/`, or to a custom domain through GitHub Pages (eg. `www.example.com`), set `base` to `'/'`. Alternatively, you can remove `base` from the configuration, as it defaults to `'/'`.
+   Jika Anda mendeploy ke `https://<USERNAME>.github.io/`, atau ke domain kustom melalui GitHub Pages (misalnya `www.example.com`), atur `base` menjadi `'/'`. Atau, Anda dapat menghapus `base` dari konfigurasi, karena secara default akan menjadi `'/'`.
 
-   If you are deploying to `https://<USERNAME>.github.io/<REPO>/` (eg. your repository is at `https://github.com/<USERNAME>/<REPO>`), then set `base` to `'/<REPO>/'`.
+   Jika Anda mendeploy ke `https://<USERNAME>.github.io/<REPO>/` (misalnya repositori Anda ada di `https://github.com/<USERNAME>/<REPO>`), maka atur `base` menjadi `'/<REPO>/'`.
 
-2. Go to your GitHub Pages configuration in the repository settings page and choose the source of deployment as "GitHub Actions", this will lead you to create a workflow that builds and deploys your project, a sample workflow that installs dependencies and builds using npm is provided:
+2. Buka konfigurasi GitHub Pages Anda di halaman pengaturan repositori dan pilih sumber deployment sebagai "GitHub Actions", ini akan membawa Anda untuk membuat alur kerja yang membangun dan mendeploy proyek Anda, contoh alur kerja yang menginstal dependensi dan membangun menggunakan npm disediakan:
 
    ```yml
-   # Simple workflow for deploying static content to GitHub Pages
-   name: Deploy static content to Pages
+   # Alur kerja sederhana untuk mendeploy konten statis ke GitHub Pages
+   name: Deploy konten statis ke Halaman
 
    on:
-     # Runs on pushes targeting the default branch
+     # Berjalan pada dorongan yang ditargetkan ke cabang default
      push:
        branches: ['main']
 
-     # Allows you to run this workflow manually from the Actions tab
+     # Memungkinkan Anda menjalankan alur kerja ini secara manual dari tab Actions
      workflow_dispatch:
 
-   # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+   # Mengatur izin GITHUB_TOKEN untuk mengizinkan deployment ke GitHub Pages
    permissions:
      contents: read
      pages: write
      id-token: write
 
-   # Allow one concurrent deployment
+   # Memungkinkan satu deployment konkuren
    concurrency:
      group: 'pages'
      cancel-in-progress: true
 
    jobs:
-     # Single deploy job since we're just deploying
+     # Satu pekerjaan deploy tunggal karena kita hanya mendeploy
      deploy:
        environment:
          name: github-pages
@@ -118,15 +118,15 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
            uses: actions/deploy-pages@v2
    ```
 
-## GitLab Pages and GitLab CI
+## Halaman GitLab dan GitLab CI
 
-1. Set the correct `base` in `vite.config.js`.
+1. Atur `base` yang benar di `vite.config.js`.
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/`, you can omit `base` as it defaults to `'/'`.
+   Jika Anda mendeploy ke `https://<USERNAME atau GROUP>.gitlab.io/`, Anda dapat mengabaikan `base` karena secara default menjadi `'/'`.
 
-   If you are deploying to `https://<USERNAME or GROUP>.gitlab.io/<REPO>/`, for example your repository is at `https://gitlab.com/<USERNAME>/<REPO>`, then set `base` to `'/<REPO>/'`.
+   Jika Anda mendeploy ke `https://<USERNAME atau GROUP>.gitlab.io/<REPO>/`, misalnya repositori Anda ada di `https://gitlab.com/<USERNAME>/<REPO>`, maka atur `base` menjadi `'/<REPO>/'`.
 
-2. Create a file called `.gitlab-ci.yml` in the root of your project with the content below. This will build and deploy your site whenever you make changes to your content:
+2. Buat file bernama `.gitlab-ci.yml` di root proyek Anda dengan konten di bawah ini. Ini akan membangun dan mendeploy situs Anda setiap kali Anda membuat perubahan pada konten Anda:
 
    ```yaml
    image: node:16.5.0
@@ -152,99 +152,99 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
 
 ## Netlify
 
-1. Install the [Netlify CLI](https://cli.netlify.com/).
-2. Create a new site using `ntl init`.
-3. Deploy using `ntl deploy`.
+1. Pasang [Netlify CLI](https://cli.netlify.com/).
+2. Buat situs baru menggunakan `ntl init`.
+3. Deploy menggunakan `ntl deploy`.
 
 ```bash
-# Install the Netlify CLI
+# Pasang Netlify CLI
 $ npm install -g netlify-cli
 
-# Create a new site in Netlify
+# Buat situs baru di Netlify
 $ ntl init
 
-# Deploy to a unique preview URL
+# Deploy ke URL pratinjau unik
 $ ntl deploy
 ```
 
-The Netlify CLI will share with you a preview URL to inspect. When you are ready to go into production, use the `prod` flag:
+Netlify CLI akan memberikan URL pratinjau untuk Anda inspeksi. Ketika Anda siap untuk masuk ke produksi, gunakan flag `prod`:
 
 ```bash
-# Deploy the site into production
+# Deploy situs ke produksi
 $ ntl deploy --prod
 ```
 
 ## Vercel
 
-### Vercel CLI
+### CLI Vercel
 
-1. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel` to deploy.
-2. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-3. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. Pasang [Vercel CLI](https://vercel.com/cli) dan jalankan `vercel` untuk melakukan deploy.
+2. Vercel akan mendeteksi bahwa Anda menggunakan Vite dan akan mengaktifkan pengaturan yang tepat untuk deployment Anda.
+3. Aplikasi Anda sudah didaftarkan! (misalnya [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
 
 ```bash
 $ npm i -g vercel
 $ vercel init vite
 Vercel CLI
-> Success! Initialized "vite" example in ~/your-folder.
-- To deploy, `cd vite` and run `vercel`.
+> Sukses! Menginisialisasi contoh "vite" di ~/your-folder.
+- Untuk deploy, `cd vite` dan jalankan `vercel`.
 ```
 
-### Vercel for Git
+### Vercel untuk Git
 
-1. Push your code to your git repository (GitHub, GitLab, Bitbucket).
-2. [Import your Vite project](https://vercel.com/new) into Vercel.
-3. Vercel will detect that you are using Vite and will enable the correct settings for your deployment.
-4. Your application is deployed! (e.g. [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
+1. Dorong kode Anda ke repositori git Anda (GitHub, GitLab, Bitbucket).
+2. [Impor proyek Vite Anda](https://vercel.com/new) ke Vercel.
+3. Vercel akan mendeteksi bahwa Anda menggunakan Vite dan akan mengaktifkan pengaturan yang tepat untuk deployment Anda.
+4. Aplikasi Anda sudah didaftarkan! (misalnya [vite-vue-template.vercel.app](https://vite-vue-template.vercel.app/))
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/concepts/deployments/environments#preview), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://vercel.com/docs/concepts/deployments/environments#production).
+Setelah proyek Anda diimpor dan didaftarkan, semua dorongan selanjutnya ke cabang akan menghasilkan [Deploy Pratinjau](https://vercel.com/docs/concepts/deployments/environments#preview), dan semua perubahan yang dilakukan pada Cabang Produksi (biasanya "main") akan menghasilkan [Deploy Produksi](https://vercel.com/docs/concepts/deployments/environments#production).
 
-Learn more about Vercel’s [Git Integration](https://vercel.com/docs/concepts/git).
+Pelajari lebih lanjut tentang [Integrasi Git Vercel](https://vercel.com/docs/concepts/git).
 
 ## Cloudflare Pages
 
-### Cloudflare Pages via Wrangler
+### Cloudflare Pages melalui Wrangler
 
-1. Install [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/get-started/).
-2. Authenticate Wrangler with your Cloudflare account using `wrangler login`.
-3. Run your build command.
-4. Deploy using `npx wrangler pages deploy dist`.
+1. Pasang [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/get-started/).
+2. Autentikasi Wrangler dengan akun Cloudflare Anda menggunakan `wrangler login`.
+3. Jalankan perintah build Anda.
+4. Deploy menggunakan `npx wrangler pages deploy dist`.
 
 ```bash
-# Install Wrangler CLI
+# Pasang Wrangler CLI
 $ npm install -g wrangler
 
-# Login to Cloudflare account from CLI
+# Login ke akun Cloudflare dari CLI
 $ wrangler login
 
-# Run your build command
+# Jalankan perintah build Anda
 $ npm run build
 
-# Create new deployment
+# Buat deployment baru
 $ npx wrangler pages deploy dist
 ```
 
-After your assets are uploaded, Wrangler will give you a preview URL to inspect your site. When you log into the Cloudflare Pages dashboard, you will see your new project.
+Setelah aset Anda diunggah, Wrangler akan memberikan URL pratinjau untuk Anda inspeksi. Ketika Anda masuk ke dashboard Cloudflare Pages, Anda akan melihat proyek baru Anda.
 
-### Cloudflare Pages with Git
+### Cloudflare Pages dengan Git
 
-1. Push your code to your git repository (GitHub, GitLab).
-2. Log in to the Cloudflare dashboard and select your account in **Account Home** > **Pages**.
-3. Select **Create a new Project** and the **Connect Git** option.
-4. Select the git project you want to deploy and click **Begin setup**
-5. Select the corresponding framework preset in the build setting depending on the Vite framework you have selected.
-6. Then save and deploy!
-7. Your application is deployed! (e.g `https://<PROJECTNAME>.pages.dev/`)
+1. Dorong kode Anda ke repositori git Anda (GitHub, GitLab).
+2. Masuk ke dashboard Cloudflare dan pilih akun Anda di **Account Home** > **Pages**.
+3. Pilih **Buat Proyek Baru** dan opsi **Connect Git**.
+4. Pilih proyek git yang ingin Anda deploy dan klik **Mulai setup**.
+5. Pilih preset kerangka kerja yang sesuai dalam pengaturan build tergantung pada kerangka kerja Vite yang Anda pilih.
+6. Kemudian simpan dan deploy!
+7. Aplikasi Anda sudah didaftarkan! (misalnya `https://<PROJECTNAME>.pages.dev/`)
 
-After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://developers.cloudflare.com/pages/platform/preview-deployments/) unless specified not to in your [branch build controls](https://developers.cloudflare.com/pages/platform/branch-build-controls/). All changes to the Production Branch (commonly “main”) will result in a Production Deployment.
+Setelah proyek Anda diimpor dan didaftarkan, semua dorongan selanjutnya ke cabang akan menghasilkan [Deploy Pratinjau](https://developers.cloudflare.com/pages/platform/preview-deployments/) kecuali ditentukan sebaliknya dalam [kontrol build cabang](https://developers.cloudflare.com/pages/platform/branch-build-controls/). Semua perubahan pada Cabang Produksi (biasanya "main") akan menghasilkan Deployment Produksi.
 
-You can also add custom domains and handle custom build settings on Pages. Learn more about [Cloudflare Pages Git Integration](https://developers.cloudflare.com/pages/get-started/#manage-your-site).
+Anda juga dapat menambahkan domain kustom dan menangani pengaturan build kustom di Pages. Pelajari lebih lanjut tentang [Integrasi Git Cloudflare Pages](https://developers.cloudflare.com/pages/get-started/#manage-your-site).
 
 ## Google Firebase
 
-1. Make sure you have [firebase-tools](https://www.npmjs.com/package/firebase-tools) installed.
+1. Pastikan Anda telah menginstal [firebase-tools](https://www.npmjs.com/package/firebase-tools).
 
-2. Create `firebase.json` and `.firebaserc` at the root of your project with the following content:
+2. Buat `firebase.json` dan `.firebaserc` di root proyek Anda dengan konten berikut:
 
    `firebase.json`:
 
@@ -273,63 +273,63 @@ You can also add custom domains and handle custom build settings on Pages. Learn
    }
    ```
 
-3. After running `npm run build`, deploy using the command `firebase deploy`.
+3. Setelah menjalankan `npm run build`, deploy dengan menggunakan perintah `firebase deploy`.
 
 ## Surge
 
-1. First install [surge](https://www.npmjs.com/package/surge), if you haven’t already.
+1. Pertama, pasang [surge](https://www.npmjs.com/package/surge), jika Anda belum melakukannya.
 
-2. Run `npm run build`.
+2. Jalankan `npm run build`.
 
-3. Deploy to surge by typing `surge dist`.
+3. Deploy ke surge dengan mengetik `surge dist`.
 
-You can also deploy to a [custom domain](http://surge.sh/help/adding-a-custom-domain) by adding `surge dist yourdomain.com`.
+Anda juga dapat melakukan deploy ke [domain kustom](http://surge.sh/help/adding-a-custom-domain) dengan menambahkan `surge dist yourdomain.com`.
 
 ## Azure Static Web Apps
 
-You can quickly deploy your Vite app with Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps) service. You need:
+Anda dapat dengan cepat melakukan deploy aplikasi Vite Anda dengan layanan Microsoft Azure [Static Web Apps](https://aka.ms/staticwebapps). Anda membutuhkan:
 
-- An Azure account and a subscription key. You can create a [free Azure account here](https://azure.microsoft.com/free).
-- Your app code pushed to [GitHub](https://github.com).
-- The [SWA Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) in [Visual Studio Code](https://code.visualstudio.com).
+- Akun Azure dan kunci langganan. Anda dapat membuat [akun Azure gratis di sini](https://azure.microsoft.com/free).
+- Kode aplikasi Anda yang didorong ke [GitHub](https://github.com).
+- [Ekstensi SWA](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps) di [Visual Studio Code](https://code.visualstudio.com).
 
-Install the extension in VS Code and navigate to your app root. Open the Static Web Apps extension, sign in to Azure, and click the '+' sign to create a new Static Web App. You will be prompted to designate which subscription key to use.
+Pasang ekstensi di VS Code dan buka root aplikasi Anda. Buka ekstensi Static Web Apps, masuk ke Azure, dan klik tanda '+' untuk membuat Static Web App baru. Anda akan diminta untuk menetapkan kunci langganan mana yang akan digunakan.
 
-Follow the wizard started by the extension to give your app a name, choose a framework preset, and designate the app root (usually `/`) and built file location `/dist`. The wizard will run and will create a GitHub action in your repo in a `.github` folder.
+Ikuti petunjuk yang dimulai oleh ekstensi untuk memberi nama aplikasi Anda, memilih preset kerangka kerja, dan menetapkan root aplikasi (biasanya `/`) dan lokasi file yang dibangun `/dist`. Wizard akan berjalan dan akan membuat tindakan GitHub di repo Anda dalam folder `.github`.
 
-The action will work to deploy your app (watch its progress in your repo's Actions tab) and, when successfully completed, you can view your app in the address provided in the extension's progress window by clicking the 'Browse Website' button that appears when the GitHub action has run.
+Tindakan akan bekerja untuk mendeploy aplikasi Anda (awasi kemajuannya di tab Actions repo Anda) dan, ketika berhasil diselesaikan, Anda dapat melihat aplikasi Anda di alamat yang disediakan dalam jendela progres ekstensi dengan mengklik tombol 'Browse Website' yang muncul ketika tindakan GitHub telah berjalan.
 
 ## Render
 
-You can deploy your Vite app as a Static Site on [Render](https://render.com/).
+Anda dapat mendeploy aplikasi Vite Anda sebagai Situs Statis di [Render](https://render.com/).
 
-1. Create a [Render account](https://dashboard.render.com/register).
+1. Buat [akun Render](https://dashboard.render.com/register).
 
-2. In the [Dashboard](https://dashboard.render.com/), click the **New** button and select **Static Site**.
+2. Di [Dashboard](https://dashboard.render.com/), klik tombol **New** dan pilih **Static Site**.
 
-3. Connect your GitHub/GitLab account or use a public repository.
+3. Hubungkan akun GitHub/GitLab Anda atau gunakan repositori publik.
 
-4. Specify a project name and branch.
+4. Tentukan nama proyek dan cabang.
 
    - **Build Command**: `npm run build`
    - **Publish Directory**: `dist`
 
-5. Click **Create Static Site**.
+5. Klik **Create Static Site**.
 
-   Your app should be deployed at `https://<PROJECTNAME>.onrender.com/`.
+   Aplikasi Anda seharusnya didaftarkan di `https://<PROJECTNAME>.onrender.com/`.
 
-By default, any new commit pushed to the specified branch will automatically trigger a new deployment. [Auto-Deploy](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) can be configured in the project settings.
+Secara default, setiap commit baru yang didorong ke cabang yang ditentukan akan secara otomatis memicu deployment baru. [Auto-Deploy](https://render.com/docs/deploys#toggling-auto-deploy-for-a-service) dapat dikonfigurasi di pengaturan proyek.
 
-You can also add a [custom domain](https://render.com/docs/custom-domains) to your project.
+Anda juga dapat menambahkan [domain kustom](https://render.com/docs/custom-domains) ke proyek Anda.
 
 ## Flightcontrol
 
-Deploy your static site using [Flightcontrol](https://www.flightcontrol.dev/?ref=docs-vite), by following these [instructions](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite)
+Deploy situs statis Anda menggunakan [Flightcontrol](https://www.flightcontrol.dev/?ref=docs-vite), dengan mengikuti [petunjuk ini](https://www.flightcontrol.dev/docs/reference/examples/vite?ref=docs-vite).
 
 ## AWS Amplify Hosting
 
-Deploy your static site using [AWS Amplify Hosting](https://aws.amazon.com/amplify/hosting/), by following these [instructions](https://docs.amplify.aws/guides/hosting/vite/q/platform/js/)
+Deploy situs statis Anda menggunakan [AWS Amplify Hosting](https://aws.amazon.com/amplify/hosting/), dengan mengikuti [petunjuk ini](https://docs.amplify.aws/guides/hosting/vite/q/platform/js/).
 
 ## Kinsta Static Site Hosting
 
-You can deploy your Vite app as a Static Site on [Kinsta](https://kinsta.com/static-site-hosting/) by following these [instructions](https://kinsta.com/docs/react-vite-example/).
+Anda dapat mendeploy aplikasi Vite Anda sebagai Situs Statis di [Kinsta](https://kinsta.com/static-site-hosting/) dengan mengikuti [petunjuk ini](https://kinsta.com/docs/react-vite-example/).

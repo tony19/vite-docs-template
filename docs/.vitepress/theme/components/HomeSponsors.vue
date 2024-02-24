@@ -8,7 +8,7 @@ const { data } = useSponsor()
 <template>
   <VPHomeSponsors
     v-if="data"
-    message="Vite is free and open source, made possible by wonderful sponsors."
+    message="Vite gratis dan open source, berkat dukungan para sponsor yang luar biasa."
     :data="data"
   />
   <div class="action">

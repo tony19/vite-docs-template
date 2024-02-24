@@ -1,28 +1,28 @@
-# Why Vite
+# Mengapa Vite
 
-## The Problems
+## Permasalahan
 
-Before ES modules were available in browsers, developers had no native mechanism for authoring JavaScript in a modularized fashion. This is why we are all familiar with the concept of "bundling": using tools that crawl, process and concatenate our source modules into files that can run in the browser.
+Sebelum modul ES tersedia di browser, para pengembang tidak memiliki mekanisme asli untuk menulis JavaScript secara modular. Inilah sebabnya kita semua akrab dengan konsep "bundling": menggunakan alat yang menjelajah, memproses, dan menggabungkan modul sumber kita menjadi file yang dapat dijalankan di browser.
 
-Over time we have seen tools like [webpack](https://webpack.js.org/), [Rollup](https://rollupjs.org) and [Parcel](https://parceljs.org/), which greatly improved the development experience for frontend developers.
+Seiring berjalannya waktu, kita telah melihat adanya alat seperti [webpack](https://webpack.js.org/), [Rollup](https://rollupjs.org), dan [Parcel](https://parceljs.org/), yang sangat meningkatkan pengalaman pengembangan bagi pengembang frontend.
 
-However, as we build more and more ambitious applications, the amount of JavaScript we are dealing with is also increasing dramatically. It is not uncommon for large scale projects to contain thousands of modules. We are starting to hit a performance bottleneck for JavaScript based tooling: it can often take an unreasonably long wait (sometimes up to minutes!) to spin up a dev server, and even with Hot Module Replacement (HMR), file edits can take a couple of seconds to be reflected in the browser. The slow feedback loop can greatly affect developers' productivity and happiness.
+Namun, seiring kita membangun aplikasi yang semakin ambisius, jumlah JavaScript yang kita tangani juga meningkat secara dramatis. Tidak jarang untuk proyek skala besar mengandung ribuan modul. Kita mulai mengalami bottleneck kinerja untuk peralatan berbasis JavaScript: seringkali membutuhkan waktu yang tidak wajar lama (kadang-kadang hingga beberapa menit!) untuk memulai server pengembangan, dan bahkan dengan Hot Module Replacement (HMR), perubahan file dapat memakan waktu beberapa detik untuk tercermin di browser. Siklus umpan balik yang lambat ini dapat sangat memengaruhi produktivitas dan kebahagiaan para pengembang.
 
-Vite aims to address these issues by leveraging new advancements in the ecosystem: the availability of native ES modules in the browser, and the rise of JavaScript tools written in compile-to-native languages.
+Vite bertujuan untuk mengatasi masalah ini dengan memanfaatkan kemajuan baru dalam ekosistem: ketersediaan modul ES asli di browser, dan munculnya alat JavaScript yang ditulis dalam bahasa kompilasi ke bahasa asli.
 
-### Slow Server Start
+### Memulai Server yang Lambat
 
-When cold-starting the dev server, a bundler-based build setup has to eagerly crawl and build your entire application before it can be served.
+Saat memulai server pengembangan dari awal (cold-start), sebuah setup pembangunan berbasis bundler harus secara cepat merayapi dan membangun seluruh aplikasi Anda sebelum dapat disajikan.
 
-Vite improves the dev server start time by first dividing the modules in an application into two categories: **dependencies** and **source code**.
+Vite meningkatkan waktu memulai server pengembangan dengan pertama-tama membagi modul-modul dalam aplikasi menjadi dua kategori: **dependencies** dan **source code**.
 
-- **Dependencies** are mostly plain JavaScript that do not change often during development. Some large dependencies (e.g. component libraries with hundreds of modules) are also quite expensive to process. Dependencies may also be shipped in various module formats (e.g. ESM or CommonJS).
+- **Dependencies** sebagian besar adalah JavaScript biasa yang jarang berubah selama pengembangan. Beberapa dependencies besar (misalnya, perpustakaan komponen dengan ratusan modul) juga cukup mahal untuk diproses. Dependencies juga dapat dikirim dalam berbagai format modul (misalnya, ESM atau CommonJS).
 
-  Vite [pre-bundles dependencies](./dep-pre-bundling) using [esbuild](https://esbuild.github.io/). esbuild is written in Go and pre-bundles dependencies 10-100x faster than JavaScript-based bundlers.
+  Vite [mempersiapkan dependencies sebelum bundling](./dep-pre-bundling) menggunakan [esbuild](https://esbuild.github.io/). esbuild ditulis dalam Go dan mempersiapkan dependencies 10-100x lebih cepat daripada bundler berbasis JavaScript.
 
-- **Source code** often contains non-plain JavaScript that needs transforming (e.g. JSX, CSS or Vue/Svelte components), and will be edited very often. Also, not all source code needs to be loaded at the same time (e.g. with route-based code-splitting).
+- **Source code** seringkali berisi JavaScript yang tidak biasa yang perlu ditransformasi (misalnya, JSX, CSS, atau komponen Vue/Svelte), dan akan diedit sangat sering. Selain itu, tidak semua source code perlu dimuat pada saat yang sama (misalnya, dengan pemisahan kode berbasis rute).
 
-  Vite serves source code over [native ESM](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules). This is essentially letting the browser take over part of the job of a bundler: Vite only needs to transform and serve source code on demand, as the browser requests it. Code behind conditional dynamic imports is only processed if actually used on the current screen.
+  Vite melayani source code melalui [ESM bawaan](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules). Ini pada dasarnya membiarkan browser mengambil bagian dari pekerjaan seorang bundler: Vite hanya perlu mentransformasi dan melayani source code sesuai permintaan, saat browser memintanya. Kode di balik impor dinamis bersyarat hanya diproses jika benar-benar digunakan pada layar saat ini.
 
 <script setup>
 import bundlerSvg from '../images/bundler.svg?raw'
@@ -31,30 +31,30 @@ import esmSvg from '../images/esm.svg?raw'
 <svg-image :svg="bundlerSvg" />
 <svg-image :svg="esmSvg" />
 
-### Slow Updates
+### Pembaruan yang Lambat
 
-When a file is edited in a bundler-based build setup, it is inefficient to rebuild the whole bundle for an obvious reason: the update speed will degrade linearly with the size of the app.
+Ketika sebuah file diedit dalam sebuah setup pembangunan berbasis bundler, itu tidak efisien untuk membangun ulang seluruh bundel dengan alasan yang jelas: kecepatan pembaruan akan menurun secara linear seiring dengan ukuran aplikasi.
 
-In some bundlers, the dev server runs the bundling in memory so that it only needs to invalidate part of its module graph when a file changes, but it still needs to re-construct the entire bundle and reload the web page. Reconstructing the bundle can be expensive, and reloading the page blows away the current state of the application. This is why some bundlers support Hot Module Replacement (HMR): allowing a module to "hot replace" itself without affecting the rest of the page. This greatly improves DX - however, in practice we've found that even HMR update speed deteriorates significantly as the size of the application grows.
+Pada beberapa bundler, server pengembangan menjalankan pembundelan di memori sehingga hanya perlu membatalkan bagian dari grafik modulnya ketika sebuah file berubah, tetapi masih perlu membangun kembali seluruh bundel dan me-reload halaman web. Membangun kembali bundel bisa mahal, dan me-reload halaman menghapus keadaan aplikasi saat ini. Inilah mengapa beberapa bundler mendukung Hot Module Replacement (HMR): memungkinkan sebuah modul untuk "hot replace" dirinya sendiri tanpa mempengaruhi bagian lain dari halaman. Ini secara signifikan meningkatkan DX - namun, dalam praktik kami telah menemukan bahwa kecepatan pembaruan HMR juga menurun secara signifikan seiring dengan pertumbuhan ukuran aplikasi.
 
-In Vite, HMR is performed over native ESM. When a file is edited, Vite only needs to precisely invalidate the chain between the edited module and its closest HMR boundary (most of the time only the module itself), making HMR updates consistently fast regardless of the size of your application.
+Pada Vite, HMR dilakukan melalui native ESM. Ketika sebuah file diedit, Vite hanya perlu membatalkan dengan tepat rantai antara modul yang diedit dan batas HMR terdekatnya (sebagian besar waktu hanya modul itu sendiri), membuat pembaruan HMR tetap cepat secara konsisten tanpa memandang ukuran aplikasi Anda.
 
-Vite also leverages HTTP headers to speed up full page reloads (again, let the browser do more work for us): source code module requests are made conditional via `304 Not Modified`, and dependency module requests are strongly cached via `Cache-Control: max-age=31536000,immutable` so they don't hit the server again once cached.
+Vite juga memanfaatkan header HTTP untuk mempercepat reload halaman penuh (sekali lagi, membiarkan browser melakukan lebih banyak pekerjaan untuk kita): permintaan modul source code dibuat kondisional melalui `304 Not Modified`, dan permintaan modul dependensi di-cache dengan kuat melalui `Cache-Control: max-age=31536000,immutable` sehingga mereka tidak mengakses server lagi setelah di-cache.
 
-Once you experience how fast Vite is, we highly doubt you'd be willing to put up with bundled development again.
+Setelah Anda mengalami seberapa cepat Vite ini, kami sangat ragu Anda akan bersedia kembali menggunakan pengembangan yang dibundel.
 
-## Why Bundle for Production
+## Mengapa Melakukan Bundel untuk Produksi
 
-Even though native ESM is now widely supported, shipping unbundled ESM in production is still inefficient (even with HTTP/2) due to the additional network round trips caused by nested imports. To get the optimal loading performance in production, it is still better to bundle your code with tree-shaking, lazy-loading and common chunk splitting (for better caching).
+Meskipun native ESM sekarang didukung secara luas, mengirim ESM yang tidak dibundel di produksi masih tidak efisien (bahkan dengan HTTP/2) karena perjalanan jaringan tambahan yang disebabkan oleh impor bertingkat. Untuk mendapatkan kinerja pemuatan yang optimal di produksi, masih lebih baik untuk membundel kode Anda dengan tree-shaking, lazy-loading, dan common chunk splitting (untuk caching yang lebih baik).
 
-Ensuring optimal output and behavioral consistency between the dev server and the production build isn't easy. This is why Vite ships with a pre-configured [build command](./build) that bakes in many [performance optimizations](./features#build-optimizations) out of the box.
+Memastikan keluaran optimal dan konsistensi perilaku antara server pengembangan dan build produksi bukanlah hal yang mudah. Inilah mengapa Vite dikemas dengan [perintah build yang telah dikonfigurasi sebelumnya](./build) yang telah menyertakan banyak [optimisasi kinerja](./features#build-optimizations) secara langsung.
 
-## Why Not Bundle with esbuild?
+## Mengapa Tidak Membundle dengan esbuild?
 
-Vite's current plugin API isn't compatible with using `esbuild` as a bundler. In spite of `esbuild` being faster, Vite's adoption of Rollup's flexible plugin API and infrastructure heavily contributed to its success in the ecosystem. For the time being, we believe that Rollup offers a better performance-vs-flexibility tradeoff.
+API plugin saat ini Vite tidak kompatibel dengan penggunaan `esbuild` sebagai bundler. Terlepas dari `esbuild` yang lebih cepat, adopsi Vite terhadap API plugin dan infrastruktur fleksibel Rollup secara signifikan berkontribusi pada kesuksesannya dalam ekosistem. Untuk saat ini, kami percaya bahwa Rollup menawarkan pertukaran kinerja-vs-fleksibilitas yang lebih baik.
 
-Rollup has also been working on performance improvements, [switching its parser to SWC in v4](https://github.com/rollup/rollup/pull/5073). And there is an ongoing effort to build a Rust-port of Rollup called Rolldown. Once Rolldown is ready, it could replace both Rollup and esbuild in Vite, improving build performance significantly and removing inconsistencies between development and build. You can watch [Evan You's ViteConf 2023 keynote for more details](https://youtu.be/hrdwQHoAp0M).
+Rollup juga telah bekerja pada peningkatan kinerja, [beralih parser ke SWC di v4](https://github.com/rollup/rollup/pull/5073). Dan ada upaya berkelanjutan untuk membangun ulang Rollup dengan Rust yang disebut Rolldown. Begitu Rolldown siap, ia bisa menggantikan baik Rollup maupun esbuild di Vite, meningkatkan kinerja build secara signifikan dan menghilangkan inkonsistensi antara pengembangan dan build. Anda dapat menonton [kunci utama ViteConf 2023 Evan You untuk lebih jelasnya](https://youtu.be/hrdwQHoAp0M).
 
-## How is Vite Different from X?
+## Bagaimana Vite Berbeda dari X?
 
-You can check out the [Comparisons](./comparisons) section for more details on how Vite differs from other similar tools.
+Anda dapat melihat bagian [Perbandingan](./comparisons) untuk lebih detail tentang bagaimana Vite berbeda dari alat serupa lainnya.
