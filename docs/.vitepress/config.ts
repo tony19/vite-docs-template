@@ -1,4 +1,5 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
 import { buildEnd } from './buildEnd.config'
 
 const ogDescription = 'Next Generation Frontend Tooling'
@@ -330,6 +331,9 @@ export default defineConfig({
     outline: {
       level: [2, 3],
     },
+  },
+  markdown: {
+    codeTransformers: [transformerTwoslash()],
   },
   buildEnd,
 })
