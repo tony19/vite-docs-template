@@ -46,11 +46,15 @@ features:
     details: Flexible programmatic APIs with full TypeScript typing.
 ---
 
-<style>
-.VPButton.alt[href="https://lu.ma/vite"] {
-  background: var(--vp-home-hero-name-background);
-  border: none;
-  padding: 1px 21px;
-  color: #fff !important;
-}
-</style>
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('uwu') != null) {
+    const img = document.querySelector('.VPHero .VPImage.image-src')
+    img.src = '/logo-uwu.png'
+    img.alt = 'Vite Kawaii Logo by @icarusgkx'
+  }
+})
+</script>
