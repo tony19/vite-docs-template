@@ -39,11 +39,13 @@
   },
   "devDependencies": {
     "@algolia/client-search": "^4.13.1",
+    "@shikijs/vitepress-twoslash": "^1.6.2",
     "@types/node": "20.12.7",
     "@types/react": "^18.0.15",
     "feed": "^4.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vitepress": "^1.0.0-rc.31"
+    "vitepress": "^1.2.2",
+    "vue": "^3.4.27"
   }
 }
