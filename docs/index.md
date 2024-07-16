@@ -21,9 +21,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/vitejs/vite
-    - theme: alt
-      text: 📅 Vite Meetup SF
-      link: https://lu.ma/vite
+    - theme: brand
+      text: ⚡ ViteConf 24!
+      link: https://viteconf.org/?utm=vite-homepage
 
 features:
   - icon: 💡
