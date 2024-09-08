@@ -38,7 +38,7 @@
     "search-insights": "^2.17.1"
   },
   "devDependencies": {
-    "@algolia/client-search": "^4.13.1",
+    "@algolia/client-search": "^5.0.0",
     "@shikijs/vitepress-twoslash": "^1.16.2",
     "@types/node": "20.16.5",
     "@types/react": "^18.3.5",
