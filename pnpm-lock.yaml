@@ -15,7 +15,7 @@ devDependencies:
     version: 5.3.0
   '@shikijs/vitepress-twoslash':
     specifier: ^1.16.2
-    version: 1.16.3(typescript@5.6.2)
+    version: 1.17.0(typescript@5.6.2)
   '@types/node':
     specifier: 22.5.4
     version: 22.5.4
@@ -656,13 +656,30 @@ packages:
       '@types/hast': 3.0.4
     dev: true
 
-  /@shikijs/core@1.16.3:
-    resolution: {integrity: sha512-yETIvrETCeC39gSPIiSADmjri9FwKmxz0QvONMtTIUYlKZe90CJkvcjPksayC2VQOtzOJonEiULUa8v8crUQvA==}
+  /@shikijs/core@1.17.0:
+    resolution: {integrity: sha512-Mkk4Mp4bNnW1kytU8I7S5PK5teNSe0iKlfqxPss4sdwnlcU8a2N62Z3te2gVmZfU9t1HF6L3wyWuM43IvEeEsg==}
     dependencies:
+      '@shikijs/engine-javascript': 1.17.0
+      '@shikijs/engine-oniguruma': 1.17.0
+      '@shikijs/types': 1.17.0
       '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
+      hast-util-to-html: 9.0.2
+    dev: true
+
+  /@shikijs/engine-javascript@1.17.0:
+    resolution: {integrity: sha512-EiBVlxmzJZdC2ypzn8k+vxLngbBNgHLS4RilwrFOABGRc72kUZubbD/6Chrq2RcVtD3yq1GtiiIdFMGd9BTX3Q==}
+    dependencies:
+      '@shikijs/types': 1.17.0
       oniguruma-to-js: 0.3.3
       regex: 4.3.2
+    dev: true
+
+  /@shikijs/engine-oniguruma@1.17.0:
+    resolution: {integrity: sha512-nsXzJGLQ0fhKmA4Gwt1cF7vC8VuZ1HSDrTRuj48h/qDeX/TzmOlTDXQ3uPtyuhyg/2rbZRzNhN8UFU4fSnQfXg==}
+    dependencies:
+      '@shikijs/types': 1.17.0
+      '@shikijs/vscode-textmate': 9.2.2
     dev: true
 
   /@shikijs/transformers@1.16.2:
@@ -671,25 +688,33 @@ packages:
       shiki: 1.16.2
     dev: true
 
-  /@shikijs/twoslash@1.16.3(typescript@5.6.2):
-    resolution: {integrity: sha512-lSBWuLv7K6QvQ1bKuJ7HLuIMa1tHjyLtijCRDjD7plhmSJXbS92icvXSCDaJsZ7ACt7KAgba4cA6ffMT7YAbjQ==}
+  /@shikijs/twoslash@1.17.0(typescript@5.6.2):
+    resolution: {integrity: sha512-CqXVLRbX5D/bN9OAWNVAxkjF1ZpqyzD6jHtKYor+rxvqz2QXK57taWo4IHa1s9APHpgGidMNxXVZZ5eN8uZnlg==}
     dependencies:
-      '@shikijs/core': 1.16.3
+      '@shikijs/core': 1.17.0
+      '@shikijs/types': 1.17.0
       twoslash: 0.2.11(typescript@5.6.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /@shikijs/vitepress-twoslash@1.16.3(typescript@5.6.2):
-    resolution: {integrity: sha512-BXkcVioFDS9RtPEuqB4WkvlilxjUGgXYsem9eqVU7CeeLEpKlofR5I9yjegloh8nP4y5ItqUAm/BYOPwleZiMA==}
+  /@shikijs/types@1.17.0:
+    resolution: {integrity: sha512-Tvu2pA69lbpXB+MmgIaROP1tio8y0uYvKb5Foh3q0TJBTAJuaoa5eDEtS/0LquyveacsiVrYF4uEZILju+7Ybg==}
     dependencies:
-      '@shikijs/twoslash': 1.16.3(typescript@5.6.2)
+      '@shikijs/vscode-textmate': 9.2.2
+      '@types/hast': 3.0.4
+    dev: true
+
+  /@shikijs/vitepress-twoslash@1.17.0(typescript@5.6.2):
+    resolution: {integrity: sha512-FcdZUtF1jL51fZfkITd1qEnmnVe/w8lnOGhEWptMqMNvMYzB8vxDv5y+E1zvE+rw0NbBuWtOmZea3WOah1nr6g==}
+    dependencies:
+      '@shikijs/twoslash': 1.17.0(typescript@5.6.2)
       floating-vue: 5.2.2(vue@3.5.3)
       mdast-util-from-markdown: 2.0.1
       mdast-util-gfm: 3.0.0
       mdast-util-to-hast: 13.2.0
-      shiki: 1.16.3
+      shiki: 1.17.0
       twoslash: 0.2.11(typescript@5.6.2)
       twoslash-vue: 0.2.11(typescript@5.6.2)
       vue: 3.5.3(typescript@5.6.2)
@@ -815,11 +840,28 @@ packages:
       source-map-js: 1.2.0
     dev: true
 
+  /@vue/compiler-core@3.5.4:
+    resolution: {integrity: sha512-oNwn+BAt3n9dK9uAYvI+XGlutwuTq/wfj4xCBaZCqwwVIGtD7D6ViihEbyYZrDHIHTDE3Q6oL3/hqmAyFEy9DQ==}
+    dependencies:
+      '@babel/parser': 7.25.6
+      '@vue/shared': 3.5.4
+      entities: 4.5.0
+      estree-walker: 2.0.2
+      source-map-js: 1.2.1
+    dev: true
+
   /@vue/compiler-dom@3.5.3:
     resolution: {integrity: sha512-wnzFArg9zpvk/811CDOZOadJRugf1Bgl/TQ3RfV4nKfSPok4hi0w10ziYUQR6LnnBAUlEXYLUfZ71Oj9ds/+QA==}
     dependencies:
       '@vue/compiler-core': 3.5.3
       '@vue/shared': 3.5.3
+    dev: true
+
+  /@vue/compiler-dom@3.5.4:
+    resolution: {integrity: sha512-yP9RRs4BDLOLfldn6ah+AGCNovGjMbL9uHvhDHf5wan4dAHLnFGOkqtfE7PPe4HTXIqE7l/NILdYw53bo1C8jw==}
+    dependencies:
+      '@vue/compiler-core': 3.5.4
+      '@vue/shared': 3.5.4
     dev: true
 
   /@vue/compiler-sfc@3.5.3:
@@ -883,9 +925,9 @@ packages:
         optional: true
     dependencies:
       '@volar/language-core': 2.4.4
-      '@vue/compiler-dom': 3.5.3
+      '@vue/compiler-dom': 3.5.4
       '@vue/compiler-vue2': 2.7.16
-      '@vue/shared': 3.5.3
+      '@vue/shared': 3.5.4
       computeds: 0.0.1
       minimatch: 9.0.5
       muggle-string: 0.4.1
@@ -927,6 +969,10 @@ packages:
 
   /@vue/shared@3.5.3:
     resolution: {integrity: sha512-Jp2v8nylKBT+PlOUjun2Wp/f++TfJVFjshLzNtJDdmFJabJa7noGMncqXRM1vXGX+Yo2V7WykQFNxusSim8SCA==}
+    dev: true
+
+  /@vue/shared@3.5.4:
+    resolution: {integrity: sha512-L2MCDD8l7yC62Te5UUyPVpmexhL9ipVnYRw9CsWfm/BGRL5FwDX4a25bcJ/OJSD3+Hx+k/a8LDKcG2AFdJV3BA==}
     dev: true
 
   /@vueuse/core@11.0.3(vue@3.5.3):
@@ -1042,8 +1088,20 @@ packages:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
     dev: true
 
+  /character-entities-html4@2.1.0:
+    resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
+    dev: true
+
+  /character-entities-legacy@3.0.0:
+    resolution: {integrity: sha512-RpPp0asT/6ufRm//AJVwpViZbGM/MkjQFxJccQRHmISF/22NBtsHqAWmL+/pmkPWoIUJdWyeVleTl1wydHATVQ==}
+    dev: true
+
   /character-entities@2.0.2:
     resolution: {integrity: sha512-shx7oQ0Awen/BRIdkjkvz54PnEEI/EjwXDSIZp86/KKdbafHh1Df/RYGBhn4hbe2+uKC9FnT5UCEdyPz3ai9hQ==}
+    dev: true
+
+  /comma-separated-tokens@2.0.3:
+    resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
     dev: true
 
   /computeds@0.0.1:
@@ -1174,6 +1232,28 @@ packages:
     dev: true
     optional: true
 
+  /hast-util-to-html@9.0.2:
+    resolution: {integrity: sha512-RP5wNpj5nm1Z8cloDv4Sl4RS8jH5HYa0v93YB6Wb4poEzgMo/dAAL0KcT4974dCjcNG5pkLqTImeFHHCwwfY3g==}
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/unist': 3.0.3
+      ccount: 2.0.1
+      comma-separated-tokens: 2.0.3
+      hast-util-whitespace: 3.0.0
+      html-void-elements: 3.0.0
+      mdast-util-to-hast: 13.2.0
+      property-information: 6.5.0
+      space-separated-tokens: 2.0.2
+      stringify-entities: 4.0.4
+      zwitch: 2.0.4
+    dev: true
+
+  /hast-util-whitespace@3.0.0:
+    resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
+    dependencies:
+      '@types/hast': 3.0.4
+    dev: true
+
   /he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
@@ -1181,6 +1261,10 @@ packages:
 
   /hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
+    dev: true
+
+  /html-void-elements@3.0.0:
+    resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
     dev: true
 
   /is-what@4.1.16:
@@ -1587,6 +1671,10 @@ packages:
     resolution: {integrity: sha512-RRurnSjJPj4rp5K6XoP45Ui33ncb7e4H7WiOHVpjbkvqvA3U+N8Z6Qbo0AE6leGYBV66n8EhEaFixvIu3SkxFw==}
     dev: true
 
+  /property-information@6.5.0:
+    resolution: {integrity: sha512-PgTgs/BlvHxOu8QuEN7wi5A0OmXaBcHpmCSTehcs6Uuu9IkDIEo13Hy7n898RHfrQ49vKCoGeWZSaAK01nwVig==}
+    dev: true
+
   /react-dom@18.3.1(react@18.3.1):
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
@@ -1659,10 +1747,11 @@ packages:
       '@types/hast': 3.0.4
     dev: true
 
-  /shiki@1.16.3:
-    resolution: {integrity: sha512-GypUE+fEd06FqDs63LSAVlmq7WsahhPQU62cgZxGF+TJT5LjD2k7HTxXj4/CKOVuMM3+wWQ1t4Y5oooeJFRRBQ==}
+  /shiki@1.17.0:
+    resolution: {integrity: sha512-VZf8cPShRwfzPcaswv81+YP7qJEoFwRT+Ehy6bizim7M0zG9bk8Egug550C+xS9g7rKIOPhzAlp2uEyuCxbk/A==}
     dependencies:
-      '@shikijs/core': 1.16.3
+      '@shikijs/core': 1.17.0
+      '@shikijs/types': 1.17.0
       '@shikijs/vscode-textmate': 9.2.2
       '@types/hast': 3.0.4
     dev: true
@@ -1672,9 +1761,25 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /source-map-js@1.2.1:
+    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
+  /space-separated-tokens@2.0.2:
+    resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
+    dev: true
+
   /speakingurl@14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /stringify-entities@4.0.4:
+    resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
+    dependencies:
+      character-entities-html4: 2.1.0
+      character-entities-legacy: 3.0.0
     dev: true
 
   /superjson@2.2.1:
