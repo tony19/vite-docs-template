@@ -223,7 +223,7 @@ Note if an inline config is provided, Vite will not search for other PostCSS con
 
 - **Type:** `Record<string, object>`
 
-Specify options to pass to CSS pre-processors. The file extensions are used as keys for the options. The supported options for each preprocessors can be found in their respective documentation:
+Specify options to pass to CSS pre-processors. The file extensions are used as keys for the options. The supported options for each preprocessor can be found in their respective documentation:
 
 - `sass`/`scss` - top level option `api: "legacy" | "modern"` (default `"legacy"`) allows switching which sass API to use. [Options (legacy)](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions), [Options (modern)](https://sass-lang.com/documentation/js-api/interfaces/stringoptions/).
 - `less` - [Options](https://lesscss.org/usage/#less-options).
