@@ -37,9 +37,9 @@ jobs:
           cd vite-docs-template
           git add .
           if git diff --cached --quiet; then
-            echo "No changes"
+            echo "✔️ No changes"
           else
             git commit -m "merge vite@${VITE_SHA1}"
             git push origin main
-            echo " Synced main with vite@${VITE_SHA1}"
+            echo "✅ Synced main with vite@${VITE_SHA1}"
           fi
