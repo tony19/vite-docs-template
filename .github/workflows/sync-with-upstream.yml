@@ -29,7 +29,8 @@ jobs:
       - name: Sync with upstream vite
         run: |
           set -ex
-          rsync -rd --delete ./vite/docs/ ./vite-docs-template/docs
+          rsync -rdv --delete ./vite/docs/ ./vite-docs-template/docs
+
           pushd vite
           VITE_SHA1=$(git rev-parse --short HEAD)
           popd
