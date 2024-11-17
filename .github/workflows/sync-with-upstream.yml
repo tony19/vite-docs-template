@@ -30,12 +30,19 @@ jobs:
         run: |
           set -ex
           rsync -rdv --delete ./vite/docs/ ./vite-docs-template/docs
+          cp -v ./vite/README.md ./vite-docs-template/.
 
           pushd vite
           VITE_SHA1=$(git rev-parse --short HEAD)
           popd
 
           cd vite-docs-template
+          function patchReadme() {
+            preamble=$(echo -e "<!-- You can remove the following notice from your fork -->\n## This repo is a template for [Vite.js docs translation repositories](https://github.com/vitejs?q=docs). See [guide](/.github/CONTRIBUTING.md).\n\n---\n")
+            { echo "$preamble"; cat README.md; } > temp.md && mv temp.md README.md
+          }
+          patchReadme
+
           git add .
           if git diff --cached --quiet; then
             echo "✔️ No changes"
