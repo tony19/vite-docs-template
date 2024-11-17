@@ -6,7 +6,7 @@ The following guides are based on some shared assumptions:
 - You are using npm. You can use equivalent commands to run the scripts if you are using Yarn or other package managers.
 - Vite is installed as a local dev dependency in your project, and you have setup the following npm scripts:
 
-```json
+```json [package.json]
 {
   "scripts": {
     "build": "vite build",
@@ -43,7 +43,7 @@ The `vite preview` command will boot up a local static web server that serves th
 
 You may configure the port of the server by passing the `--port` flag as an argument.
 
-```json
+```json [package.json]
 {
   "scripts": {
     "preview": "vite preview --port 8080"
@@ -127,7 +127,7 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
 
 2. Create a file called `.gitlab-ci.yml` in the root of your project with the content below. This will build and deploy your site whenever you make changes to your content:
 
-   ```yaml
+   ```yaml [.gitlab-ci.yml]
    image: node:16.5.0
    pages:
      stage: deploy
@@ -151,6 +151,8 @@ Now the `preview` command will launch the server at `http://localhost:8080`.
 
 ## Netlify
 
+### Netlify CLI
+
 1. Install the [Netlify CLI](https://cli.netlify.com/).
 2. Create a new site using `ntl init`.
 3. Deploy using `ntl deploy`.
@@ -172,6 +174,16 @@ The Netlify CLI will share with you a preview URL to inspect. When you are ready
 # Deploy the site into production
 $ ntl deploy --prod
 ```
+
+### Netlify with Git
+
+1. Push your code to a git repository (GitHub, GitLab, BitBucket, Azure DevOps).
+2. [Import the project](https://app.netlify.com/start) to Netlify.
+3. Choose the branch, output directory, and set up environment variables if applicable.
+4. Click on **Deploy**.
+5. Your Vite app is deployed!
+
+After your project has been imported and deployed, all subsequent pushes to branches other than the production branch along with pull requests will generate [Preview Deployments](https://docs.netlify.com/site-deploys/deploy-previews/), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://docs.netlify.com/site-deploys/overview/#definitions).
 
 ## Vercel
 
@@ -245,9 +257,7 @@ You can also add custom domains and handle custom build settings on Pages. Learn
 
 2. Create `firebase.json` and `.firebaserc` at the root of your project with the following content:
 
-   `firebase.json`:
-
-   ```json
+   ```json [firebase.json]
    {
      "hosting": {
        "public": "dist",
@@ -262,9 +272,7 @@ You can also add custom domains and handle custom build settings on Pages. Learn
    }
    ```
 
-   `.firebaserc`:
-
-   ```js
+   ```js [.firebaserc]
    {
      "projects": {
        "default": "<YOUR_FIREBASE_ID>"
