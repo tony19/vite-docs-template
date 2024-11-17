@@ -20,6 +20,11 @@ jobs:
           repository: vitejs/vite
           path: vite
 
+      - name: Setup GitHub user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Sync with upstream vite
         run: |
           set -ex
