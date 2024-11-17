@@ -1,0 +1,39 @@
+name: Sync with upstream vite docs
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout vite-docs-template
+        uses: actions/checkout@v4
+        with:
+          path: vite-docs-template
+
+      - name: Checkout vite
+        uses: actions/checkout@v4
+        with:
+          repository: vitejs/vite
+          path: vite
+
+      - name: Sync with upstream vite
+        run: |
+          set -ex
+          rsync -rd --delete ./vite/docs/ ./vite-docs-template/docs
+          pushd vite
+          VITE_SHA1=$(git rev-parse --short HEAD)
+          popd
+
+          cd vite-docs-template
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "merge vite@${VITE_SHA1}"
+            git push origin main
+            echo " Synced main with vite@${VITE_SHA1}"
+          fi
