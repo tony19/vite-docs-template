@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout vite-docs-template
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: vite-docs-template
           ref: main
 
       - name: Checkout vite
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: vitejs/vite
           path: vite
