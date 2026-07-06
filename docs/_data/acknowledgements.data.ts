@@ -54,9 +54,7 @@ const pastNotableDependencies: PastDependency[] = [
   },
 ]
 
-const vitePackageDir = fs.realpathSync(
-  path.resolve(import.meta.dirname, '../../node_modules/vite'),
-)
+const vitePackageDir = path.resolve(import.meta.dirname, '../../packages/vite')
 
 interface PackageJson {
   name: string
@@ -267,8 +265,7 @@ function groupByAuthor(dependencies: Dependency[]): Author[] {
 
 function loadData(): AcknowledgementsData {
   const licensePath = path.join(vitePackageDir, 'LICENSE.md')
-  // vite's dependencies are siblings of its real location in the pnpm store
-  const nodeModulesDir = path.resolve(vitePackageDir, '..')
+  const nodeModulesDir = path.join(vitePackageDir, 'node_modules')
   const rootNodeModulesDir = path.resolve(
     import.meta.dirname,
     '../../node_modules',
@@ -315,7 +312,7 @@ declare const data: AcknowledgementsData
 export { data }
 
 export default {
-  watch: ['../../node_modules/vite/LICENSE.md'],
+  watch: ['../../packages/vite/LICENSE.md'],
   load(): AcknowledgementsData {
     return loadData()
   },
