@@ -32,6 +32,12 @@ jobs:
           rsync -rdv --delete ./vite/docs/ ./vite-docs-template/docs
           cp -v ./vite/README.md ./vite-docs-template/.
 
+          # docs/.vitepress/config.ts and docs/_data/acknowledgements.data.ts
+          # read these files from the vite monorepo layout, so mirror them too
+          mkdir -p ./vite-docs-template/packages/vite
+          cp -v ./vite/packages/vite/package.json ./vite-docs-template/packages/vite/.
+          cp -v ./vite/packages/vite/LICENSE.md ./vite-docs-template/packages/vite/.
+
           pushd vite
           VITE_SHA1=$(git rev-parse --short HEAD)
           popd
