@@ -33,7 +33,7 @@
     "@type-challenges/utils": "^0.1.1",
     "@types/express": "^5.0.6",
     "@voidzero-dev/vitepress-theme": "^4.8.4",
-    "feed": "^5.2.1",
+    "feed": "^6.0.0",
     "markdown-it-image-size": "^15.0.1",
     "oxc-minify": "^0.138.0",
     "vite": "^8.1.3",
