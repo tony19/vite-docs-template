@@ -1,12 +1,25 @@
-import type { DefaultTheme } from 'vitepress'
-import { defineConfig } from 'vitepress'
+import path from 'node:path'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
-import { buildEnd } from './buildEnd.config'
+import type { FooterLink } from '@voidzero-dev/vitepress-theme'
+import { extendConfig } from '@voidzero-dev/vitepress-theme/config'
+import type { HeadConfig } from 'vitepress'
+import { defineConfig } from 'vitepress'
+import { graphvizMarkdownPlugin } from 'vitepress-plugin-graphviz'
+import {
+  groupIconMdPlugin,
+  groupIconVitePlugin,
+} from 'vitepress-plugin-group-icons'
+import llmstxt from 'vitepress-plugin-llms'
+import packageJson from '../../packages/vite/package.json' with { type: 'json' }
+import { buildEnd } from './buildEnd.config.ts'
+
+const viteVersion = packageJson.version
+const viteMajorVersion = +viteVersion.split('.')[0]
 
 const ogDescription = 'Next Generation Frontend Tooling'
-const ogImage = 'https://vitejs.dev/og-image.png'
+const ogImage = 'https://vite.dev/og-image.jpg'
 const ogTitle = 'Vite'
-const ogUrl = 'https://vitejs.dev'
+const ogUrl = 'https://vite.dev'
 
 // netlify envs
 const deployURL = process.env.DEPLOY_PRIME_URL || ''
@@ -32,47 +45,51 @@ const additionalTitle = ((): string => {
       return ''
   }
 })()
-const versionLinks = ((): DefaultTheme.NavItemWithLink[] => {
-  const oldVersions: DefaultTheme.NavItemWithLink[] = [
-    {
-      text: 'Vite 4 Docs',
-      link: 'https://v4.vitejs.dev',
-    },
-    {
-      text: 'Vite 3 Docs',
-      link: 'https://v3.vitejs.dev',
-    },
-    {
-      text: 'Vite 2 Docs',
-      link: 'https://v2.vitejs.dev',
-    },
-  ]
+const versionLinks = (() => {
+  const links: FooterLink[] = []
 
-  switch (deployType) {
-    case 'main':
-    case 'local':
-      return [
-        {
-          text: 'Vite 5 Docs (release)',
-          link: 'https://vitejs.dev',
-        },
-        ...oldVersions,
-      ]
-    case 'release':
-      return oldVersions
+  if (deployType !== 'main') {
+    links.push({
+      text: 'Unreleased Docs',
+      link: 'https://main.vite.dev',
+    })
   }
+
+  if (deployType === 'main' || deployType === 'local') {
+    links.push({
+      text: `Vite ${viteMajorVersion} Docs (release)`,
+      link: 'https://vite.dev',
+    })
+  }
+
+  // Create version links from v2 onwards
+  for (let i = viteMajorVersion - 1; i >= 2; i--) {
+    links.push({
+      text: `Vite ${i} Docs`,
+      link: `https://v${i}.vite.dev`,
+    })
+  }
+
+  return links
 })()
 
-export default defineConfig({
+const config = defineConfig({
   title: `Vite${additionalTitle}`,
   description: 'Next Generation Frontend Tooling',
-
+  cleanUrls: true,
+  sitemap: {
+    hostname: 'https://vite.dev',
+  },
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    [
+      'link',
+      { rel: 'icon', type: 'image/svg+xml', href: '/logo-without-border.svg' },
+    ],
     [
       'link',
       { rel: 'alternate', type: 'application/rss+xml', href: '/blog.rss' },
     ],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'me', href: 'https://m.webtoo.ls/@vite' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: ogTitle }],
@@ -83,29 +100,24 @@ export default defineConfig({
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:site', content: '@vite_js' }],
     ['meta', { name: 'theme-color', content: '#646cff' }],
-    [
-      'script',
-      {
-        src: 'https://cdn.usefathom.com/script.js',
-        'data-site': 'CBDFBSLI',
-        'data-spa': 'auto',
-        defer: '',
-      },
-    ],
   ],
 
   locales: {
     root: { label: 'English' },
-    zh: { label: '简体中文', link: 'https://cn.vitejs.dev' },
-    ja: { label: '日本語', link: 'https://ja.vitejs.dev' },
-    es: { label: 'Español', link: 'https://es.vitejs.dev' },
-    pt: { label: 'Português', link: 'https://pt.vitejs.dev' },
-    ko: { label: '한국어', link: 'https://ko.vitejs.dev' },
-    de: { label: 'Deutsch', link: 'https://de.vitejs.dev' },
+    zh: { label: '简体中文', link: 'https://cn.vite.dev' },
+    ja: { label: '日本語', link: 'https://ja.vite.dev' },
+    es: { label: 'Español', link: 'https://es.vite.dev' },
+    ko: { label: '한국어', link: 'https://ko.vite.dev' },
+    de: { label: 'Deutsch', link: 'https://de.vite.dev' },
   },
 
   themeConfig: {
-    logo: '/logo.svg',
+    variant: 'vite',
+    banner: {
+      id: 'cloudflare-supports-vite',
+      text: `Cloudflare supports Vite's mission`,
+      url: '/blog/cloudflare-supports-vite',
+    },
 
     editLink: {
       pattern: 'https://github.com/vitejs/vite/edit/main/docs/:path',
@@ -113,18 +125,26 @@ export default defineConfig({
     },
 
     socialLinks: [
+      { icon: 'bluesky', link: 'https://bsky.app/profile/vite.dev' },
       { icon: 'mastodon', link: 'https://elk.zone/m.webtoo.ls/@vite' },
-      { icon: 'twitter', link: 'https://twitter.com/vite_js' },
-      { icon: 'discord', link: 'https://chat.vitejs.dev' },
+      { icon: 'x', link: 'https://x.com/vite_js' },
+      { icon: 'discord', link: 'https://chat.vite.dev' },
       { icon: 'github', link: 'https://github.com/vitejs/vite' },
     ],
 
-    algolia: {
-      appId: '7H67QR5P0A',
-      apiKey: 'deaab78bcdfe96b599497d25acc6460e',
-      indexName: 'vitejs',
-      searchParameters: {
-        facetFilters: ['tags:en'],
+    search: {
+      provider: 'local',
+      options: {
+        miniSearch: {
+          searchOptions: {
+            boostDocument(page) {
+              if (page.startsWith('/guide/')) return 2 // Prefer guide pages
+              if (page.startsWith('/config/')) return 1.5 // Then config pages
+              if (page.startsWith('/blog/')) return 0 // Do not index blog posts
+              return 1
+            },
+          },
+        },
       },
     },
 
@@ -134,8 +154,38 @@ export default defineConfig({
     },
 
     footer: {
-      message: `Released under the MIT License. (${commitRef})`,
-      copyright: 'Copyright © 2019-present Evan You & Vite Contributors',
+      copyright: `© 2019-present VoidZero Inc. and Vite contributors. (${commitRef})`,
+      nav: [
+        {
+          title: 'Vite',
+          items: [
+            { text: 'Guide', link: '/guide/' },
+            { text: 'Config', link: '/config/' },
+            { text: 'Plugins', link: '/plugins/' },
+          ],
+        },
+        {
+          title: 'Resources',
+          items: [
+            { text: 'Team', link: '/team' },
+            { text: 'Blog', link: '/blog' },
+            {
+              text: 'Releases',
+              link: 'https://github.com/vitejs/vite/releases',
+            },
+          ],
+        },
+        {
+          title: 'Versions',
+          items: versionLinks,
+        },
+      ],
+      social: [
+        { icon: 'github', link: 'https://github.com/vitejs/vite' },
+        { icon: 'discord', link: 'https://chat.vite.dev' },
+        { icon: 'bluesky', link: 'https://bsky.app/profile/vite.dev' },
+        { icon: 'x', link: 'https://x.com/vite_js' },
+      ],
     },
 
     nav: [
@@ -148,19 +198,36 @@ export default defineConfig({
           { text: 'Team', link: '/team' },
           { text: 'Blog', link: '/blog' },
           { text: 'Releases', link: '/releases' },
+          { text: 'Acknowledgements', link: '/acknowledgements' },
+          {
+            text: 'Code of Conduct',
+            link: 'https://github.com/vitejs/.github/blob/main/CODE_OF_CONDUCT.md',
+          },
+          {
+            text: 'Plugin Registry',
+            link: 'https://registry.vite.dev/plugins',
+          },
+          {
+            text: 'The Documentary',
+            link: 'https://www.youtube.com/watch?v=bmWQqAKLgT4',
+          },
           {
             items: [
+              {
+                text: 'Bluesky',
+                link: 'https://bsky.app/profile/vite.dev',
+              },
               {
                 text: 'Mastodon',
                 link: 'https://elk.zone/m.webtoo.ls/@vite',
               },
               {
-                text: 'Twitter',
-                link: 'https://twitter.com/vite_js',
+                text: 'X',
+                link: 'https://x.com/vite_js',
               },
               {
                 text: 'Discord Chat',
-                link: 'https://chat.vitejs.dev',
+                link: 'https://chat.vite.dev',
               },
               {
                 text: 'Awesome Vite',
@@ -174,37 +241,50 @@ export default defineConfig({
                 text: 'DEV Community',
                 link: 'https://dev.to/t/vite',
               },
-              {
-                text: 'Changelog',
-                link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
-              },
-              {
-                text: 'Contributing',
-                link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
-              },
             ],
           },
         ],
       },
       {
-        text: 'Version',
-        items: versionLinks,
+        text: `v${viteVersion}`,
+        items: [
+          {
+            text: 'Changelog',
+            link: 'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md',
+          },
+          {
+            text: 'Contributing',
+            link: 'https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md',
+          },
+          {
+            items: versionLinks,
+          },
+        ],
       },
     ],
 
     sidebar: {
       '/guide/': [
         {
-          text: 'Guide',
+          text: 'Introduction',
           items: [
-            {
-              text: 'Why Vite',
-              link: '/guide/why',
-            },
             {
               text: 'Getting Started',
               link: '/guide/',
             },
+            {
+              text: 'Philosophy',
+              link: '/guide/philosophy',
+            },
+            {
+              text: 'Why Vite',
+              link: '/guide/why',
+            },
+          ],
+        },
+        {
+          text: 'Guide',
+          items: [
             {
               text: 'Features',
               link: '/guide/features',
@@ -246,10 +326,6 @@ export default defineConfig({
               link: '/guide/backend-integration',
             },
             {
-              text: 'Comparisons',
-              link: '/guide/comparisons',
-            },
-            {
               text: 'Troubleshooting',
               link: '/guide/troubleshooting',
             },
@@ -258,12 +334,12 @@ export default defineConfig({
               link: '/guide/performance',
             },
             {
-              text: 'Philosophy',
-              link: '/guide/philosophy',
+              text: `Migration from v${viteMajorVersion - 1}`,
+              link: '/guide/migration',
             },
             {
-              text: 'Migration from v4',
-              link: '/guide/migration',
+              text: 'Breaking Changes',
+              link: '/changes/',
             },
           ],
         },
@@ -283,12 +359,33 @@ export default defineConfig({
               link: '/guide/api-javascript',
             },
             {
-              text: 'Vite Runtime API',
-              link: '/guide/api-vite-runtime',
-            },
-            {
               text: 'Config Reference',
               link: '/config/',
+            },
+          ],
+        },
+        {
+          text: 'Environment API',
+          items: [
+            {
+              text: 'Introduction',
+              link: '/guide/api-environment',
+            },
+            {
+              text: 'Environment Instances',
+              link: '/guide/api-environment-instances',
+            },
+            {
+              text: 'Plugins',
+              link: '/guide/api-environment-plugins',
+            },
+            {
+              text: 'Frameworks',
+              link: '/guide/api-environment-frameworks',
+            },
+            {
+              text: 'Runtimes',
+              link: '/guide/api-environment-runtimes',
             },
           ],
         },
@@ -332,25 +429,164 @@ export default defineConfig({
           ],
         },
       ],
+      '/changes/': [
+        {
+          text: 'Breaking Changes',
+          link: '/changes/',
+        },
+        {
+          text: 'Current',
+          items: [],
+        },
+        {
+          text: 'Future',
+          items: [
+            {
+              text: 'this.environment in Hooks',
+              link: '/changes/this-environment-in-hooks',
+            },
+            {
+              text: 'HMR hotUpdate Plugin Hook',
+              link: '/changes/hotupdate-hook',
+            },
+            {
+              text: 'Move to Per-environment APIs',
+              link: '/changes/per-environment-apis',
+            },
+            {
+              text: 'SSR Using ModuleRunner API',
+              link: '/changes/ssr-using-modulerunner',
+            },
+            {
+              text: 'Shared Plugins During Build',
+              link: '/changes/shared-plugins-during-build',
+            },
+          ],
+        },
+        {
+          text: 'Past',
+          items: [],
+        },
+      ],
     },
 
     outline: {
       level: [2, 3],
     },
   },
-  transformPageData(pageData) {
-    const canonicalUrl = `${ogUrl}/${pageData.relativePath}`
-      .replace(/\/index\.md$/, '/')
-      .replace(/\.md$/, '/')
-    pageData.frontmatter.head ??= []
-    pageData.frontmatter.head.unshift(
-      ['link', { rel: 'canonical', href: canonicalUrl }],
-      ['meta', { property: 'og:title', content: pageData.title }],
-    )
-    return pageData
+  transformHead(ctx) {
+    const path = ctx.page.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
+
+    if (path !== '404') {
+      const canonicalUrl = path ? `${ogUrl}/${path}` : ogUrl
+      ctx.head.push(
+        ['link', { rel: 'canonical', href: canonicalUrl }],
+        ['meta', { property: 'og:title', content: ctx.pageData.title }],
+      )
+    }
+
+    // For the landing page, move the google font links to the top for better performance
+    if (path === '') {
+      const googleFontLinks: HeadConfig[] = []
+      for (let i = 0; i < ctx.head.length; i++) {
+        const tag = ctx.head[i]
+        if (
+          tag[0] === 'link' &&
+          (tag[1]?.href?.includes('fonts.googleapis.com') ||
+            tag[1]?.href?.includes('fonts.gstatic.com'))
+        ) {
+          ctx.head.splice(i, 1)
+          googleFontLinks.push(tag)
+          i--
+        }
+      }
+      ctx.head.unshift(...googleFontLinks)
+    }
   },
   markdown: {
-    codeTransformers: [transformerTwoslash()],
+    // languages used for twoslash and jsdocs in twoslash
+    languages: ['ts', 'js', 'json'],
+    codeTransformers: [
+      transformerTwoslash({
+        twoslashOptions: {
+          compilerOptions: {
+            moduleResolution: 100, // bundler
+            ignoreDeprecations: '6.0', // remove the options entirely when twoslash doesn't set `baseUrl`
+          },
+        },
+      }),
+      // add `style:*` support
+      {
+        root(hast) {
+          const meta = this.options.meta?.__raw
+            ?.split(' ')
+            .find((m) => m.startsWith('style:'))
+          if (meta) {
+            const style = meta.slice('style:'.length)
+            const rootPre = hast.children.find(
+              (n): n is typeof n & { type: 'element'; tagName: 'pre' } =>
+                n.type === 'element' && n.tagName === 'pre',
+            )
+            if (rootPre) {
+              rootPre.properties.style += '; ' + style
+            }
+          }
+        },
+      },
+    ],
+    async config(md) {
+      md.use(groupIconMdPlugin, {
+        titleBar: {
+          includeSnippet: true,
+        },
+      })
+      await graphvizMarkdownPlugin(md)
+    },
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@components/oss/TopBanner.vue': path.resolve(
+          import.meta.dirname,
+          'theme/components/TopBanner.vue',
+        ),
+      },
+    },
+    plugins: [
+      groupIconVitePlugin({
+        customIcon: {
+          firebase: 'vscode-icons:file-type-firebase',
+          '.gitlab-ci.yml': 'vscode-icons:file-type-gitlab',
+        },
+      }),
+      llmstxt({
+        ignoreFiles: ['blog/*', 'blog.md', 'index.md', 'team.md'],
+        description: 'The Build Tool for the Web',
+        details: `\
+- 💡 Instant Server Start
+- ⚡️ Lightning Fast HMR
+- 🛠️ Rich Features
+- 📦 Optimized Build
+- 🔩 Universal Plugin Interface
+- 🔑 Fully Typed APIs
+
+Vite is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:
+
+- A dev server that provides [rich feature enhancements](https://vite.dev/guide/features.md) over [native ES modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules), for example extremely fast [Hot Module Replacement (HMR)](https://vite.dev/guide/features.md#hot-module-replacement).
+
+- A build command that bundles your code with [Rolldown](https://rolldown.rs), pre-configured to output highly optimized static assets for production.
+
+In addition, Vite is highly extensible via its [Plugin API](https://vite.dev/guide/api-plugin.md) and [JavaScript API](https://vite.dev/guide/api-javascript.md) with full typing support.`,
+      }),
+    ],
+    optimizeDeps: {
+      include: ['@shikijs/vitepress-twoslash/client'],
+    },
+    define: {
+      __VITE_VERSION__: JSON.stringify(viteVersion),
+    },
   },
   buildEnd,
 })
+
+export default extendConfig(config)

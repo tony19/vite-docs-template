@@ -1,246 +1,377 @@
-# Migration from v4
+# Migration from v7
 
-## Node.js Support
+If you are migrating from `rolldown-vite`, the technical preview release for Rolldown integrated Vite for v6 & v7, only the sections with <Badge text="NRV" type="warning" /> in the title are applicable.
 
-Vite no longer supports Node.js 14 / 16 / 17 / 19, which reached its EOL. Node.js 18 / 20+ is now required.
+## Default Browser Target Change [<Badge text="NRV" type="warning" />](#migration-from-v7)
 
-## Rollup 4
+The default browser values of `build.target` and `'baseline-widely-available'` are updated to newer browser versions:
 
-Vite is now using Rollup 4 which also brings along its breaking changes, in particular:
+- Chrome 107 → 111
+- Edge 107 → 111
+- Firefox 104 → 114
+- Safari 16.0 → 16.4
 
-- Import assertions (`assertions` prop) has been renamed to import attributes (`attributes` prop).
-- Acorn plugins are no longer supported.
-- For Vite plugins, `this.resolve` `skipSelf` option is now `true` by default.
-- For Vite plugins, `this.parse` now only supports the `allowReturnOutsideFunction` option for now.
+These browser versions align with [Baseline Widely Available](https://web-platform-dx.github.io/baseline/) feature sets as of 2026-01-01. In other words, they were all released about two and a half years ago.
 
-Read the full breaking changes in [Rollup's release notes](https://github.com/rollup/rollup/releases/tag/v4.0.0) for build-related changes in [`build.rollupOptions`](/config/build-options.md#build-rollupoptions).
+## Rolldown
 
-If you are using TypeScript, make sure to set `moduleResolution: 'bundler'` (or `node16`/`nodenext`) as Rollup 4 requires it. Or you can set `skipLibCheck: true` instead.
+Vite 8 uses [Rolldown](https://rolldown.rs/) and [Oxc](https://oxc.rs/) based tools instead of [esbuild](https://esbuild.github.io/) and [Rollup](https://rollupjs.org/).
 
-## Deprecate CJS Node API
+### Gradual Migration
 
-The CJS Node API of Vite is deprecated. When calling `require('vite')`, a deprecation warning is now logged. You should update your files or frameworks to import the ESM build of Vite instead.
+The `rolldown-vite` package implements Vite 7 with Rolldown, without other Vite 8 changes. This can be used as an intermediate step to migrate to Vite 8. See [the Rolldown Integration guide](https://v7.vite.dev/guide/rolldown) in the Vite 7 docs to switch to `rolldown-vite` from Vite 7.
 
-In a basic Vite project, make sure:
+For users migrating from `rolldown-vite` to Vite 8, you can undo the dependency changes in `package.json` and update to Vite 8:
 
-1. The `vite.config.js` file content is using the ESM syntax.
-2. The closest `package.json` file has `"type": "module"`, or use the `.mjs`/`.mts` extension, e.g. `vite.config.mjs` or `vite.config.mts`.
+```json
+{
+  "devDependencies": {
+    "vite": "npm:rolldown-vite@7.2.2" // [!code --]
+    "vite": "^8.0.0" // [!code ++]
+  }
+}
+```
 
-For other projects, there are a few general approaches:
+### Dependency Optimizer Now Uses Rolldown
 
-- **Configure ESM as default, opt-in to CJS if needed:** Add `"type": "module"` in the project `package.json`. All `*.js` files are now interpreted as ESM and needs to use the ESM syntax. You can rename a file with the `.cjs` extension to keep using CJS instead.
-- **Keep CJS as default, opt-in to ESM if needed:** If the project `package.json` does not have `"type": "module"`, all `*.js` files are interpreted as CJS. You can rename a file with the `.mjs` extension to use ESM instead.
-- **Dynamically import Vite:** If you need to keep using CJS, you can dynamically import Vite using `import('vite')` instead. This requires your code to be written in an `async` context, but should still be manageable as Vite's API is mostly asynchronous.
+Rolldown is now used for dependency optimization instead of esbuild. Vite still supports [`optimizeDeps.esbuildOptions`](/config/dep-optimization-options#optimizedeps-esbuildoptions) for backward compatibility by converting it to [`optimizeDeps.rolldownOptions`](/config/dep-optimization-options#optimizedeps-rolldownoptions) automatically. `optimizeDeps.esbuildOptions` is now deprecated and will be removed in the future and we encourage you to migrate to `optimizeDeps.rolldownOptions`.
 
-See the [troubleshooting guide](/guide/troubleshooting.html#vite-cjs-node-api-deprecated) for more information.
+The following options are converted automatically:
 
-## Rework `define` and `import.meta.env.*` replacement strategy
+- [`esbuildOptions.minify`](https://esbuild.github.io/api/#minify) -> [`rolldownOptions.output.minify`](https://rolldown.rs/reference/OutputOptions.minify)
+- [`esbuildOptions.treeShaking`](https://esbuild.github.io/api/#tree-shaking) -> [`rolldownOptions.treeshake`](https://rolldown.rs/reference/InputOptions.treeshake)
+- [`esbuildOptions.define`](https://esbuild.github.io/api/#define) -> [`rolldownOptions.transform.define`](https://rolldown.rs/reference/InputOptions.transform#define)
+- [`esbuildOptions.loader`](https://esbuild.github.io/api/#loader) -> [`rolldownOptions.moduleTypes`](https://rolldown.rs/reference/InputOptions.moduleTypes)
+- [`esbuildOptions.preserveSymlinks`](https://esbuild.github.io/api/#preserve-symlinks) -> [`!rolldownOptions.resolve.symlinks`](https://rolldown.rs/reference/InputOptions.resolve#symlinks)
+- [`esbuildOptions.resolveExtensions`](https://esbuild.github.io/api/#resolve-extensions) -> [`rolldownOptions.resolve.extensions`](https://rolldown.rs/reference/InputOptions.resolve#extensions)
+- [`esbuildOptions.mainFields`](https://esbuild.github.io/api/#main-fields) -> [`rolldownOptions.resolve.mainFields`](https://rolldown.rs/reference/InputOptions.resolve#mainfields)
+- [`esbuildOptions.conditions`](https://esbuild.github.io/api/#conditions) -> [`rolldownOptions.resolve.conditionNames`](https://rolldown.rs/reference/InputOptions.resolve#conditionnames)
+- [`esbuildOptions.keepNames`](https://esbuild.github.io/api/#keep-names) -> [`rolldownOptions.output.keepNames`](https://rolldown.rs/reference/OutputOptions.keepNames)
+- [`esbuildOptions.platform`](https://esbuild.github.io/api/#platform) -> [`rolldownOptions.platform`](https://rolldown.rs/reference/InputOptions.platform)
+- [`esbuildOptions.plugins`](https://esbuild.github.io/plugins/) -> [`rolldownOptions.plugins`](https://rolldown.rs/reference/InputOptions.plugins) (partial support)
 
-In Vite 4, the [`define`](/config/shared-options.md#define) and [`import.meta.env.*`](/guide/env-and-mode.md#env-variables) features use different replacement strategies in dev and build:
-
-- In dev, both features are injected as global variables to `globalThis` and `import.meta` respectively.
-- In build, both features are statically replaced with a regex.
-
-This results in a dev and build inconsistency when trying to access the variables, and sometimes even caused failed builds. For example:
+You can get the options set by the compatibility layer from the `configResolved` hook:
 
 ```js
-// vite.config.js
-export default defineConfig({
-  define: {
-    __APP_VERSION__: JSON.stringify('1.0.0'),
+const plugin = {
+  name: 'log-config',
+  configResolved(config) {
+    console.log('options', config.optimizeDeps.rolldownOptions)
   },
+},
+```
+
+### JavaScript Transforms by Oxc
+
+Oxc is now used for JavaScript transformation instead of esbuild. Vite still supports the [`esbuild`](/config/shared-options#esbuild) option for backward compatibility by converting it to [`oxc`](/config/shared-options#oxc) automatically. `esbuild` is now deprecated and will be removed in the future and we encourage you to migrate to `oxc`.
+
+The following options are converted automatically:
+
+- `esbuild.jsxInject` -> `oxc.jsxInject`
+- `esbuild.include` -> `oxc.include`
+- `esbuild.exclude` -> `oxc.exclude`
+- [`esbuild.jsx`](https://esbuild.github.io/api/#jsx) -> [`oxc.jsx`](https://oxc.rs/docs/guide/usage/transformer/jsx)
+  - `esbuild.jsx: 'preserve'` -> `oxc.jsx: 'preserve'`
+  - `esbuild.jsx: 'automatic'` -> `oxc.jsx: { runtime: 'automatic' }`
+    - [`esbuild.jsxImportSource`](https://esbuild.github.io/api/#jsx-import-source) -> `oxc.jsx.importSource`
+  - `esbuild.jsx: 'transform'` -> `oxc.jsx: { runtime: 'classic' }`
+    - [`esbuild.jsxFactory`](https://esbuild.github.io/api/#jsx-factory) -> `oxc.jsx.pragma`
+    - [`esbuild.jsxFragment`](https://esbuild.github.io/api/#jsx-fragment) -> `oxc.jsx.pragmaFrag`
+  - [`esbuild.jsxDev`](https://esbuild.github.io/api/#jsx-dev) -> `oxc.jsx.development`
+  - [`esbuild.jsxSideEffects`](https://esbuild.github.io/api/#jsx-side-effects) -> `oxc.jsx.pure`
+- [`esbuild.define`](https://esbuild.github.io/api/#define) -> [`oxc.define`](https://oxc.rs/docs/guide/usage/transformer/global-variable-replacement#define)
+- [`esbuild.banner`](https://esbuild.github.io/api/#banner) -> custom plugin using transform hook
+- [`esbuild.footer`](https://esbuild.github.io/api/#footer) -> custom plugin using transform hook
+
+The [`esbuild.supported`](https://esbuild.github.io/api/#supported) option is not supported by Oxc. If you need this option, please see [oxc-project/oxc#15373](https://github.com/oxc-project/oxc/issues/15373).
+
+You can get the options set by the compatibility layer from the `configResolved` hook:
+
+```js
+const plugin = {
+  name: 'log-config',
+  configResolved(config) {
+    console.log('options', config.oxc)
+  },
+},
+```
+
+Currently, the Oxc transformer does not support lowering native decorators as we are waiting for the specification to progress, see ([oxc-project/oxc#9170](https://github.com/oxc-project/oxc/issues/9170)).
+
+:::: details Workaround for lowering native decorators
+
+You can use [Babel](https://babeljs.io/) or [SWC](https://swc.rs/) to lower native decorators for the time being.
+
+**Using Babel:**
+
+::: code-group
+
+```bash [npm]
+$ npm install -D @rolldown/plugin-babel @babel/plugin-proposal-decorators
+```
+
+```bash [Yarn]
+$ yarn add -D @rolldown/plugin-babel @babel/plugin-proposal-decorators
+```
+
+```bash [pnpm]
+$ pnpm add -D @rolldown/plugin-babel @babel/plugin-proposal-decorators
+```
+
+```bash [Bun]
+$ bun add -D @rolldown/plugin-babel @babel/plugin-proposal-decorators
+```
+
+```bash [Deno]
+$ deno add -D npm:@rolldown/plugin-babel npm:@babel/plugin-proposal-decorators
+```
+
+:::
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite'
+import babel from '@rolldown/plugin-babel'
+
+function decoratorPreset(options: Record<string, unknown>) {
+  return {
+    preset: () => ({
+      plugins: [['@babel/plugin-proposal-decorators', options]],
+    }),
+    rolldown: {
+      // Only run this transform if the file contains a decorator.
+      filter: {
+        code: '@',
+      },
+    },
+  }
+}
+
+export default defineConfig({
+  plugins: [babel({ presets: [decoratorPreset({ version: '2023-11' })] })],
 })
 ```
 
-```js
-const data = { __APP_VERSION__ }
-// dev: { __APP_VERSION__: "1.0.0" } ✅
-// build: { "1.0.0" } ❌
+**Using SWC:**
 
-const docs = 'I like import.meta.env.MODE'
-// dev: "I like import.meta.env.MODE" ✅
-// build: "I like "production"" ❌
+::: code-group
+
+```bash [npm]
+$ npm install -D @rollup/plugin-swc @swc/core
 ```
 
-Vite 5 fixes this by using `esbuild` to handle the replacements in builds, aligning with the dev behaviour.
-
-This change should not affect most setups, as it's already documented that `define` values should follow esbuild's syntax:
-
-> To be consistent with esbuild behavior, expressions must either be a JSON object (null, boolean, number, string, array, or object) or a single identifier.
-
-However, if you prefer to keep statically replacing values directly, you can use [`@rollup/plugin-replace`](https://github.com/rollup/plugins/tree/master/packages/replace).
-
-## General Changes
-
-### SSR externalized modules value now matches production
-
-In Vite 4, SSR externalized modules are wrapped with `.default` and `.__esModule` handling for better interoperability, but it doesn't match the production behaviour when loaded by the runtime environment (e.g. Node.js), causing hard-to-catch inconsistencies. By default, all direct project dependencies are SSR externalized.
-
-Vite 5 now removes the `.default` and `.__esModule` handling to match the production behaviour. In practice, this shouldn't affect properly-packaged dependencies, but if you encounter new issues loading modules, you can try these refactors:
-
-```js
-// Before:
-import { foo } from 'bar'
-
-// After:
-import _bar from 'bar'
-const { foo } = _bar
+```bash [Yarn]
+$ yarn add -D @rollup/plugin-swc @swc/core
 ```
+
+```bash [pnpm]
+$ pnpm add -D @rollup/plugin-swc @swc/core
+```
+
+```bash [Bun]
+$ bun add -D @rollup/plugin-swc @swc/core
+```
+
+```bash [Deno]
+$ deno add -D npm:@rollup/plugin-swc npm:@swc/core
+```
+
+:::
 
 ```js
-// Before:
-import foo from 'bar'
+import { defineConfig, withFilter } from 'vite'
+import swc from '@rollup/plugin-swc'
 
-// After:
-import * as _foo from 'bar'
-const foo = _foo.default
+export default defineConfig({
+  // ...
+  plugins: [
+    withFilter(
+      swc({
+        swc: {
+          jsc: {
+            parser: { decorators: true, decoratorsBeforeExport: true },
+            transform: { decoratorVersion: '2023-11' },
+          },
+        },
+      }),
+      // Only run this transform if the file contains a decorator.
+      { transform: { code: '@' } },
+    ),
+  ],
+})
 ```
 
-Note that these changes matches the Node.js behaviour, so you can also run the imports in Node.js to test it out. If you prefer to stick with the previous behaviour, you can set `legacy.proxySsrExternalModules` to `true`.
+::::
 
-### `worker.plugins` is now a function
+#### esbuild Fallbacks
 
-In Vite 4, [`worker.plugins`](/config/worker-options.md#worker-plugins) accepted an array of plugins (`(Plugin | Plugin[])[]`). From Vite 5, it needs to be configured as a function that returns an array of plugins (`() => (Plugin | Plugin[])[]`). This change is required so parallel worker builds run more consistently and predictably.
+`esbuild` is no longer directly used by Vite and is now an optional dependency. If you are using a plugin that uses the `transformWithEsbuild` function, you need to install `esbuild` as a `devDependency`. The `transformWithEsbuild` function is deprecated and will be removed in the future. We recommend migrating to the new `transformWithOxc` function instead.
 
-### Allow path containing `.` to fallback to index.html
+### JavaScript Minification by Oxc
 
-In Vite 4, accessing a path in dev containing `.` did not fallback to index.html even if [`appType`](/config/shared-options.md#apptype) is set to `'spa'` (default). From Vite 5, it will fallback to index.html.
+The Oxc Minifier is now used for JavaScript minification instead of esbuild. You can use the deprecated [`build.minify: 'esbuild'`](/config/build-options#build-minify) option to switch back to esbuild. This configuration option will be removed in the future and you need install `esbuild` as a `devDependency` as Vite no longer relies on esbuild directly.
 
-Note that the browser will no longer show a 404 error message in the console if you point the image path to a non-existent file (e.g. `<img src="./file-does-not-exist.png">`).
+If you were using the `esbuild.minify*` options to control minification behavior, you can now use `build.rolldownOptions.output.minify` instead. If you were using the `esbuild.drop` option, you can now use [`build.rolldownOptions.output.minify.compress.drop*` options](https://oxc.rs/docs/guide/usage/minifier/dead-code-elimination).
 
-### Align dev and preview HTML serving behaviour
+Property mangling and its related options ([`mangleProps`, `reserveProps`, `mangleQuoted`, `mangleCache`](https://esbuild.github.io/api/#mangle-props)) are not supported by Oxc. If you need these options, please see [oxc-project/oxc#15375](https://github.com/oxc-project/oxc/issues/15375).
 
-In Vite 4, the dev and preview servers serve HTML based on its directory structure and trailing slash differently. This causes inconsistencies when testing your built app. Vite 5 refactors into a single behaviour like below, given the following file structure:
+esbuild and Oxc Minifier make slightly different assumptions about source code. In case you suspect the minifier is causing breakage in your code, you can compare these assumptions here:
 
+- [esbuild minify assumptions](https://esbuild.github.io/api/#minify-considerations)
+- [Oxc Minifier assumptions](https://github.com/oxc-project/oxc/blob/main/crates/oxc_minifier/docs/ASSUMPTIONS.md)
+
+Please report any issues you find related to minification in your JavaScript apps.
+
+### CSS Minification by Lightning CSS
+
+[Lightning CSS](https://lightningcss.dev/) is now used for CSS minification by default. You can use the [`build.cssMinify: 'esbuild'`](/config/build-options#build-cssminify) option to switch back to esbuild. Note that you need to install `esbuild` as a `devDependency`.
+
+Lightning CSS supports better syntax lowering and your CSS bundle size might increase slightly.
+
+### Consistent CommonJS Interop
+
+The `default` import from a CommonJS (CJS) module is now handled in a consistent way.
+
+If it matches one of the following conditions, the `default` import is the `module.exports` value of the importee CJS module. Otherwise, the `default` import is the `module.exports.default` value of the importee CJS module:
+
+- The importer is `.mjs` or `.mts`.
+- The closest `package.json` for the importer has a `type` field set to `module`.
+- The `module.exports.__esModule` value of the importee CJS module is not set to `true`.
+
+::: details The previous behavior
+
+In development, if it matches one of the following conditions, the `default` import is the `module.exports` value of the importee CJS module. Otherwise, the `default` import is the `module.exports.default` value of the importee CJS module:
+
+- _The importer is included in the dependency optimization_ and `.mjs` or `.mts`.
+- _The importer is included in the dependency optimization_ and the closest `package.json` for the importer has a `type` field set to `module`.
+- The `module.exports.__esModule` value of the importee CJS module is not set to `true`.
+
+In build, the conditions were:
+
+- The `module.exports.__esModule` value of the importee CJS module is not set to `true`.
+- _`default` property of `module.exports` does not exist_.
+
+(assuming [`build.commonjsOptions.defaultIsModuleExports`](https://github.com/rollup/plugins/tree/master/packages/commonjs#defaultismoduleexports) is not changed from the default `'auto'`)
+
+:::
+
+See Rolldown's docs about this problem for more details: [Ambiguous `default` import from CJS modules - Bundling CJS | Rolldown](https://rolldown.rs/in-depth/bundling-cjs#ambiguous-default-import-from-cjs-modules).
+
+This change may break some existing code importing CJS modules. You can use the deprecated `legacy.inconsistentCjsInterop: true` option to temporarily restore the previous behavior. If you find a package that is affected by this change, please report it to the package author or send them a pull request. Make sure to link to the Rolldown documentation above so that the author can understand the context.
+
+### Removed Module Resolution Using Format Sniffing
+
+When both `browser` and `module` fields are present in `package.json`, Vite used to resolve the field based on the content of the file and it used to pick the ESM file for browsers. This was introduced because some packages were using the `module` field to point to ESM files for Node.js and some other packages were using the `browser` field to point to UMD files for browsers. Given that the modern `exports` field solved this problem and is now adopted by many packages, Vite no longer uses this heuristic and always respects the order of the [`resolve.mainFields`](/config/shared-options#resolve-mainfields) option. If you were relying on this behavior, you can use the [`resolve.alias`](/config/shared-options#resolve-alias) option to map the field to the desired file or apply a patch with your package manager (e.g. `patch-package`, `pnpm patch`).
+
+### Require Calls For Externalized Modules
+
+`require` calls for externalized modules are now preserved as `require` calls and not converted to `import` statements. This is to preserve the semantics of `require` calls. If you want to convert them to `import` statements, you can use [Rolldown's built-in `esmExternalRequirePlugin`](https://rolldown.rs/builtin-plugins/esm-external-require), which is re-exported from `vite`.
+
+```js
+import { defineConfig, esmExternalRequirePlugin } from 'vite'
+
+export default defineConfig({
+  // ...
+  plugins: [
+    esmExternalRequirePlugin({
+      external: ['react', 'vue', /^node:/],
+    }),
+  ],
+})
 ```
-├── index.html
-├── file.html
-└── dir
-    └── index.html
+
+See Rolldown's docs for more details: [`require` external modules - Bundling CJS | Rolldown](https://rolldown.rs/in-depth/bundling-cjs#require-external-modules).
+
+### `import.meta.url` in UMD / IIFE
+
+`import.meta.url` is no longer polyfilled in UMD / IIFE output formats. It will be replaced with `undefined` by default. If you prefer the previous behavior, you can use the [`define`](/config/shared-options#define) option with [`build.rolldownOptions.output.intro`](https://rolldown.rs/reference/OutputOptions.intro) option. See Rolldown's docs for more details: [Well-known `import.meta` properties - Non ESM Output Formats | Rolldown](https://rolldown.rs/in-depth/non-esm-output-formats#well-known-import-meta-properties).
+
+### Removed `build.rollupOptions.watch.chokidar` option
+
+The `build.rollupOptions.watch.chokidar` option was removed. Please migrate to the [`build.rolldownOptions.watch.watcher`](https://rolldown.rs/reference/InputOptions.watch#watcher) option.
+
+### Removed object form `build.rollupOptions.output.manualChunks` and deprecate function form one
+
+The object form `output.manualChunks` option is not supported anymore. The function form `output.manualChunks` is deprecated. Rolldown has the more flexible [`codeSplitting`](https://rolldown.rs/reference/OutputOptions.codeSplitting) option. See Rolldown's docs for more details about `codeSplitting`: [Manual Code Splitting - Rolldown](https://rolldown.rs/in-depth/manual-code-splitting).
+
+### `build()` Throws `BundleError`
+
+_This change only affects JS API users._
+
+`build()` now throws a [`BundleError`](https://rolldown.rs/reference/TypeAlias.BundleError) instead of the raw error thrown in the plugin. `BundleError` is typed as `Error & { errors?: RolldownError[] }` and it wraps the individual errors in an `errors` array. If you need the individual errors, you need to access `.errors`:
+
+```js
+try {
+  await build()
+} catch (e) {
+  if (e.errors) {
+    for (const error of e.errors) {
+      console.log(error.code) // error code
+    }
+  }
+}
 ```
 
-| Request           | Before (dev)                 | Before (preview)  | After (dev & preview)        |
-| ----------------- | ---------------------------- | ----------------- | ---------------------------- |
-| `/dir/index.html` | `/dir/index.html`            | `/dir/index.html` | `/dir/index.html`            |
-| `/dir`            | `/index.html` (SPA fallback) | `/dir/index.html` | `/index.html` (SPA fallback) |
-| `/dir/`           | `/dir/index.html`            | `/dir/index.html` | `/dir/index.html`            |
-| `/file.html`      | `/file.html`                 | `/file.html`      | `/file.html`                 |
-| `/file`           | `/index.html` (SPA fallback) | `/file.html`      | `/file.html`                 |
-| `/file/`          | `/index.html` (SPA fallback) | `/file.html`      | `/index.html` (SPA fallback) |
+### Module Type Support and Auto Detection
 
-### Manifest files are now generated in `.vite` directory by default
+_This change only affects plugin authors._
 
-In Vite 4, the manifest files ([`build.manifest`](/config/build-options.md#build-manifest) and [`build.ssrManifest`](/config/build-options.md#build-ssrmanifest)) were generated in the root of [`build.outDir`](/config/build-options.md#build-outdir) by default.
+Rolldown has experimental support for [Module types](https://rolldown.rs/guide/notable-features#module-types), similar to [esbuild's `loader` option](https://esbuild.github.io/api/#loader). Due to this, Rolldown automatically sets a module type based on the extension of the resolved id. If you are converting content from other module types to JavaScript in `load` or `transform` hooks, you may need to add `moduleType: 'js'` to the returned value:
 
-From Vite 5, they will be generated in the `.vite` directory in the `build.outDir` by default. This change helps deconflict public files with the same manifest file names when they are copied to the `build.outDir`.
-
-### Corresponding CSS files are not listed as top level entry in manifest.json file
-
-In Vite 4, the corresponding CSS file for a JavaScript entry point was also listed as a top-level entry in the manifest file ([`build.manifest`](/config/build-options.md#build-manifest)). These entries were unintentionally added and only worked for simple cases.
-
-In Vite 5, corresponding CSS files can only be found within the JavaScript entry file section.
-When injecting the JS file, the corresponding CSS files [should be injected](/guide/backend-integration.md#:~:text=%3C!%2D%2D%20if%20production%20%2D%2D%3E%0A%3Clink%20rel%3D%22stylesheet%22%20href%3D%22/assets/%7B%7B%20manifest%5B%27main.js%27%5D.css%20%7D%7D%22%20/%3E%0A%3Cscript%20type%3D%22module%22%20src%3D%22/assets/%7B%7B%20manifest%5B%27main.js%27%5D.file%20%7D%7D%22%3E%3C/script%3E).
-When the CSS should be injected separately, it must be added as a separate entry point.
-
-### CLI shortcuts require an additional `Enter` press
-
-CLI shortcuts, like `r` to restart the dev server, now require an additional `Enter` press to trigger the shortcut. For example, `r + Enter` to restart the dev server.
-
-This change prevents Vite from swallowing and controlling OS-specific shortcuts, allowing better compatibility when combining the Vite dev server with other processes, and avoids the [previous caveats](https://github.com/vitejs/vite/pull/14342).
-
-### Update `experimentalDecorators` and `useDefineForClassFields` TypeScript behaviour
-
-Vite 5 uses esbuild 0.19 and removes the compatibility layer for esbuild 0.18, which changes how [`experimentalDecorators`](https://www.typescriptlang.org/tsconfig#experimentalDecorators) and [`useDefineForClassFields`](https://www.typescriptlang.org/tsconfig#useDefineForClassFields) are handled.
-
-- **`experimentalDecorators` is not enabled by default**
-
-  You need to set `compilerOptions.experimentalDecorators` to `true` in `tsconfig.json` to use decorators.
-
-- **`useDefineForClassFields` defaults depend on the TypeScript `target` value**
-
-  If `target` is not `ESNext` or `ES2022` or newer, or if there's no `tsconfig.json` file, `useDefineForClassFields` will default to `false` which can be problematic with the default `esbuild.target` value of `esnext`. It may transpile to [static initialization blocks](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks#browser_compatibility) which may not be supported in your browser.
-
-  As such, it is recommended to set `target` to `ESNext` or `ES2022` or newer, or set `useDefineForClassFields` to `true` explicitly when configuring `tsconfig.json`.
-
-```jsonc
-{
-  "compilerOptions": {
-    // Set true if you use decorators
-    "experimentalDecorators": true,
-    // Set true if you see parsing errors in your browser
-    "useDefineForClassFields": true,
+```js
+const plugin = {
+  name: 'txt-loader',
+  load(id) {
+    if (id.endsWith('.txt')) {
+      const content = fs.readFile(id, 'utf-8')
+      return {
+        code: `export default ${JSON.stringify(content)}`,
+        moduleType: 'js', // [!code ++]
+      }
+    }
   },
 }
 ```
 
-### Remove `--https` flag and `https: true`
+### Other Related Deprecations
 
-The `--https` flag sets `server.https: true` and `preview.https: true` internally. This config was meant to be used together with the automatic https certification generation feature which [was dropped in Vite 3](https://v3.vitejs.dev/guide/migration.html#automatic-https-certificate-generation). Hence, this config is no longer useful as it will start a Vite HTTPS server without a certificate.
+The following options are deprecated and will be removed in the future:
 
-If you use [`@vitejs/plugin-basic-ssl`](https://github.com/vitejs/vite-plugin-basic-ssl) or [`vite-plugin-mkcert`](https://github.com/liuweiGL/vite-plugin-mkcert), they will already set the `https` config internally, so you can remove `--https`, `server.https: true`, and `preview.https: true` in your setup.
+- `build.rollupOptions`: renamed to `build.rolldownOptions`
+- `worker.rollupOptions`: renamed to `worker.rolldownOptions`
+- `build.commonjsOptions`: it is now no-op
+- `build.dynamicImportVarsOptions.warnOnError`: it is now no-op
+- `resolve.alias[].customResolver`: Use a custom plugin with `resolveId` hook and `enforce: 'pre'` instead
 
-### Remove `resolvePackageEntry` and `resolvePackageData` APIs
+## Removed Deprecated Features [<Badge text="NRV" type="warning" />](#migration-from-v7)
 
-The `resolvePackageEntry` and `resolvePackageData` APIs are removed as they exposed Vite's internals and blocked potential Vite 4.3 optimizations in the past. These APIs can be replaced with third-party packages, for example:
-
-- `resolvePackageEntry`: [`import.meta.resolve`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta/resolve) or the [`import-meta-resolve`](https://github.com/wooorm/import-meta-resolve) package.
-- `resolvePackageData`: Same as above, and crawl up the package directory to get the root `package.json`. Or use the community [`vitefu`](https://github.com/svitejs/vitefu) package.
-
-```js
-import { resolve } from 'import-meta-resolve'
-import { findDepPkgJsonPath } from 'vitefu'
-import fs from 'node:fs'
-
-const pkg = 'my-lib'
-const basedir = process.cwd()
-
-// `resolvePackageEntry`:
-const packageEntry = resolve(pkg, basedir)
-
-// `resolvePackageData`:
-const packageJsonPath = findDepPkgJsonPath(pkg, basedir)
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
-```
-
-## Removed Deprecated APIs
-
-- Default exports of CSS files (e.g `import style from './foo.css'`): Use the `?inline` query instead
-- `import.meta.globEager`: Use `import.meta.glob('*', { eager: true })` instead
-- `ssr.format: 'cjs'` and `legacy.buildSsrCjsExternalHeuristics` ([#13816](https://github.com/vitejs/vite/discussions/13816))
-- `server.middlewareMode: 'ssr'` and `server.middlewareMode: 'html'`: Use [`appType`](/config/shared-options.md#apptype) + [`server.middlewareMode: true`](/config/server-options.md#server-middlewaremode) instead ([#8452](https://github.com/vitejs/vite/pull/8452))
+- Passing a URL to `import.meta.hot.accept` is no longer supported. Please pass an id instead. ([#21382](https://github.com/vitejs/vite/pull/21382))
 
 ## Advanced
 
-There are some changes which only affect plugin/tool creators.
+These breaking changes are expected to only affect a minority of use cases:
 
-- [[#14119] refactor!: merge `PreviewServerForHook` into `PreviewServer` type](https://github.com/vitejs/vite/pull/14119)
-  - The `configurePreviewServer` hook now accepts the `PreviewServer` type instead of `PreviewServerForHook` type.
-- [[#14818] refactor(preview)!: use base middleware](https://github.com/vitejs/vite/pull/14818)
-  - Middlewares added from the returned function in `configurePreviewServer` now does not have access to the `base` when comparing the `req.url` value. This aligns the behaviour with the dev server. You can check the `base` from the `configResolved` hook if needed.
-- [[#14834] fix(types)!: expose httpServer with Http2SecureServer union](https://github.com/vitejs/vite/pull/14834)
-  - `http.Server | http2.Http2SecureServer` is now used instead of `http.Server` where appropriate.
+- [Extglobs](https://github.com/micromatch/picomatch/blob/master/README.md#extglobs) are not supported yet ([rolldown-vite#365](https://github.com/vitejs/rolldown-vite/issues/365))
+- TypeScript legacy namespace is only supported partially. See [Oxc Transformer's related documentation](https://oxc.rs/docs/guide/usage/transformer/typescript.html#partial-namespace-support) for more details.
+- `define` does not share reference for objects: When you pass an object as a value to `define`, each variable will have a separate copy of the object. See [Oxc Transformer's related documentation](https://oxc.rs/docs/guide/usage/transformer/global-variable-replacement#define) for more details.
+- `bundle` object changes (`bundle` is an object passed in `generateBundle` / `writeBundle` hooks, returned by `build` function):
+  - Assigning to `bundle[foo]` is not supported. This is discouraged by Rollup as well. Please use `this.emitFile()` instead.
+  - the reference is not shared across the hooks ([rolldown-vite#410](https://github.com/vitejs/rolldown-vite/issues/410))
+  - `structuredClone(bundle)` errors with `DataCloneError: #<Object> could not be cloned`. This is not supported anymore. Please clone it with `structuredClone({ ...bundle })`. ([rolldown-vite#128](https://github.com/vitejs/rolldown-vite/issues/128))
+- All parallel hooks in Rollup work as sequential hooks. See [Rolldown's documentation](https://rolldown.rs/apis/plugin-api#sequential-hook-execution) for more details.
+- `"use strict";` is not injected sometimes. See [Rolldown's documentation](https://rolldown.rs/in-depth/directives) for more details.
+- Transforming to ES5 and below with plugin-legacy is not supported ([rolldown-vite#452](https://github.com/vitejs/rolldown-vite/issues/452))
+- Passing the same browser with multiple versions of it to `build.target` option now errors: esbuild selects the latest version of it, which was probably not what you intended.
+- Missing support by Rolldown: The following features are not supported by Rolldown and are no longer supported by Vite.
+  - `build.rollupOptions.output.format: 'system'` ([rolldown#2387](https://github.com/rolldown/rolldown/issues/2387))
+  - `build.rollupOptions.output.format: 'amd'` ([rolldown#2528](https://github.com/rolldown/rolldown/issues/2528))
+  - `shouldTransformCachedModule` hook ([rolldown#4389](https://github.com/rolldown/rolldown/issues/4389))
+  - `resolveImportMeta` hook ([rolldown#1010](https://github.com/rolldown/rolldown/issues/1010))
+  - `renderDynamicImport` hook ([rolldown#4532](https://github.com/rolldown/rolldown/issues/4532))
+  - `resolveFileUrl` hook
+- `parseAst` / `parseAstAsync` functions are now deprecated in favor of `parseSync` / `parse` functions which have more features.
+- comments are removed before the `renderChunk` hook instead of after the `renderChunk` hook
+- comments other than the ones listed [here](https://rolldown.rs/reference/OutputOptions.comments) are moved, while Rollup only removes comments if the adjacent code is removed
 
-Also there are other breaking changes which only affect few users.
+## Migration from v6
 
-- [[#14098] fix!: avoid rewriting this (reverts #5312)](https://github.com/vitejs/vite/pull/14098)
-  - Top level `this` was rewritten to `globalThis` by default when building. This behavior is now removed.
-- [[#14231] feat!: add extension to internal virtual modules](https://github.com/vitejs/vite/pull/14231)
-  - Internal virtual modules' id now has an extension (`.js`).
-- [[#14583] refactor!: remove exporting internal APIs](https://github.com/vitejs/vite/pull/14583)
-  - Removed accidentally exported internal APIs: `isDepsOptimizerEnabled` and `getDepOptimizationConfig`
-  - Removed exported internal types: `DepOptimizationResult`, `DepOptimizationProcessing`, and `DepsOptimizer`
-  - Renamed `ResolveWorkerOptions` type to `ResolvedWorkerOptions`
-- [[#5657] fix: return 404 for resources requests outside the base path](https://github.com/vitejs/vite/pull/5657)
-  - In the past, Vite responded to requests outside the base path without `Accept: text/html`, as if they were requested with the base path. Vite no longer does that and responds with 404 instead.
-- [[#14723] fix(resolve)!: remove special .mjs handling](https://github.com/vitejs/vite/pull/14723)
-  - In the past, when a library `"exports"` field maps to an `.mjs` file, Vite will still try to match the `"browser"` and `"module"` fields to fix compatibility with certain libraries. This behavior is now removed to align with the exports resolution algorithm.
-- [[#14733] feat(resolve)!: remove `resolve.browserField`](https://github.com/vitejs/vite/pull/14733)
-  - `resolve.browserField` has been deprecated since Vite 3 in favour of an updated default of `['browser', 'module', 'jsnext:main', 'jsnext']` for [`resolve.mainFields`](/config/shared-options.md#resolve-mainfields).
-- [[#14855] feat!: add isPreview to ConfigEnv and resolveConfig](https://github.com/vitejs/vite/pull/14855)
-  - Renamed `ssrBuild` to `isSsrBuild` in the `ConfigEnv` object.
-- [[#14945] fix(css): correctly set manifest source name and emit CSS file](https://github.com/vitejs/vite/pull/14945)
-  - CSS file names are now generated based on the chunk name.
-
-## Migration from v3
-
-Check the [Migration from v3 Guide](https://v4.vitejs.dev/guide/migration.html) in the Vite v4 docs first to see the needed changes to port your app to Vite v4, and then proceed with the changes on this page.
+Check the [Migration from v6 Guide](https://v7.vite.dev/guide/migration) in the Vite v7 docs first to see the needed changes to port your app to Vite 7, and then proceed with the changes on this page.
