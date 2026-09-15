@@ -2,12 +2,12 @@ name: Sync with upstream vite docs
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/20 * * * 20"
   workflow_dispatch:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: windows
     steps:
       - name: Checkout vite-docs-template
         uses: actions/checkout@v7
